@@ -61,7 +61,6 @@ namespace qController
             };
             mainSlider.ValueChanged += (sender, args) =>
             {
-                Console.WriteLine(String.Format("The Main Slider value is {0}", args.NewValue));
                 qController.qSender.sendArgs("/cue/selected/sliderLevel/0", (float)args.NewValue);
             };
 
@@ -72,7 +71,6 @@ namespace qController
             };
             leftSlider.ValueChanged += (sender, args) =>
             {
-                Console.WriteLine(String.Format("The Left Slider value is {0}", (float)args.NewValue));
                 qController.qSender.sendArgs("/cue/selected/sliderLevel/1", (float)args.NewValue);
             };
 
@@ -83,7 +81,6 @@ namespace qController
             };
             rightSlider.ValueChanged += (sender, args) =>
             {
-                Console.WriteLine(String.Format("The Right Slider value is {0}", args.NewValue));
                 qController.qSender.sendArgs("/cue/selected/sliderLevel/2", (float)args.NewValue);
             };
             mainG.Children.Add(mainSlider, 1, 0);
@@ -95,21 +92,21 @@ namespace qController
             Grid.SetColumnSpan(rightSlider, 4);
 
             Label mainLabel = new Label { 
-                Text = "MAIN",
+                Text = "MAIN:",
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center
             };
 
             Label leftLabel = new Label
             {
-                Text = "LEFT",
+                Text = "LEFT:",
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center
             };
 
             Label rightLabel = new Label
             {
-                Text = "RIGHT",
+                Text = "RIGHT:",
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center
             };
