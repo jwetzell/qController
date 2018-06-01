@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:qController" x:Class="qController.qControllerPage">
+    <StackLayout x:Name="sLayout">
+        <Grid x:Name="topBar" HorizontalOptions="FillAndExpand">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Image x:Name = "scanButton" HorizontalOptions = "Start" Margin="20,10,20,10" Grid.Row="0" Grid.Column="0" />
+          <Image x:Name = "addButton" HorizontalOptions = "End" Margin="20,10,20,10" Grid.Row="0" Grid.Column="1" />
+        </Grid>
+        <ListView x:Name="lstView" HasUnevenRows = "true" >
+        </ListView>
+    </StackLayout>
+</ContentPage>

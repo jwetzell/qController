@@ -1,0 +1,86 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="MyPage.cs" />
+    <Compile Remove="Bespoke.Osc\Bespoke.Common.Osc\Properties\AssemblyInfo.cs" />
+    <Compile Remove="Bespoke.Osc\Samples\CS\Receiver\Program.cs" />
+    <Compile Remove="Bespoke.Osc\Samples\CS\Receiver\Properties\AssemblyInfo.cs" />
+    <Compile Remove="Bespoke.Osc\Samples\CS\Transmitter\ITransmitter.cs" />
+    <Compile Remove="Bespoke.Osc\Samples\CS\Transmitter\MulticastTransmitter.cs" />
+    <Compile Remove="Bespoke.Osc\Samples\CS\Transmitter\Program.cs" />
+    <Compile Remove="Bespoke.Osc\Samples\CS\Transmitter\TcpTransmitter.cs" />
+    <Compile Remove="Bespoke.Osc\Samples\CS\Transmitter\UdpTransmitter.cs" />
+    <Compile Remove="Bespoke.Osc\Samples\CS\Transmitter\Properties\AssemblyInfo.cs" />
+    <Compile Remove="Bespoke.Net\Assert.cs" />
+    <Compile Remove="Bespoke.Net\CommandLineParser.cs" />
+    <Compile Remove="Bespoke.Net\ExceptionEventArgs.cs" />
+    <Compile Remove="Bespoke.Net\FloatExtensions.cs" />
+    <Compile Remove="Bespoke.Net\InputManager.cs" />
+    <Compile Remove="Bespoke.Net\Node.cs" />
+    <Compile Remove="Bespoke.Net\ObjectRegistry.cs" />
+    <Compile Remove="Bespoke.Net\RandomHelper.cs" />
+    <Compile Remove="Bespoke.Net\ServiceContainer.cs" />
+    <Compile Remove="Bespoke.Net\StringExtensions.cs" />
+    <Compile Remove="Bespoke.Net\Net\IPServer.cs" />
+    <Compile Remove="Bespoke.Net\Net\TcpConnection.cs" />
+    <Compile Remove="Bespoke.Net\Net\TcpConnectionEventArgs.cs" />
+    <Compile Remove="Bespoke.Net\Net\TcpDataReceivedEventArgs.cs" />
+    <Compile Remove="Bespoke.Net\Net\TcpServer.cs" />
+    <Compile Remove="Bespoke.Net\Net\TransmissionType.cs" />
+    <Compile Remove="Bespoke.Net\Net\UdpDataReceivedEventArgs.cs" />
+    <Compile Remove="Bespoke.Net\Net\UdpServer.cs" />
+    <Compile Remove="Bespoke.Net\Properties\AssemblyInfo.cs" />
+    <Compile Remove="Classes\QButton.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="App.xaml.cs">
+      <DependentUpon>*.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Pages\ControlPage.xaml.cs">
+      <DependentUpon>*.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Pages\qControllerPage.xaml.cs">
+      <DependentUpon>*.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Rug.Osc" Version="1.2.5" />
+    <PackageReference Include="Acr.UserDialogs" Version="7.0.1" />
+    <PackageReference Include="Zeroconf" Version="2.9.0" />
+    <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
+    <PackageReference Include="Acr.Settings" Version="9.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Rssdp" Version="4.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="App.xaml" />
+    <None Remove="qControllerPage.xaml" />
+    <None Remove="ControlPage.xaml" />
+    <None Remove="Bespoke.Osc\Samples\CS\Receiver\App.config" />
+    <None Remove="Bespoke.Osc\Samples\CS\Transmitter\App.config" />
+    <None Remove="Bespoke.Osc\Samples\VB\Receiver\App.config" />
+    <None Remove="Bespoke.Osc\Samples\VB\Receiver\My Project\Application.Designer.vb" />
+    <None Remove="Bespoke.Osc\Samples\VB\Receiver\My Project\Application.myapp" />
+    <None Remove="Bespoke.Net\.gitignore" />
+    <None Remove="Bespoke.Net\Help\Bespoke Common Library.chm" />
+  </ItemGroup>
+  <!--<ItemGroup>
+    <EmbeddedResource Include="Pages\ControlPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\qControllerPage.xaml" />
+    <EmbeddedResource Include="App.xaml" />
+  </ItemGroup>-->
+  <ItemGroup>
+    <Folder Include="Classes\" />
+    <Folder Include="Pages\" />
+    <Folder Include="Classes\Cues\" />
+    <Folder Include="Classes\Cell\" />
+    <Folder Include="Classes\Communication\" />
+    <Folder Include="Classes\Settings\" />
+  </ItemGroup>
+</Project>
