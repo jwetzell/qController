@@ -1,12 +1,12 @@
 ﻿using System;
-using Rug.Osc;
+using SharpOSC;
 using System.Net;
 using System.Threading;
 
 namespace qController
 {
-    public class PacketEventArgs : EventArgs{
-        public OscPacket Packet {
+    public class MessageEventArgs : EventArgs{
+        public OscMessage Message {
             get;
             set;
         }
@@ -14,21 +14,20 @@ namespace qController
 
     public class QReceiver
     {
-        static OscReceiver qReceiver;
         static Thread thread;
         private QController owner;
+        static UDPListener udpListener;
+        public delegate void MessageReceivedHandler(object source, MessageEventArgs args);
 
-        public delegate void PacketReceivedHandler(object source, PacketEventArgs args);
-
-        public event PacketReceivedHandler PacketReceived;
+        public event MessageReceivedHandler MessageReceived;
 
         public QReceiver(int port, QController ctrl)
         {
-            qReceiver = new OscReceiver(port);
+            owner = ctrl;
+
+            udpListener = new UDPListener(port);
 
             thread = new Thread(new ThreadStart(ListenLoop));
-            owner = ctrl;
-            qReceiver.Connect();
             thread.Start();
 
         }
@@ -36,45 +35,32 @@ namespace qController
 		public void ListenLoop()
 		{
             Console.WriteLine("Loop Started");
-			try
-			{
-                while (qReceiver.State != OscSocketState.Closed)
-				{
-					// if we are in a state to recieve
-					if (qReceiver.State == OscSocketState.Connected)
-					{
-						// get the next message 
-						// this will block until one arrives or the socket is closed
-                        OscPacket packet = qReceiver.Receive();
 
-                        OnPacketReceived(packet);
-                        // Write the packet to the console 
+            while (true)
+            {
+                OscMessage messageReceived = null;
+                while(messageReceived == null)
+                {
+                    messageReceived = (OscMessage)udpListener.Receive();
+                    Thread.Sleep(1);
+                }
+                Console.WriteLine("Received a message!");
+                Console.WriteLine(messageReceived.Address);
+                OnMessageReceived(messageReceived);
+            }
 
-						// DO SOMETHING HERE!
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				// if the socket was connected when this happens
-				// then tell the user
-				if (qReceiver.State == OscSocketState.Connected)
-				{
-					Console.WriteLine("Exception in listen loop");
-					Console.WriteLine(ex.Message);
-				}
-			}
             Console.WriteLine("Loop Ended");
-		}
 
-        public void Close(){
-            qReceiver.Close();
-            thread.Abort();
         }
 
-        protected virtual void OnPacketReceived(OscPacket pkt){
-            if (PacketReceived != null)
-                PacketReceived(this, new PacketEventArgs(){Packet = pkt});
+        public void Close(){
+            thread.Abort();
+            udpListener.Close();
+        }
+
+        protected virtual void OnMessageReceived(OscMessage msg){
+            if (MessageReceived != null)
+                MessageReceived(this, new MessageEventArgs(){Message = msg});
         }
     }
 }

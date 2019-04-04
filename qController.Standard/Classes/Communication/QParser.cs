@@ -1,5 +1,5 @@
 ﻿using System;
-using Rug.Osc;
+using SharpOSC;
 using Newtonsoft.Json.Linq;
 
 namespace qController
@@ -35,8 +35,7 @@ namespace qController
         public event SelectedCueUpdatedHandler SelectedCueUpdated;
         public event AudioLevelsUpdatedHandler AudioLevelsUpdated;
 
-        public void ParsePacket(OscPacket packet){
-            OscMessage msg = (OscMessage)packet;
+        public void ParseMessage(OscMessage msg){
             if (msg.Address.Contains("selectedCues"))
                 ParseSelectedCueInfo(msg);
             else if (msg.Address.Contains("notes"))
@@ -46,9 +45,9 @@ namespace qController
 
         }
 
-        public void OnPacketReceived(object source, PacketEventArgs args){
+        public void OnMessageReceived(object source, MessageEventArgs args){
             //Console.WriteLine("Packet Received");
-            ParsePacket(args.Packet);
+            ParseMessage(args.Message);
         }
 
         public void ParseSelectedCueInfo(OscMessage msg){
@@ -67,13 +66,14 @@ namespace qController
         public void ParseNoteInfo(OscMessage msg){
             //JToken cueInfo = OSC2JSON(msg);
         }
+
         public void ParseLevelInfo(OscMessage msg){
             JToken levels = OSC2JSON(msg)[0];
             OnAudioLevelsUpdated(levels);
         }
 
         public JToken OSC2JSON(OscMessage Msg){
-            JObject json = JObject.Parse(Msg.ToArray()[0].ToString());
+            JObject json = JObject.Parse(Msg.Arguments.ToArray()[0].ToString());
             return json.GetValue("data");
         }
 

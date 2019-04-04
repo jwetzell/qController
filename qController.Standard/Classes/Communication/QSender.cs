@@ -1,30 +1,34 @@
 ﻿using System;
 using System.Net;
-using Rug.Osc;
+using SharpOSC;
 
 namespace qController
 {
     public class QSender
     {
-        OscSender qSender;
+        TCPSender tcpSender;
+        UDPSender udpSender;
 
         public QSender(string address, int port)
         {
-			IPAddress ipAddress = IPAddress.Parse(address);
-
-            qSender = new OscSender(ipAddress, port);
+            tcpSender = new TCPSender(address, port);
+            udpSender = new UDPSender(address, port);
         }
 
         public void sendString(string address) {
-            qSender.Connect();
-            qSender.Send(new OscMessage(address,new object[]{}));
-            qSender.Close();
+            tcpSender.Send(new OscMessage(address));
         }
 
-        public void sendArgs(string msg, object args){
-            qSender.Connect();
-            qSender.Send(new OscMessage(msg,args));
-            qSender.Close();
+        public void sendStringUDP(string address)
+        {
+            udpSender.Send(new OscMessage(address));
+        }
+        public void sendArgs(string address, object args){
+            tcpSender.Send(new OscMessage(address, args));
+        }
+        public void sendArgsUDP(string address, object args)
+        {
+            udpSender.Send(new OscMessage(address, args));
         }
 
     }

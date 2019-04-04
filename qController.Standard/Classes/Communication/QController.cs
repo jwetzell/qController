@@ -24,7 +24,7 @@ namespace qController
             qUpdater.Start();
 
             qParser.SelectedCueUpdated += this.OnSelectedCueUpdated;
-            qReceiver.PacketReceived += qParser.OnPacketReceived;
+            qReceiver.MessageReceived += qParser.OnMessageReceived;
 
         }
 
@@ -32,6 +32,10 @@ namespace qController
             qSender.sendString(cmd);
         }
 
+        public void sendCommandUDP(string cmd)
+        {
+            qSender.sendStringUDP(cmd);
+        }
         public void updateCueValue(QCue cue, string property, object newValue){
            // qSender.sendArgs("/cue_id/"+cue.uniqueID+"/"+property, newValue);
         }

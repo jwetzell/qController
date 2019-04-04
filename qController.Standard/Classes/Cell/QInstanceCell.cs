@@ -103,7 +103,7 @@ namespace qController
             {
                 App.iNav.PushModalAsync(new NavigationPage(new ControlPage(nameLabel.Text,addressLabel.Text)));
 
-                Console.WriteLine("Connect To" + nameLabel.Text + " Pressed");
+                Console.WriteLine("Connect To " + nameLabel.Text + " Pressed");
 
             }
         }

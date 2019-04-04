@@ -14,8 +14,8 @@ namespace qController
         public void Start(){
             active = true;
             Device.StartTimer(TimeSpan.FromSeconds(0.01), () => {
-                qController.sendCommand("/selectedCues");
-                qController.sendCommand("/cue/selected/levels");
+                qController.sendCommandUDP("/selectedCues");
+                qController.sendCommandUDP("/cue/selected/levels");
                 return active;
             });
         }
