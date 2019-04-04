@@ -48,7 +48,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Rug.Osc" Version="1.2.5" />
     <PackageReference Include="Acr.UserDialogs" Version="7.0.1" />
     <PackageReference Include="Zeroconf" Version="2.9.0" />
     <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />

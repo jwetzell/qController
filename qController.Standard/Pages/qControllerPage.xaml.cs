@@ -1,7 +1,6 @@
 ﻿using Xamarin.Forms;
 using System.Net;
 using System;
-using Rug.Osc;
 using Acr.UserDialogs;
 using Acr.Settings;
 using Zeroconf;

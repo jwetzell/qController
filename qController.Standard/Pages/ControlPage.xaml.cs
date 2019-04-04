@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
-using Rug.Osc;
 using System.Collections;
 
 namespace qController
