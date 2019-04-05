@@ -1,6 +1,7 @@
 ﻿using System;
 using SharpOSC;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace qController
 {
@@ -21,7 +22,14 @@ namespace qController
             set;
         }
     }
-
+    public class WorkspaceEventArgs : EventArgs
+    {
+        public QWorkSpace UpdatedWorkspace
+        {
+            get;
+            set;
+        }
+    }
     public class QParser
     {
         public QParser()
@@ -31,9 +39,11 @@ namespace qController
 
         public delegate void SelectedCueUpdatedHandler(object source, CueEventArgs args);
         public delegate void AudioLevelsUpdatedHandler(object source, AudioLevelArgs args);
+        public delegate void WorkspaceUpdatedHandler(object source, WorkspaceEventArgs args);
 
         public event SelectedCueUpdatedHandler SelectedCueUpdated;
         public event AudioLevelsUpdatedHandler AudioLevelsUpdated;
+        public event WorkspaceUpdatedHandler WorkspaceUpdated;
 
         public void ParseMessage(OscMessage msg){
             if (msg.Address.Contains("selectedCues"))
@@ -42,19 +52,16 @@ namespace qController
                 ParseNoteInfo(msg);
             else if (msg.Address.Contains("levels"))
                 ParseLevelInfo(msg);
-
+            else if (msg.Address.Contains("cueLists"))
+                ParseWorkspaceInfo(msg);
+            else
+                Console.WriteLine(msg.Address);
         }
-
-        public void OnMessageReceived(object source, MessageEventArgs args){
-            //Console.WriteLine("Packet Received");
-            ParseMessage(args.Message);
-        }
-
         public void ParseSelectedCueInfo(OscMessage msg){
             JArray selectedCues = (JArray)OSC2JSON(msg);
-            if(selectedCues.Count > 0){
+            if (selectedCues.Count > 0){
                 foreach(JObject item in selectedCues){
-                    QCue parsedCue = new QCue(item);
+                    QCue parsedCue = JsonConvert.DeserializeObject<QCue>(item.ToString());
                     OnSelectedCueUpdated(parsedCue);
                 }
 
@@ -72,11 +79,25 @@ namespace qController
             OnAudioLevelsUpdated(levels);
         }
 
+        public void ParseWorkspaceInfo(OscMessage msg)
+        {
+            if (msg.Arguments.Count > 0)
+            {
+                QWorkSpace workspace = JsonConvert.DeserializeObject<QWorkSpace>(msg.Arguments[0].ToString());
+                OnWorkspaceUpdated(workspace);
+            }
+        }
+
         public JToken OSC2JSON(OscMessage Msg){
             JObject json = JObject.Parse(Msg.Arguments.ToArray()[0].ToString());
             return json.GetValue("data");
         }
 
+        protected virtual void OnWorkspaceUpdated(QWorkSpace workspace)
+        {
+            if (WorkspaceUpdated != null)
+                WorkspaceUpdated(this, new WorkspaceEventArgs() { UpdatedWorkspace = workspace });
+        }
         protected virtual void OnSelectedCueUpdated(QCue cue)
         {
             if (SelectedCueUpdated != null)

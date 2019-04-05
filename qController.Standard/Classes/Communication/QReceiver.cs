@@ -44,9 +44,8 @@ namespace qController
                     messageReceived = (OscMessage)udpListener.Receive();
                     Thread.Sleep(1);
                 }
-                Console.WriteLine("Received a message!");
-                Console.WriteLine(messageReceived.Address);
                 OnMessageReceived(messageReceived);
+                
             }
 
             Console.WriteLine("Loop Ended");
@@ -59,6 +58,7 @@ namespace qController
         }
 
         protected virtual void OnMessageReceived(OscMessage msg){
+            Console.WriteLine("Message Received");
             if (MessageReceived != null)
                 MessageReceived(this, new MessageEventArgs(){Message = msg});
         }

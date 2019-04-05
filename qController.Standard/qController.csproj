@@ -35,6 +35,8 @@
     <Compile Remove="Bespoke.Net\Net\UdpServer.cs" />
     <Compile Remove="Bespoke.Net\Properties\AssemblyInfo.cs" />
     <Compile Remove="Classes\QButton.cs" />
+    <Compile Remove="Classes\Cues\QDefinitions.cs" />
+    <Compile Remove="Classes\Communication\QReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="App.xaml.cs">

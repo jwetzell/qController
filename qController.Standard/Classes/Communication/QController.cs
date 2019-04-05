@@ -8,33 +8,32 @@ namespace qController
     public class QController
     {
 
-		public QSender qSender;
-		QReceiver qReceiver;
         QUpdater qUpdater;
         public QParser qParser;
         QCue selectedCue;
-
+        public QClient qClient;
+        QWorkSpace qWorkspace;
 		public QController(string address, int port)
         {
-            
-			qSender = new QSender(address, port);
-            qReceiver = new QReceiver(port+1, this);
+            qClient = new QClient(address, port);
+
             qParser = new QParser();
             qUpdater = new QUpdater(this);
             qUpdater.Start();
 
             qParser.SelectedCueUpdated += this.OnSelectedCueUpdated;
-            qReceiver.MessageReceived += qParser.OnMessageReceived;
+            qParser.WorkspaceUpdated += this.OnWorkspaceUpdated;
+
 
         }
 
         public void sendCommand(string cmd){
-            qSender.sendString(cmd);
+            qClient.sendString(cmd);
         }
 
         public void sendCommandUDP(string cmd)
         {
-            qSender.sendStringUDP(cmd);
+            qClient.sendStringUDP(cmd);
         }
         public void updateCueValue(QCue cue, string property, object newValue){
            // qSender.sendArgs("/cue_id/"+cue.uniqueID+"/"+property, newValue);
@@ -46,8 +45,13 @@ namespace qController
             //Console.WriteLine("Selected Cue Updated: Name=" + selectedCue.listName);
         }
 
+        public void OnWorkspaceUpdated(object source, WorkspaceEventArgs args)
+        {
+
+            qWorkspace = args.UpdatedWorkspace;
+
+        }
         public void Kill(){
-            qReceiver.Close();
             qUpdater.Kill();
         }
     }

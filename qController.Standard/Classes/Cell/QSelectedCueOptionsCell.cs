@@ -61,7 +61,7 @@ namespace qController
             };
             mainSlider.ValueChanged += (sender, args) =>
             {
-                qController.qSender.sendArgs("/cue/selected/sliderLevel/0", (float)args.NewValue);
+                qController.qClient.sendArgs("/cue/selected/sliderLevel/0", (float)args.NewValue);
             };
 
             leftSlider = new Slider
@@ -71,7 +71,7 @@ namespace qController
             };
             leftSlider.ValueChanged += (sender, args) =>
             {
-                qController.qSender.sendArgs("/cue/selected/sliderLevel/1", (float)args.NewValue);
+                qController.qClient.sendArgs("/cue/selected/sliderLevel/1", (float)args.NewValue);
             };
 
             rightSlider = new Slider
@@ -81,7 +81,7 @@ namespace qController
             };
             rightSlider.ValueChanged += (sender, args) =>
             {
-                qController.qSender.sendArgs("/cue/selected/sliderLevel/2", (float)args.NewValue);
+                qController.qClient.sendArgs("/cue/selected/sliderLevel/2", (float)args.NewValue);
             };
             mainG.Children.Add(mainSlider, 1, 0);
             mainG.Children.Add(leftSlider, 1, 1);

@@ -1,11 +1,13 @@
 ﻿using System;
-using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+
 namespace qController
 {
-    public class QCue
+    public class QCueList
     {
         public string number { get; set; }
         public string uniqueID { get; set; }
+        public List<QCue> cues { get; set; }
         public bool flagged { get; set; }
         public string listName { get; set; }
         public string type { get; set; }

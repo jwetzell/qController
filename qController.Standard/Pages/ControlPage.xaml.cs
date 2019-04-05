@@ -18,6 +18,9 @@ namespace qController
 
             qController = new QController(address, 53000);
             qController.qParser.SelectedCueUpdated += SelectedCueUpdated;
+            qController.qParser.WorkspaceUpdated += WorkspaceUpdated;
+
+            qController.qParser.ParseWorkspaceInfo(qController.qClient.sendAndReceiveString("/cueLists"));
             NavigationPage.SetHasNavigationBar(this, false);
             instanceName.Text = name;
 
@@ -143,6 +146,18 @@ namespace qController
                 }
                 qCell.UpdateSelectedCue(e.SelectedCue);
             });
+        }
+
+        public void WorkspaceUpdated(object sender, WorkspaceEventArgs e)
+        {
+            if(e.UpdatedWorkspace.data.Count > 0)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    //
+                });
+                Console.WriteLine("Workspace Updated: " + e.UpdatedWorkspace.workspace_id);
+            }
         }
 
         protected override void OnDisappearing()
