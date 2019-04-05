@@ -17,10 +17,10 @@ namespace qController
             InitializeComponent();
 
             qController = new QController(address, 53000);
-            qController.qParser.SelectedCueUpdated += SelectedCueUpdated;
-            qController.qParser.WorkspaceUpdated += WorkspaceUpdated;
+            qController.qClient.qParser.SelectedCueUpdated += SelectedCueUpdated;
+            qController.qClient.qParser.WorkspaceUpdated += WorkspaceUpdated;
 
-            qController.qParser.ParseWorkspaceInfo(qController.qClient.sendAndReceiveString("/cueLists"));
+            qController.qClient.sendAndReceiveString("/cueLists");
             NavigationPage.SetHasNavigationBar(this, false);
             instanceName.Text = name;
 

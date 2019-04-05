@@ -32,7 +32,7 @@ namespace qController
         Slider rightSlider;
         public QSelectedCueOptionsCell(QController qController)
         {
-            qController.qParser.AudioLevelsUpdated += AudioLevelsUpdated;
+            qController.qClient.qParser.AudioLevelsUpdated += AudioLevelsUpdated;
             Padding = new Thickness(5);
             CornerRadius = 20;
             BackgroundColor = Color.FromHex("D8D8D8");

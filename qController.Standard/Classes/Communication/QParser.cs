@@ -46,16 +46,20 @@ namespace qController
         public event WorkspaceUpdatedHandler WorkspaceUpdated;
 
         public void ParseMessage(OscMessage msg){
-            if (msg.Address.Contains("selectedCues"))
-                ParseSelectedCueInfo(msg);
-            else if (msg.Address.Contains("notes"))
-                ParseNoteInfo(msg);
-            else if (msg.Address.Contains("levels"))
-                ParseLevelInfo(msg);
-            else if (msg.Address.Contains("cueLists"))
-                ParseWorkspaceInfo(msg);
-            else
-                Console.WriteLine(msg.Address);
+            if (!msg.Address.Contains("null"))
+            {
+                if (msg.Address.Contains("selectedCues"))
+                    ParseSelectedCueInfo(msg);
+                else if (msg.Address.Contains("notes"))
+                    ParseNoteInfo(msg);
+                else if (msg.Address.Contains("levels"))
+                    ParseLevelInfo(msg);
+                else if (msg.Address.Contains("cueLists"))
+                    ParseWorkspaceInfo(msg);
+                else
+                    Console.WriteLine(msg.Address);
+            }
+
         }
         public void ParseSelectedCueInfo(OscMessage msg){
             JArray selectedCues = (JArray)OSC2JSON(msg);

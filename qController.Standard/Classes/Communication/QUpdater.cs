@@ -25,11 +25,11 @@ namespace qController
 
         public void UpdateSelected()
         {
-            qController.qParser.ParseMessage(qController.qClient.sendAndReceiveString("/selectedCues"));
+            qController.qClient.sendAndReceiveString("/selectedCues");
         }
         public void UpdateLevels()
         {
-            qController.qParser.ParseMessage(qController.qClient.sendAndReceiveString("/cue/selected/levels"));
+            qController.qClient.sendAndReceiveString("/cue/selected/levels");
         }
 
         public void Kill(){

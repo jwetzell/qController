@@ -39,6 +39,8 @@
     <Compile Remove="Classes\Communication\QReceiver.cs" />
     <Compile Remove="Classes\Communication\SharpOSC\UDPListener.cs" />
     <Compile Remove="Classes\Communication\SharpOSC\UDPSender.cs" />
+    <Compile Remove="Classes\Communication\QSender.cs" />
+    <Compile Remove="Classes\Communication\QSender.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="App.xaml.cs">

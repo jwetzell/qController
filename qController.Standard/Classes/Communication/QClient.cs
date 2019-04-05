@@ -6,17 +6,29 @@ namespace qController
     public class QClient
     {
         TCPSender tcpSender;
-        UDPSender udpSender;
+        public QParser qParser;
 
         public QClient(string address, int port)
         {
+            qParser = new QParser();
             tcpSender = new TCPSender(address, port);
-            udpSender = new UDPSender(address, port);
+            tcpSender.MessageReceived += OnMessageReceived;
+            
+        }
+
+        private void OnMessageReceived(object source, MessageEventArgs args)
+        {
+            qParser.ParseMessage(args.Message);
         }
 
         public void sendString(string address)
         {
             tcpSender.Send(new OscMessage(address));
+        }
+
+        public void sendArgs(string address, object args)
+        {
+            tcpSender.Send(new OscMessage(address, args));
         }
 
         public OscMessage sendAndReceiveString(string address)
@@ -29,17 +41,7 @@ namespace qController
             return tcpSender.SendAndReceive(new OscMessage(address, args));
         }
 
-        public void sendStringUDP(string address)
-        {
-            udpSender.Send(new OscMessage(address));
-        }
-        public void sendArgs(string address, object args)
-        {
-            tcpSender.Send(new OscMessage(address, args));
-        }
-        public void sendArgsUDP(string address, object args)
-        {
-            udpSender.Send(new OscMessage(address, args));
-        }
+
+
     }
 }

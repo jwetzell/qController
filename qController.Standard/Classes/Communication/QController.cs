@@ -9,7 +9,6 @@ namespace qController
     {
 
         QUpdater qUpdater;
-        public QParser qParser;
         QCue selectedCue;
         public QClient qClient;
         QWorkSpace qWorkspace;
@@ -17,12 +16,12 @@ namespace qController
         {
             qClient = new QClient(address, port);
 
-            qParser = new QParser();
             qUpdater = new QUpdater(this);
             qUpdater.Start();
 
-            qParser.SelectedCueUpdated += this.OnSelectedCueUpdated;
-            qParser.WorkspaceUpdated += this.OnWorkspaceUpdated;
+            qClient.qParser.SelectedCueUpdated += this.OnSelectedCueUpdated;
+            qClient.qParser.WorkspaceUpdated += this.OnWorkspaceUpdated;
+
 
 
         }
@@ -31,10 +30,6 @@ namespace qController
             qClient.sendString(cmd);
         }
 
-        public void sendCommandUDP(string cmd)
-        {
-            qClient.sendStringUDP(cmd);
-        }
         public void updateCueValue(QCue cue, string property, object newValue){
            // qSender.sendArgs("/cue_id/"+cue.uniqueID+"/"+property, newValue);
         }

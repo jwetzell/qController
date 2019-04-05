@@ -7,6 +7,15 @@ using System.Threading;
 
 namespace SharpOSC
 {
+    public class MessageEventArgs : EventArgs
+    {
+        public OscMessage Message
+        {
+            get;
+            set;
+        }
+    }
+
     public class TCPSender
     {
         public int Port
@@ -19,6 +28,9 @@ namespace SharpOSC
         {
             get { return _address; }
         }
+        public delegate void MessageReceivedHandler(object source, MessageEventArgs args);
+        public event MessageReceivedHandler MessageReceived;
+
         string _address;
         TcpClient client;
         Thread receivingThread;
@@ -88,6 +100,7 @@ namespace SharpOSC
         {
             byte[] data = packet.GetBytes();
             OscMessage response = SendAndReceive(data);
+            OnMessageReceived(response);
             return response;
         }
         public void StartReceiving()
@@ -134,6 +147,12 @@ namespace SharpOSC
             client.GetStream().Close();
             receivingThread.Abort();
             client.Close();
+        }
+
+        protected virtual void OnMessageReceived(OscMessage msg)
+        {
+            if (MessageReceived != null)
+                MessageReceived(this, new MessageEventArgs() { Message = msg });
         }
     }
 }
