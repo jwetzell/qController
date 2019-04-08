@@ -6,6 +6,7 @@ namespace qController
 {
     public class QUpdater
     {
+
         private bool active = true;
         private QController qController;
         private Thread updateThread; 
@@ -32,7 +33,7 @@ namespace qController
         public void UpdateSelected()
         {
             string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\"]";
-            qController.qClient.sendAndReceiveStringArgs("/cue/selected/valuesForKeys", valuesForKeys);
+            //qController.qClient.sendAndReceiveStringArgs("/cue/selected/valuesForKeys", valuesForKeys);
         }
         public void UpdateLevels()
         {

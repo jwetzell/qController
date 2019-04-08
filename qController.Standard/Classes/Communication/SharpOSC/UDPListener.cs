@@ -97,10 +97,10 @@ namespace SharpOSC
 					}
 					catch (Exception e)
 					{
-						// If there is an error reading the packet, null is sent to the callback
-					}
-
-					OscPacketCallback(packet);
+                        Console.WriteLine(e.ToString());
+                        // If there is an error reading the packet, null is sent to the callback
+                    }
+                    OscPacketCallback(packet);
 				}
 				else
 				{

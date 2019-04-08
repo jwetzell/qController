@@ -124,7 +124,7 @@ namespace qController
 
         void sendOSC(object sender, EventArgs e)
         {
-            qController.sendCommand(((QButton)sender).OSCCommand);
+            qController.qClient.sendStringUDP(((QButton)sender).OSCCommand);
         }
 
         void Back(object sender, EventArgs e)

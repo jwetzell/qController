@@ -33,7 +33,6 @@ namespace SharpOSC
 
         string _address;
         TcpClient client;
-        Thread receivingThread;
 
         byte END = 0xc0;
         byte ESC = 0xdb;
@@ -81,7 +80,7 @@ namespace SharpOSC
                 }
             } catch(Exception e)
             {
-                Console.WriteLine(e.ToString());
+                //Console.WriteLine(e.ToString());
             }
             return response;
         }
@@ -102,10 +101,6 @@ namespace SharpOSC
             OscMessage response = SendAndReceive(data);
             OnMessageReceived(response);
             return response;
-        }
-        public void StartReceiving()
-        {
-            receivingThread.Start();
         }
 
         public void Send(OscPacket packet)
@@ -145,7 +140,6 @@ namespace SharpOSC
         public void Close()
         {
             client.GetStream().Close();
-            receivingThread.Abort();
             client.Close();
         }
 

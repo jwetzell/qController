@@ -73,8 +73,6 @@ namespace qController
             JToken selectedCue = OSC2JSON(msg);
             Console.WriteLine("Selected Cue Updated");
             QCue cue = JsonConvert.DeserializeObject<QCue>(selectedCue.ToString());
-
-            Console.WriteLine(cue.uniqueID);
             OnSelectedCueUpdated(cue);
         }
 

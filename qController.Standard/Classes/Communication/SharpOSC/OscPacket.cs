@@ -32,7 +32,6 @@ namespace SharpOSC
 			char[] types = new char[0];
 			List<object> arguments = new List<object>();
 			List<object> mainArray = arguments; // used as a reference when we are parsing arrays to get the main array back
-
 			// Get address
 			address = getAddress(msg, index);
 			index += msg.FirstIndexAfter(address.Length, x => x == ',');
@@ -147,7 +146,7 @@ namespace SharpOSC
 
 					case ('['):
 						if (arguments != mainArray)
-							throw new Exception("SharopOSC does not support nested arrays");
+							throw new Exception("SharpOSC does not support nested arrays");
 						arguments = new List<object>(); // make arguments point to a new object array
 						break;
 
@@ -246,6 +245,12 @@ namespace SharpOSC
 					break;
 				}
 			}
+
+            if (types == null)
+            {
+                byte[] term = { 0 };
+                types = Encoding.ASCII.GetChars(term);
+            }
 
 			if (i >= msg.Length && types == null)
 				throw new Exception("No null terminator after type string");
@@ -480,6 +485,5 @@ namespace SharpOSC
 		}
 
 		#endregion
-
 	}
 }
