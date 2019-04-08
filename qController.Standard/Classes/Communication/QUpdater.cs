@@ -25,7 +25,8 @@ namespace qController
 
         public void UpdateSelected()
         {
-            qController.qClient.sendAndReceiveString("/selectedCues");
+            string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\"]";
+            qController.qClient.sendAndReceiveStringArgs("/cue/selected/valuesForKeys", valuesForKeys);
         }
         public void UpdateLevels()
         {

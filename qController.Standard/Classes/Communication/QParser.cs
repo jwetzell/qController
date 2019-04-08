@@ -48,7 +48,7 @@ namespace qController
         public void ParseMessage(OscMessage msg){
             if (!msg.Address.Contains("null"))
             {
-                if (msg.Address.Contains("selectedCues"))
+                if (msg.Address.Contains("valuesForKeys"))
                     ParseSelectedCueInfo(msg);
                 else if (msg.Address.Contains("notes"))
                     ParseNoteInfo(msg);
@@ -57,21 +57,25 @@ namespace qController
                 else if (msg.Address.Contains("cueLists"))
                     ParseWorkspaceInfo(msg);
                 else
+                {
+                    Console.WriteLine("Unknown message type");
                     Console.WriteLine(msg.Address);
+                    foreach (var item in msg.Arguments)
+                    {
+                        Console.WriteLine(item);
+                    }
+                }
+
             }
 
         }
         public void ParseSelectedCueInfo(OscMessage msg){
-            JArray selectedCues = (JArray)OSC2JSON(msg);
-            if (selectedCues.Count > 0){
-                foreach(JObject item in selectedCues){
-                    QCue parsedCue = JsonConvert.DeserializeObject<QCue>(item.ToString());
-                    OnSelectedCueUpdated(parsedCue);
-                }
+            JToken selectedCue = OSC2JSON(msg);
+            Console.WriteLine("Selected Cue Updated");
+            QCue cue = JsonConvert.DeserializeObject<QCue>(selectedCue.ToString());
 
-            }else{
-                Console.WriteLine("No Cues Selected");
-            }
+            Console.WriteLine(cue.uniqueID);
+            OnSelectedCueUpdated(cue);
         }
 
         public void ParseNoteInfo(OscMessage msg){
