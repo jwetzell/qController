@@ -11,7 +11,8 @@ namespace qController
         QUpdater qUpdater;
         QCue selectedCue;
         public QClient qClient;
-        QWorkSpace qWorkspace;
+        public QWorkSpace qWorkspace;
+        public string playbackPosition;
 		public QController(string address, int port)
         {
             qClient = new QClient(address, port);
@@ -21,10 +22,11 @@ namespace qController
 
             qClient.qParser.SelectedCueUpdated += this.OnSelectedCueUpdated;
             qClient.qParser.WorkspaceUpdated += this.OnWorkspaceUpdated;
-
+            qClient.qParser.PlaybackPositionUpdated += this.OnPlaybackPositionUpdated;
 
             qClient.sendArgsUDP("/updates", 1);
             qClient.sendAndReceiveString("/cueLists");
+            
 
         }
 
@@ -38,25 +40,26 @@ namespace qController
 
         public void OnSelectedCueUpdated(object source, CueEventArgs args)
         {
-            selectedCue = args.SelectedCue;
+            selectedCue = args.Cue;
             Console.WriteLine("Selected cue updated: " + selectedCue.uniqueID);
-            foreach (var cueList in qWorkspace.data)
-            {
-                foreach( var cue in cueList.cues)
-                {
-                    if(cue.uniqueID == selectedCue.uniqueID)
-                    {
-                        Console.WriteLine("Cue found in local workspace");
-                    }
-                }
-            }
         }
 
         public void OnWorkspaceUpdated(object source, WorkspaceEventArgs args)
         {
-
             qWorkspace = args.UpdatedWorkspace;
+            Console.WriteLine("Workspace updated in QController: " + qWorkspace.workspace_id);
+        }
 
+        public void OnPlaybackPositionUpdated(object source, PlaybackPositionArgs args)
+        {
+            playbackPosition = args.PlaybackPosition;
+            Console.WriteLine("Playback Position updated in QController: " + playbackPosition);
+        }
+
+        public void OnCueUpdateReceived(object source, CueEventArgs args)
+        {
+            qWorkspace.UpdateCue(args.Cue);
+            Console.WriteLine("Cue updated: " + args.Cue.uniqueID );
         }
         public void Kill(){
             qUpdater.Kill();

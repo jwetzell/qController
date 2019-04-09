@@ -37,7 +37,7 @@ namespace qController
         }
         public void UpdateLevels()
         {
-            qController.qClient.sendAndReceiveString("/cue/selected/levels");
+            //qController.qClient.sendAndReceiveString("/cue/selected/levels");
         }
 
         public void Kill(){

@@ -19,7 +19,7 @@ namespace qController
             qController = new QController(address, 53000);
             qController.qClient.qParser.SelectedCueUpdated += SelectedCueUpdated;
             qController.qClient.qParser.WorkspaceUpdated += WorkspaceUpdated;
-
+            qController.qClient.qParser.PlaybackPositionUpdated += PlaybackPositionUpdated;
             qController.qClient.sendAndReceiveString("/cueLists");
             NavigationPage.SetHasNavigationBar(this, false);
             instanceName.Text = name;
@@ -50,20 +50,20 @@ namespace qController
 
             }
 
-            Hashtable cmds = new Hashtable();
+            List<QButton> buttons = new List<QButton>();
+
+            buttons.Add(new QButton("Previous", "/select/previous"));
+            buttons.Add(new QButton("Panic", "/panic"));
+            buttons.Add(new QButton("Next", "/select/next"));
+            buttons.Add(new QButton("Preview", "/preview"));
+            buttons.Add(new QButton("Pause", "/pause"));
+            buttons.Add(new QButton("Resume", "/resume"));
 
             var backButtonGesture = new TapGestureRecognizer();
 
             backButtonGesture.Tapped += Back;
             backButton.GestureRecognizers.Add(backButtonGesture);
 
-
-            cmds.Add("Pause", "/pause");
-            cmds.Add("Resume", "/resume");
-            cmds.Add("Panic", "/panic");
-            cmds.Add("Next", "/select/next");
-            cmds.Add("Previous", "/select/previous");
-            cmds.Add("Preview", "/preview");
 
             qCell = new QSelectedCueCell();
             qSelectedCueOptions = new QSelectedCueOptionsCell(qController);
@@ -89,11 +89,10 @@ namespace qController
 
             int row = 0;
             int column = 0;
-            foreach (string cmd in cmds.Keys)
+            foreach (var b in buttons)
             {
-                QButton b = new QButton(cmd,(string)cmds[cmd]);
                 b.Clicked += sendOSC;
-                if(cmd=="Panic")
+                if(b.Text=="Panic")
                 {
                     b.BackgroundColor = Color.IndianRed;
                 }
@@ -134,7 +133,7 @@ namespace qController
 
         public void SelectedCueUpdated(object sender, CueEventArgs e){
             Device.BeginInvokeOnMainThread(()=>{
-                if (e.SelectedCue.type.Equals("Audio"))
+                if (e.Cue.type.Equals("Audio"))
                 {
                     //Console.WriteLine("CUE IS AN AUDIO CUE");
                     sLayout.Children.Add(qSelectedCueOptions);
@@ -144,7 +143,7 @@ namespace qController
                     //Console.WriteLine("CUE IS NOT AN AUDIO CUE");
                     sLayout.Children.Remove(qSelectedCueOptions);
                 }
-                qCell.UpdateSelectedCue(e.SelectedCue);
+                qCell.UpdateSelectedCue(e.Cue);
             });
         }
 
@@ -156,7 +155,31 @@ namespace qController
                 {
                     //
                 });
-                Console.WriteLine("Workspace Updated: " + e.UpdatedWorkspace.workspace_id);
+                qController.qWorkspace = e.UpdatedWorkspace;
+                Console.WriteLine("Workspace updated in ControlPage: " + qController.qWorkspace.workspace_id);
+            }
+        }
+
+        public void PlaybackPositionUpdated(object sender, PlaybackPositionArgs e)
+        {
+            qController.playbackPosition = e.PlaybackPosition;
+            Console.WriteLine("Playback Position updated in ControlPage: " + qController.playbackPosition);
+            QCue cue = qController.qWorkspace.GetCue(qController.playbackPosition);
+            if(cue != null)
+            {
+                Device.BeginInvokeOnMainThread(() => {
+                    if (cue.type.Equals("Audio"))
+                    {
+                        //Console.WriteLine("CUE IS AN AUDIO CUE");
+                        //sLayout.Children.Add(qSelectedCueOptions);
+                    }
+                    else
+                    {
+                        //Console.WriteLine("CUE IS NOT AN AUDIO CUE");
+                        //sLayout.Children.Remove(qSelectedCueOptions);
+                    }
+                    qCell.UpdateSelectedCue(cue);
+                });
             }
         }
 

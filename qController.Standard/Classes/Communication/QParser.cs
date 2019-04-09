@@ -7,7 +7,7 @@ namespace qController
 {
     public class CueEventArgs : EventArgs
     {
-        public QCue SelectedCue
+        public QCue Cue
         {
             get;
             set;
@@ -30,6 +30,14 @@ namespace qController
             set;
         }
     }
+    public class PlaybackPositionArgs : EventArgs
+    {
+        public string PlaybackPosition
+        {
+            get;
+            set;
+        }
+    }
     public class QParser
     {
         public QParser()
@@ -40,22 +48,33 @@ namespace qController
         public delegate void SelectedCueUpdatedHandler(object source, CueEventArgs args);
         public delegate void AudioLevelsUpdatedHandler(object source, AudioLevelArgs args);
         public delegate void WorkspaceUpdatedHandler(object source, WorkspaceEventArgs args);
+        public delegate void CueInfoUpdatedHandler(object source, CueEventArgs args);
+        public delegate void PlaybackPositionUpdatedHandler(object source, PlaybackPositionArgs args);
 
         public event SelectedCueUpdatedHandler SelectedCueUpdated;
         public event AudioLevelsUpdatedHandler AudioLevelsUpdated;
         public event WorkspaceUpdatedHandler WorkspaceUpdated;
+        public event CueInfoUpdatedHandler CueInfoUpdated;
+        public event PlaybackPositionUpdatedHandler PlaybackPositionUpdated;
 
         public void ParseMessage(OscMessage msg){
             if (!msg.Address.Contains("null"))
             {
                 if (msg.Address.Contains("valuesForKeys"))
-                    ParseSelectedCueInfo(msg);
+                {
+                    if (msg.Address.Contains("selected"))
+                        ParseSelectedCueInfo(msg);
+                    else
+                        ParseCueUpdateInfo(msg);
+                }
                 else if (msg.Address.Contains("notes"))
                     ParseNoteInfo(msg);
                 else if (msg.Address.Contains("levels"))
                     ParseLevelInfo(msg);
                 else if (msg.Address.Contains("cueLists"))
                     ParseWorkspaceInfo(msg);
+                else if (msg.Address.Contains("playbackPosition"))
+                    ParsePositionUpdateInfo(msg);
                 else
                 {
                     Console.WriteLine("Unknown message type");
@@ -69,6 +88,23 @@ namespace qController
             }
 
         }
+
+        public void ParsePositionUpdateInfo(OscMessage msg)
+        {
+            if(msg.Arguments.Count > 0)
+            {
+                OnPlaybackPositionUpdated(msg.Arguments[0].ToString());
+            }
+        }
+
+        public void ParseCueUpdateInfo(OscMessage msg)
+        {
+            JToken cueUpdate = OSC2JSON(msg);
+            Console.WriteLine("Cue Update Received");
+            QCue cue = JsonConvert.DeserializeObject<QCue>(cueUpdate.ToString());
+            OnCueInfoUpdated(cue);
+        }
+
         public void ParseSelectedCueInfo(OscMessage msg){
             JToken selectedCue = OSC2JSON(msg);
             Console.WriteLine("Selected Cue Updated");
@@ -107,12 +143,24 @@ namespace qController
         protected virtual void OnSelectedCueUpdated(QCue cue)
         {
             if (SelectedCueUpdated != null)
-                SelectedCueUpdated(this, new CueEventArgs() { SelectedCue = cue });
+                SelectedCueUpdated(this, new CueEventArgs() { Cue = cue });
         }
 
         protected virtual void OnAudioLevelsUpdated(JToken audioLevels){
             if (AudioLevelsUpdated != null)
                 AudioLevelsUpdated(this, new AudioLevelArgs { levels = audioLevels });
+        }
+
+        protected virtual void OnCueInfoUpdated(QCue cue)
+        {
+            if (CueInfoUpdated != null)
+                CueInfoUpdated(this, new CueEventArgs() { Cue = cue });
+        }
+
+        protected virtual void OnPlaybackPositionUpdated(string id)
+        {
+            if (PlaybackPositionUpdated != null)
+                PlaybackPositionUpdated(this, new PlaybackPositionArgs() { PlaybackPosition = id });
         }
     }
 }

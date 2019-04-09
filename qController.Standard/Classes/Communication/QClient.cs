@@ -62,30 +62,49 @@ namespace qController
 
         public void ProcessUpdate(OscMessage msg)
         {
-            if (msg.Address.Contains("cue_id"))
+            if (msg.Address.Contains("disconnect"))
+            {
+                Console.WriteLine("Workspace is disonnecting");
+            }
+            else if (msg.Address.Contains("cue_id"))
             {
                 var updateID = msg.Address.Split('/').Last();
-                Console.WriteLine("Cue needs to be updated: " + updateID);
-            }else if (msg.Address.Contains("playbackPosition"))
+                UpdateSpecificCue(updateID);
+            }
+            else if (msg.Address.Contains("playbackPosition"))
             {
                 if (msg.Arguments.Count > 0)
                 {
-                    Console.WriteLine("Playback position to be updated: " + msg.Arguments[0]);
+                    qParser.ParseMessage(msg);
                     UpdateSelectedCue();
                 }
 
             }
+            else if (msg.Address.Contains("workspace"))
+            {
+                UpdateWorkspace("not yet implemented");
+            }
+
+         
         }
 
         public void UpdateSpecificCue(string cue_id)
         {
-            Console.WriteLine(cue_id);
+            Console.WriteLine("Cue needs to be updated: " + cue_id);
+            string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\"]";
+            string address = "/cue/" + cue_id + "/valuesForKeys";
+            sendAndReceiveStringArgs(address, valuesForKeys);
         }
 
         public void UpdateSelectedCue()
         {
             string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\"]";
             sendAndReceiveStringArgs("/cue/selected/valuesForKeys", valuesForKeys);
+        }
+
+        public void UpdateWorkspace(string ws_id)
+        {
+            Console.WriteLine("Workspace needs to be updaeted: " + ws_id);
         }
 
         public void Close()
