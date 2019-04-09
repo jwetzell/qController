@@ -62,10 +62,7 @@ namespace qController
             {
                 if (msg.Address.Contains("valuesForKeys"))
                 {
-                    if (msg.Address.Contains("selected"))
-                        ParseSelectedCueInfo(msg);
-                    else
-                        ParseCueUpdateInfo(msg);
+                    ParseCueUpdateInfo(msg);
                 }
                 else if (msg.Address.Contains("notes"))
                     ParseNoteInfo(msg);
@@ -86,7 +83,6 @@ namespace qController
                 }
 
             }
-
         }
 
         public void ParsePositionUpdateInfo(OscMessage msg)

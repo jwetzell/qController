@@ -26,7 +26,6 @@ namespace qController
             qClient.qParser.CueInfoUpdated += this.OnCueUpdateReceived;
             qClient.sendArgsUDP("/updates", 1);
             qClient.sendAndReceiveString("/cueLists");
-
         }
 
         public void sendCommand(string cmd){
@@ -48,6 +47,8 @@ namespace qController
             qWorkspace = args.UpdatedWorkspace;
             Console.WriteLine("Workspace updated in QController: " + qWorkspace.workspace_id);
             qWorkspace.PrintStats();
+            playbackPosition = null;
+            qClient.UpdateSelectedCue();
         }
 
         public void OnPlaybackPositionUpdated(object source, PlaybackPositionArgs args)
@@ -60,6 +61,10 @@ namespace qController
         {
             qWorkspace.UpdateCue(args.Cue);
             Console.WriteLine("Cue updated in QController: " + args.Cue.uniqueID );
+            if (playbackPosition == null)
+            {
+                playbackPosition = args.Cue.uniqueID;
+            }
         }
         public void Kill(){
             qUpdater.Kill();
