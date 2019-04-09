@@ -20,7 +20,7 @@ namespace qController
             qController.qClient.qParser.SelectedCueUpdated += SelectedCueUpdated;
             qController.qClient.qParser.WorkspaceUpdated += WorkspaceUpdated;
             qController.qClient.qParser.PlaybackPositionUpdated += PlaybackPositionUpdated;
-            qController.qClient.sendAndReceiveString("/cueLists");
+            qController.qClient.qParser.CueInfoUpdated += OnCueUpdateReceived;
             NavigationPage.SetHasNavigationBar(this, false);
             instanceName.Text = name;
 
@@ -179,6 +179,20 @@ namespace qController
                         //sLayout.Children.Remove(qSelectedCueOptions);
                     }
                     qCell.UpdateSelectedCue(cue);
+                });
+            }
+        }
+
+        public void OnCueUpdateReceived(object sender, CueEventArgs args)
+        {
+            qController.qWorkspace.UpdateCue(args.Cue);
+            Console.WriteLine("Cue updated in ControlPage: " + args.Cue.uniqueID);
+            if (args.Cue.uniqueID == qController.playbackPosition)
+            {
+                Console.WriteLine("Cue that was updated is equal to the playback position.");
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    qCell.UpdateSelectedCue(args.Cue);
                 });
             }
         }

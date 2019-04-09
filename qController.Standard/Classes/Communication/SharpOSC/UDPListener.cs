@@ -100,6 +100,7 @@ namespace SharpOSC
                         Console.WriteLine(e.ToString());
                         // If there is an error reading the packet, null is sent to the callback
                     }
+                    Console.WriteLine("Raw UDP In: " + System.Text.Encoding.ASCII.GetString(bytes));
                     OscPacketCallback(packet);
 				}
 				else

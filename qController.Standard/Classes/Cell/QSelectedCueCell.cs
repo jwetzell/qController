@@ -113,7 +113,7 @@ namespace qController
             name.Text = cue.name;
             number.Text = cue.number;
             type.Text = cue.type;
-            //notes.Text = cue.notes;
+            notes.Text = cue.notes;
         }
     }
 }

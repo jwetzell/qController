@@ -39,5 +39,13 @@ namespace qController
                 }
             }
         }
+        public void PrintStats()
+        {
+            foreach (var cueList in data)
+            {
+                Console.WriteLine(cueList.listName + "("+ cueList.cues.Count + " cues)");
+
+            }
+        }
     }
 }

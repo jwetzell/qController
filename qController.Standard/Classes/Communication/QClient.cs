@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using SharpOSC;
 using Newtonsoft.Json;
 namespace qController
@@ -49,14 +50,14 @@ namespace qController
         {
             udpSender.Send(new OscMessage(address, args));
         }
-        public OscMessage sendAndReceiveString(string address)
+        public void sendAndReceiveString(string address)
         {
-            return tcpSender.SendAndReceive(new OscMessage(address));
+            tcpSender.SendAndReceive(new OscMessage(address));
         }
 
-        public OscMessage sendAndReceiveStringArgs(string address, params object[] args)
+        public void sendAndReceiveStringArgs(string address, params object[] args)
         {
-            return tcpSender.SendAndReceive(new OscMessage(address, args));
+            tcpSender.SendAndReceive(new OscMessage(address,args));
         }
 
 
@@ -91,14 +92,15 @@ namespace qController
         public void UpdateSpecificCue(string cue_id)
         {
             Console.WriteLine("Cue needs to be updated: " + cue_id);
-            string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\"]";
-            string address = "/cue/" + cue_id + "/valuesForKeys";
+            string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\",\"notes\"]";
+            string address = "/cue_id/" + cue_id + "/valuesForKeys";
+
             sendAndReceiveStringArgs(address, valuesForKeys);
         }
 
         public void UpdateSelectedCue()
         {
-            string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\"]";
+            string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\",\"notes\"]";
             sendAndReceiveStringArgs("/cue/selected/valuesForKeys", valuesForKeys);
         }
 

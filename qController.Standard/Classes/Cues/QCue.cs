@@ -25,5 +25,6 @@ namespace qController
         public bool isBroken { get; set; }
         public string displayName { get; set; }
         public bool isLoaded { get; set; }
+        public string notes { get; set; }
     }
 }

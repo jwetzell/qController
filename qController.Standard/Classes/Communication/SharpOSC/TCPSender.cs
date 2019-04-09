@@ -56,12 +56,15 @@ namespace SharpOSC
             client.Close();
         }
 
-        public OscMessage Receive()
+        public async void Receive()
         {
+            Random random = new Random();
+            int num = random.Next(1000);
+
             OscMessage response = new OscMessage("/null");
+            NetworkStream netStream = client.GetStream();
             try
             {
-                NetworkStream netStream = client.GetStream();
                 netStream.ReadTimeout = 250;
                 List<byte> responseData = new List<byte>();
                 if (netStream.CanRead)
@@ -71,36 +74,37 @@ namespace SharpOSC
                     int bytesRead = 0;
                     do
                     {
-                        bytesRead = netStream.Read(buffer, 0, buffer.Length);
+                        bytesRead = await netStream.ReadAsync(buffer, 0, buffer.Length);
                         responseData.AddRange(buffer);
+                        Thread.Sleep(1);
+                        //Console.WriteLine(  "Thread " + num + ":  Bytes read: " + bytesRead + " - " + Encoding.ASCII.GetString(buffer));
                     } while (netStream.DataAvailable);
+
+                    Console.WriteLine("Raw TCP In: " + System.Text.Encoding.ASCII.GetString(responseData.ToArray()));
                     response = (OscMessage)OscPacket.GetPacket(responseData.Skip(1).ToArray());
-                    netStream.Close();
-                    client.Close();
                 }
             } catch(Exception e)
             {
-                //Console.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString());
             }
-            return response;
+            netStream.Close();
+            client.Close();
+            OnMessageReceived(response);
         }
 
-        public OscMessage SendAndReceive(byte[] message)
+        public void SendAndReceive(byte[] message)
         {
             client = new TcpClient(Address, Port);
             byte[] slipData = SlipEncode(message);
             NetworkStream netStream = client.GetStream();
             netStream.Write(slipData.ToArray(), 0, slipData.ToArray().Length);
-            OscMessage response = Receive();
-            return response;
+            Receive();
         }
 
-        public OscMessage SendAndReceive(OscPacket packet)
+        public void SendAndReceive(OscPacket packet)
         {
             byte[] data = packet.GetBytes();
-            OscMessage response = SendAndReceive(data);
-            OnMessageReceived(response);
-            return response;
+            SendAndReceive(data);
         }
 
         public void Send(OscPacket packet)

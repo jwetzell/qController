@@ -27,8 +27,8 @@ namespace SharpOSC
 		private static OscMessage parseMessage(byte[] msg)
 		{
 			int index = 0;
-
-			string address = null;
+            //Console.WriteLine("Raw OSC DATA: " + System.Text.Encoding.ASCII.GetString(msg));
+            string address = null;
 			char[] types = new char[0];
 			List<object> arguments = new List<object>();
 			List<object> mainArray = arguments; // used as a reference when we are parsing arrays to get the main array back
@@ -287,8 +287,12 @@ namespace SharpOSC
 					break;
 				}
 			}
-
-			if (i >= msg.Length && output == null)
+            if (output == null)
+            {
+                byte[] term = { 0 };
+                output = Encoding.ASCII.GetString(term);
+            }
+            if (i >= msg.Length && output == null)
 				throw new Exception("No null terminator after type string");
 
 			return output.Replace("\0", "");

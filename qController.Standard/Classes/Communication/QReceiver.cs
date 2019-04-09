@@ -15,40 +15,33 @@ namespace qController
 
         static Thread thread;
         static UDPListener udpListener;
-
+        static int Port;
         public QReceiver(int port)
         {
-            HandleOscPacket callback = delegate (OscPacket packet)
-            {
-                var messageReceived = (OscMessage)packet;
-                if(messageReceived != null)
-                    OnUpdateMessageReceived(messageReceived);
-                else
-                    Console.WriteLine("Message came back null");
-            };
-
-            udpListener = new UDPListener(port, callback);
+            Port = port;
+            thread = new Thread(new ThreadStart(ListenLoop));
+            thread.Start();
 
         }
 
 		public void ListenLoop()
 		{
-            /*while (true)
+            HandleOscPacket callback = delegate (OscPacket packet)
             {
-                OscMessage messageReceived = null;
-                while(messageReceived == null)
-                {
-                    messageReceived = (OscMessage)udpListener.Receive();
-                    Thread.Sleep(1);
-                }
-                OnUpdateMessageReceived(messageReceived);
+                var messageReceived = (OscMessage)packet;
+                if (messageReceived != null)
+                    OnUpdateMessageReceived(messageReceived);
+                else
+                    Console.WriteLine("Message came back null");
+            };
 
-            }*/
+            udpListener = new UDPListener(Port, callback);
 
         }
 
         public void Close(){
             udpListener.Close();
+            thread.Abort();
         }
 
         protected virtual void OnUpdateMessageReceived(OscMessage msg)

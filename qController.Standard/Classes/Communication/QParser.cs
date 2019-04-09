@@ -100,7 +100,6 @@ namespace qController
         public void ParseCueUpdateInfo(OscMessage msg)
         {
             JToken cueUpdate = OSC2JSON(msg);
-            Console.WriteLine("Cue Update Received");
             QCue cue = JsonConvert.DeserializeObject<QCue>(cueUpdate.ToString());
             OnCueInfoUpdated(cue);
         }
@@ -152,7 +151,7 @@ namespace qController
         }
 
         protected virtual void OnCueInfoUpdated(QCue cue)
-        {
+        { 
             if (CueInfoUpdated != null)
                 CueInfoUpdated(this, new CueEventArgs() { Cue = cue });
         }
