@@ -19,6 +19,7 @@ namespace qController
         public QReceiver(int port)
         {
             Port = port;
+            udpListener = new UDPListener(port);
             thread = new Thread(new ThreadStart(ListenLoop));
             thread.Start();
 
@@ -26,6 +27,7 @@ namespace qController
 
 		public void ListenLoop()
 		{
+            /*
             HandleOscPacket callback = delegate (OscPacket packet)
             {
                 var messageReceived = (OscMessage)packet;
@@ -36,6 +38,17 @@ namespace qController
             };
 
             udpListener = new UDPListener(Port, callback);
+            */
+            while (true)
+            {
+                OscMessage messageReceived = null;
+                while(messageReceived == null)
+                {
+                    messageReceived = (OscMessage)udpListener.Receive();
+                    Thread.Sleep(1);
+                }
+                OnUpdateMessageReceived(messageReceived);
+            }           
 
         }
 
