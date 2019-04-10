@@ -21,7 +21,8 @@ namespace qController
 
         public static void AddInstance(string name, string address){
             if(!Contains(name,address)){
-                qInstances.Add(new QInstance(name, address));
+                AddInstance(new QInstance(name, address));
+                Console.WriteLine("Adding Instance: " + name + " @ " + address);
             }
         }
         public static void AddInstance(QInstance q){

@@ -96,12 +96,6 @@ namespace qController
 			});
         }
 
-        void showToast(string message){
-            var toastConfig = new ToastConfig(message);
-            toastConfig.SetDuration(3000);
-            toastConfig.SetPosition(ToastPosition.Bottom);
-            UserDialogs.Instance.Toast(toastConfig);
-        }
 
         async void Scan(object sender, EventArgs e){
             bool workspacesFound = false;
@@ -127,6 +121,14 @@ namespace qController
             }else{
                 showToast("No Workspaces Found!");
             }
+        }
+
+        void showToast(string message)
+        {
+            var toastConfig = new ToastConfig(message);
+            toastConfig.SetDuration(3000);
+            toastConfig.SetPosition(ToastPosition.Bottom);
+            UserDialogs.Instance.Toast(toastConfig);
         }
 
     }

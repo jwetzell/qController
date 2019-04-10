@@ -53,8 +53,9 @@ namespace qController
         }
 
         public void Close(){
-            udpListener.Close();
+
             thread.Abort();
+            udpListener.Close();
         }
 
         protected virtual void OnUpdateMessageReceived(OscMessage msg)
