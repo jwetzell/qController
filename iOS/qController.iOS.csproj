@@ -166,6 +166,9 @@
     <ImageAsset Include="Assets.xcassets\back.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\back.imageset\back.png" />
     <ImageAsset Include="Assets.xcassets\back.imageset\back%402x.png" />
+    <ImageAsset Include="Assets.xcassets\hamburger.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\hamburger.imageset\hamburger%402x.png" />
+    <ImageAsset Include="Assets.xcassets\hamburger.imageset\hamburger%402x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -174,6 +177,7 @@
     <Folder Include="Assets.xcassets\add.imageset\" />
     <Folder Include="Assets.xcassets\scan.imageset\" />
     <Folder Include="Assets.xcassets\back.imageset\" />
+    <Folder Include="Assets.xcassets\hamburger.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -192,6 +196,9 @@
       <Project>{86160AAC-2150-41B0-BB06-4442CA054A78}</Project>
       <Name>qController</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\qfont.ttf" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />

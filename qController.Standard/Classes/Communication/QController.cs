@@ -25,6 +25,7 @@ namespace qController
             qClient.qParser.PlaybackPositionUpdated += this.OnPlaybackPositionUpdated;
             qClient.qParser.CueInfoUpdated += this.OnCueUpdateReceived;
             qClient.sendArgsUDP("/updates", 1);
+            qClient.sendArgsUDP("/updates", 1);
             qClient.sendAndReceiveString("/cueLists");
         }
 

@@ -20,8 +20,8 @@ namespace qController
                 Padding = new Thickness(0),
                 RowDefinitions = 
                 {
-                    new RowDefinition{Height = GridLength.Auto},
-                    new RowDefinition{Height = GridLength.Auto}
+                    new RowDefinition{Height = GridLength.Star},
+                    new RowDefinition{Height = GridLength.Star}
                 },
                 ColumnDefinitions = 
                 {

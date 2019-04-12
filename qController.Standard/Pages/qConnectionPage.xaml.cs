@@ -9,13 +9,29 @@ using System.Collections.Generic;
 namespace qController
 {
     
-    public partial class qControllerPage : ContentPage
+    public partial class QConnectionPage : ContentPage
     {
-        public qControllerPage()
+        public QConnectionPage()
         {
             InitializeComponent();
             InitGUI();
+            App.rootPage.MenuItemSelected += OnMenuItemSelected;
+        }
 
+        private void OnMenuItemSelected(object source, MenuEventArgs args)
+        {
+            Console.WriteLine("Menu Item Selected: " + args.Command);
+            if(args.Command == "scan")
+            {
+                Scan();
+            }
+            else if(args.Command == "add")
+            {
+                AddWorkspace();
+            }else if(args.Command == "open_link")
+            {
+                Device.OpenUri(new Uri("http://www.example.com"));
+            }
         }
 
         private void InitGUI()
@@ -38,31 +54,23 @@ namespace qController
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
-                    scanButton.Margin = new Thickness(20, 45, 20, 10);
-                    addButton.Margin = new Thickness(20, 45, 20, 10);
+                    menuButton.Margin = new Thickness(20, 35, 20, 10);
                     break;
 
             }
 
-            addButton.Source = ImageSource.FromFile("add");
-            scanButton.Source = ImageSource.FromFile("scan");
+            menuButton.Text = "\uF0C9";
 
             lstView.BackgroundColor = Color.FromHex("4A4A4A");
             BackgroundColor = Color.FromHex("4A4A4A"); 
             var scanButtonGesture = new TapGestureRecognizer();
 
-            scanButtonGesture.Tapped += Scan;
-            scanButton.GestureRecognizers.Add(scanButtonGesture);
+            scanButtonGesture.Tapped += showMenu;
+            menuButton.GestureRecognizers.Add(scanButtonGesture);
 
-
-
-            var addButtonGesture = new TapGestureRecognizer();
-
-            addButtonGesture.Tapped += AddWorkspace;
-            addButton.GestureRecognizers.Add(addButtonGesture);
         }
 
-        void AddWorkspace(object sender, EventArgs e){
+        void AddWorkspace(){
             
             UserDialogs.Instance.Prompt(new PromptConfig
 			{
@@ -97,12 +105,11 @@ namespace qController
         }
 
 
-        async void Scan(object sender, EventArgs e){
+        async void Scan(){
             bool workspacesFound = false;
             showToast("Scanning for Workspaces...");
-
-
             Console.WriteLine("Begin Scanning");
+
             IReadOnlyList<IZeroconfHost> results = await ZeroconfResolver.ResolveAsync("_qlab._udp.local.",TimeSpan.FromSeconds(3));
             if(results != null){
                 foreach (var result in results)
@@ -121,6 +128,11 @@ namespace qController
             }else{
                 showToast("No Workspaces Found!");
             }
+        }
+
+        void showMenu(object sender, EventArgs e)
+        {
+            App.MenuIsPresented = true;
         }
 
         void showToast(string message)

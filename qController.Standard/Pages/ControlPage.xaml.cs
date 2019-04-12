@@ -11,7 +11,9 @@ namespace qController
         Label instanceName = new Label();
         QSelectedCueCell qCell;
         QSelectedCueOptionsCell qSelectedCueOptions;
+        QCueListView qCueListView;
         Grid mainG;
+        ListView listView;
         public ControlPage(string name, string address)
         {
             InitializeComponent();
@@ -44,8 +46,8 @@ namespace qController
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
-                    backButton.Margin = new Thickness(20, 45, 20, 10);
-                    instanceName.Margin = new Thickness(20, 45, 20, 10);
+                    backButton.Margin = new Thickness(20, 35, 20, 10);
+                    instanceName.Margin = new Thickness(20, 35, 20, 10);
                     break;
 
             }
@@ -119,6 +121,10 @@ namespace qController
 
             sLayout.Children.Add(mainG);
 
+            qCueListView = new QCueListView();
+
+            //sLayout.Children.Add(qCueListView);
+
         }
 
         void sendOSC(object sender, EventArgs e)
@@ -128,7 +134,7 @@ namespace qController
 
         void Back(object sender, EventArgs e)
         {
-            App.iNav.PopModalAsync();
+            App.NavigationPage.Navigation.PopModalAsync();
         }
 
         public void SelectedCueUpdated(object sender, CueEventArgs e){
@@ -153,7 +159,7 @@ namespace qController
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    //
+                    qCueListView.UpdateWithWorkspace(e.UpdatedWorkspace);
                 });
                 qController.qWorkspace = e.UpdatedWorkspace;
                 Console.WriteLine("Workspace updated in ControlPage: " + qController.qWorkspace.workspace_id);

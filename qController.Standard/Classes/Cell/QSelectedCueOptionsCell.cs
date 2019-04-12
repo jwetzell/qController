@@ -40,9 +40,9 @@ namespace qController
             {
                 Padding = new Thickness(0),
                 RowDefinitions = {
-                    new RowDefinition{Height = GridLength.Auto},
-                    new RowDefinition{Height = GridLength.Auto},
-                    new RowDefinition{Height = GridLength.Auto}
+                    new RowDefinition{Height = GridLength.Star},
+                    new RowDefinition{Height = GridLength.Star},
+                    new RowDefinition{Height = GridLength.Star}
                 },
                 ColumnDefinitions = {
                     new ColumnDefinition{Width = new GridLength(1,GridUnitType.Star)},

@@ -38,6 +38,11 @@
     <Compile Remove="Classes\Cues\QDefinitions.cs" />
     <Compile Remove="Classes\Communication\QSender.cs" />
     <Compile Remove="Classes\Communication\QSender.cs" />
+    <Compile Remove="ViewModels\MenuPageViewModel.cs" />
+    <Compile Remove="Pages\RootPageMenuItem.cs" />
+    <Compile Remove="Pages\RootPageMaster.xaml.cs" />
+    <Compile Remove="Pages\RootPageDetail.xaml.cs" />
+    <Compile Remove="Pages\HomePage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="App.xaml.cs">
@@ -84,5 +89,10 @@
     <Folder Include="Classes\Cell\" />
     <Folder Include="Classes\Communication\" />
     <Folder Include="Classes\Settings\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Pages\RootPageMaster.xaml" />
+    <EmbeddedResource Remove="Pages\RootPageDetail.xaml" />
+    <EmbeddedResource Remove="Pages\HomePage.xaml" />
   </ItemGroup>
 </Project>
