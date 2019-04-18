@@ -186,11 +186,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable\connect.png" />
-    <AndroidResource Include="Resources\drawable\delete.png" />
-    <AndroidResource Include="Resources\drawable\add.png" />
-    <AndroidResource Include="Resources\drawable\scan.png" />
-    <AndroidResource Include="Resources\drawable\back.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\qController.Standard\qController.csproj">

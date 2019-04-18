@@ -151,24 +151,6 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_20pt.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_60pt%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_60pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\connect.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\connect.imageset\Connect Icon.png" />
-    <ImageAsset Include="Assets.xcassets\connect.imageset\Connect Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\delete.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\delete.imageset\delete.png" />
-    <ImageAsset Include="Assets.xcassets\delete.imageset\delete%402x.png" />
-    <ImageAsset Include="Assets.xcassets\add.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\add.imageset\add.png" />
-    <ImageAsset Include="Assets.xcassets\add.imageset\add%402x.png" />
-    <ImageAsset Include="Assets.xcassets\scan.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\scan.imageset\scan.png" />
-    <ImageAsset Include="Assets.xcassets\scan.imageset\scan%402x.png" />
-    <ImageAsset Include="Assets.xcassets\back.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\back.imageset\back.png" />
-    <ImageAsset Include="Assets.xcassets\back.imageset\back%402x.png" />
-    <ImageAsset Include="Assets.xcassets\hamburger.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\hamburger.imageset\hamburger%402x.png" />
-    <ImageAsset Include="Assets.xcassets\hamburger.imageset\hamburger%402x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
