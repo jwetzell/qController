@@ -39,7 +39,7 @@ namespace qController
 
         void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as MasterPageItem;
+            var item = e.SelectedItem as MenuPageItem;
             if (item != null)
             {
                 MenuPage.listView.SelectedItem = null;

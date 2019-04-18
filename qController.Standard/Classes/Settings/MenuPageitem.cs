@@ -2,7 +2,7 @@
 
 namespace qController
 {
-    public class MasterPageItem 
+    public class MenuPageItem
     {
         public string Title { get; set; }
         public string Icon { get; set; }

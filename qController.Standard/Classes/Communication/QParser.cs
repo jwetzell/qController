@@ -72,6 +72,8 @@ namespace qController
                     ParseWorkspaceInfo(msg);
                 else if (msg.Address.Contains("playbackPosition"))
                     ParsePositionUpdateInfo(msg);
+                else if (msg.Address.Contains("thump"))
+                    Console.WriteLine("Heartbeat Received");
                 else
                 {
                     Console.WriteLine("Unknown message type");

@@ -23,21 +23,15 @@ namespace qController
         public void UpdateLoop()
         {
             active = true;
-            Device.StartTimer(TimeSpan.FromSeconds(0.01), () => {
-                UpdateSelected();
-                UpdateLevels();
+            Device.StartTimer(TimeSpan.FromSeconds(5.0), () => {
+                SendThump();
                 return active;
             });
         }
 
-        public void UpdateSelected()
+        public void SendThump()
         {
-            string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\"]";
-            //qController.qClient.sendAndReceiveStringArgs("/cue/selected/valuesForKeys", valuesForKeys);
-        }
-        public void UpdateLevels()
-        {
-            //qController.qClient.sendAndReceiveString("/cue/selected/levels");
+            qController.qClient.sendStringUDP("/thump");
         }
 
         public void Kill(){

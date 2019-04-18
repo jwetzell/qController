@@ -9,26 +9,26 @@ namespace qController
     {
 
         public ListView listView;
-        public ObservableCollection<MasterPageItem> items;
+        public ObservableCollection<MenuPageItem> items;
         public MenuPage()
         {
             Title = "Menu";
             InitializeComponent();
-            items = new ObservableCollection<MasterPageItem>();
+            items = new ObservableCollection<MenuPageItem>();
 
-            items.Add(new MasterPageItem
+            items.Add(new MenuPageItem
             {
                 Title = "Scan Network",
                 Icon = "\uE800",
                 Command = "scan"
             });
-            items.Add(new MasterPageItem
+            items.Add(new MenuPageItem
             {
                 Title = "Add Manually",
                 Icon = "\uE801",
                 Command = "add"
             });
-            /*items.Add(new MasterPageItem
+            /*items.Add(new MenuPageItem
             {
                 Title = "Open Link",
                 Icon = "\uF0C9",
@@ -73,7 +73,7 @@ namespace qController
         public void ChangeToWorkspace(QWorkSpace workspace)
         {
             items.Clear();
-            items.Add(new MasterPageItem
+            items.Add(new MenuPageItem
             {
                 Title = "Disconnect",
                 Icon = "\uE803",
@@ -81,7 +81,7 @@ namespace qController
             });
             foreach (var cueList in workspace.data)
             {
-                items.Add(new MasterPageItem
+                items.Add(new MenuPageItem
                 {
                     Title = cueList.listName,
                     Icon = "",
@@ -101,7 +101,7 @@ namespace qController
                         cueTitle = "\t" + cue.listName;
                     }
 
-                    items.Add(new MasterPageItem
+                    items.Add(new MenuPageItem
                     {
                         Title = cueTitle,
                         Icon = cueIcon,
@@ -115,13 +115,13 @@ namespace qController
         public void ChangeToHome()
         {
             items.Clear();
-            items.Add(new MasterPageItem
+            items.Add(new MenuPageItem
             {
                 Title = "Scan Network",
                 Icon = "\uE800",
                 Command = "scan"
             });
-            items.Add(new MasterPageItem
+            items.Add(new MenuPageItem
             {
                 Title = "Add Manually",
                 Icon = "\uE801",
