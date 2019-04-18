@@ -12,7 +12,7 @@ namespace qController
         QSelectedCueCell qCell;
         QSelectedCueOptionsCell qSelectedCueOptions;
         Grid mainG;
-        ListView listView;
+
         public ControlPage(string name, string address)
         {
             InitializeComponent();
@@ -22,12 +22,28 @@ namespace qController
             qController.qClient.qParser.WorkspaceUpdated += WorkspaceUpdated;
             qController.qClient.qParser.PlaybackPositionUpdated += PlaybackPositionUpdated;
             qController.qClient.qParser.CueInfoUpdated += OnCueUpdateReceived;
-
+            qController.qClient.qParser.ConnectionStatusChanged += OnConnectionStatusChanged;
             instanceName.Text = name;
             App.rootPage.MenuItemSelected += OnMenuItemSelected;
-
+            qController.Connect();
             InitGUI();
+            
+        }
 
+        private void OnConnectionStatusChanged(object source, ConnectEventArgs args)
+        {
+            if (args.Status == "ok")
+            {
+                Console.WriteLine("Workspace has successfully connected");
+            }
+            else if (args.Status == "badpass")
+            {
+                Console.WriteLine("Password incorrect or no password supplied");
+            }
+            else
+            {
+                Console.WriteLine("Workspace not found");
+            }
         }
 
         private void OnMenuItemSelected(object source, MenuEventArgs args)
@@ -149,9 +165,11 @@ namespace qController
 
         void Back()
         {
+            qController.Disconnect();
             App.rootPage.MenuPage.ChangeToHome();
             App.NavigationPage.Navigation.PopAsync();
         }
+
         public void SelectedCueUpdated(object sender, CueEventArgs e){
             Device.BeginInvokeOnMainThread(()=>{
                 if (e.Cue.type.Equals("Audio"))
@@ -190,12 +208,12 @@ namespace qController
                     if (cue.type.Equals("Audio"))
                     {
                         //Console.WriteLine("CUE IS AN AUDIO CUE");
-                        //sLayout.Children.Add(qSelectedCueOptions);
+                        sLayout.Children.Add(qSelectedCueOptions);
                     }
                     else
                     {
                         //Console.WriteLine("CUE IS NOT AN AUDIO CUE");
-                        //sLayout.Children.Remove(qSelectedCueOptions);
+                        sLayout.Children.Remove(qSelectedCueOptions);
                     }
                     qCell.UpdateSelectedCue(cue);
                 });
@@ -211,6 +229,16 @@ namespace qController
                 Console.WriteLine("Cue that was updated is equal to the playback position.");
                 Device.BeginInvokeOnMainThread(() =>
                 {
+                    if (args.Cue.type.Equals("Audio"))
+                    {
+                        //Console.WriteLine("CUE IS AN AUDIO CUE");
+                        sLayout.Children.Add(qSelectedCueOptions);
+                    }
+                    else
+                    {
+                        //Console.WriteLine("CUE IS NOT AN AUDIO CUE");
+                        sLayout.Children.Remove(qSelectedCueOptions);
+                    }
                     qCell.UpdateSelectedCue(args.Cue);
                 });
             }

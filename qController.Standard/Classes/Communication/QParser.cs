@@ -2,6 +2,7 @@
 using SharpOSC;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace qController
 {
@@ -16,7 +17,12 @@ namespace qController
 
     public class AudioLevelArgs : EventArgs
     {
-        public JToken levels
+        public string cue_id
+        {
+            get;
+            set;
+        }
+        public List<double> levels
         {
             get;
             set;
@@ -38,6 +44,14 @@ namespace qController
             set;
         }
     }
+    public class ConnectEventArgs : EventArgs
+    {
+        public string Status
+        {
+            get;
+            set;
+        }
+    }
     public class QParser
     {
         public QParser()
@@ -50,7 +64,8 @@ namespace qController
         public delegate void WorkspaceUpdatedHandler(object source, WorkspaceEventArgs args);
         public delegate void CueInfoUpdatedHandler(object source, CueEventArgs args);
         public delegate void PlaybackPositionUpdatedHandler(object source, PlaybackPositionArgs args);
-
+        public delegate void ConnectionStatusHandler(object source, ConnectEventArgs args);
+        public event ConnectionStatusHandler ConnectionStatusChanged;
         public event SelectedCueUpdatedHandler SelectedCueUpdated;
         public event AudioLevelsUpdatedHandler AudioLevelsUpdated;
         public event WorkspaceUpdatedHandler WorkspaceUpdated;
@@ -62,7 +77,10 @@ namespace qController
             {
                 if (msg.Address.Contains("valuesForKeys"))
                 {
-                    ParseCueUpdateInfo(msg);
+                    if (msg.Address.Contains("WithArguments"))
+                        ParseLevelInfo(msg);
+                    else
+                        ParseCueUpdateInfo(msg);
                 }
                 else if (msg.Address.Contains("notes"))
                     ParseNoteInfo(msg);
@@ -74,6 +92,8 @@ namespace qController
                     ParsePositionUpdateInfo(msg);
                 else if (msg.Address.Contains("thump"))
                     Console.WriteLine("Heartbeat Received");
+                else if (msg.Address.Contains("connect"))
+                    ParseConnectInfo(msg);
                 else
                 {
                     Console.WriteLine("Unknown message type");
@@ -85,6 +105,12 @@ namespace qController
                 }
 
             }
+        }
+
+        public void ParseConnectInfo(OscMessage msg)
+        {
+            JToken connectStatus = OSC2JSON(msg);
+            OnConnectionStatusChanged(connectStatus.ToString());
         }
 
         public void ParsePositionUpdateInfo(OscMessage msg)
@@ -114,8 +140,9 @@ namespace qController
         }
 
         public void ParseLevelInfo(OscMessage msg){
+            var cue_id = msg.Address.Split('/')[3];
             JToken levels = OSC2JSON(msg)[0];
-            OnAudioLevelsUpdated(levels);
+            OnAudioLevelsUpdated(cue_id, levels.ToObject<List<double>>());
         }
 
         public void ParseWorkspaceInfo(OscMessage msg)
@@ -143,9 +170,9 @@ namespace qController
                 SelectedCueUpdated(this, new CueEventArgs() { Cue = cue });
         }
 
-        protected virtual void OnAudioLevelsUpdated(JToken audioLevels){
+        protected virtual void OnAudioLevelsUpdated(string id, List<double> audioLevels){
             if (AudioLevelsUpdated != null)
-                AudioLevelsUpdated(this, new AudioLevelArgs { levels = audioLevels });
+                AudioLevelsUpdated(this, new AudioLevelArgs { cue_id = id, levels = audioLevels });
         }
 
         protected virtual void OnCueInfoUpdated(QCue cue)
@@ -158,6 +185,11 @@ namespace qController
         {
             if (PlaybackPositionUpdated != null)
                 PlaybackPositionUpdated(this, new PlaybackPositionArgs() { PlaybackPosition = id });
+        }
+        protected virtual void OnConnectionStatusChanged(string status)
+        {
+            if (ConnectionStatusChanged != null)
+                ConnectionStatusChanged(this, new ConnectEventArgs() { Status = status });
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
 
@@ -9,24 +10,25 @@ namespace qController
         void AudioLevelsUpdated(object source, AudioLevelArgs args)
         {
             Device.BeginInvokeOnMainThread(() => {
+                activeCue = args.cue_id;
                 levels = args.levels;
                 if (mainSlider != null)
                 {
-                   mainSlider.Value = (double)levels[0];
+                   mainSlider.Value = levels[0];
                 }
                 if (leftSlider != null)
                 {
-                   leftSlider.Value = (double)levels[1];
+                   leftSlider.Value = levels[1];
                 }
                 if (rightSlider != null)
                 {
-                    rightSlider.Value = (double)levels[2];
+                    rightSlider.Value = levels[2];
                 }
             });
         }
 
-        Label type;
-        JToken levels;
+        List<double> levels;
+        string activeCue;
         Slider mainSlider;
         Slider leftSlider;
         Slider rightSlider;
@@ -52,7 +54,6 @@ namespace qController
                     new ColumnDefinition{Width = new GridLength(1,GridUnitType.Star)}
                 }
             };
-            type = new Label { Text = "" };
 
             mainSlider = new Slider
             {
@@ -61,7 +62,7 @@ namespace qController
             };
             mainSlider.ValueChanged += (sender, args) =>
             {
-                qController.qClient.sendArgs("/cue/selected/sliderLevel/0", (float)args.NewValue);
+                qController.qClient.sendArgs("/cue_id/" + activeCue + "/sliderLevel/0", (float)args.NewValue);
             };
 
             leftSlider = new Slider
@@ -71,7 +72,7 @@ namespace qController
             };
             leftSlider.ValueChanged += (sender, args) =>
             {
-                qController.qClient.sendArgs("/cue/selected/sliderLevel/1", (float)args.NewValue);
+                qController.qClient.sendArgs("/cue_id/" + activeCue + "/sliderLevel/1", (float)args.NewValue);
             };
 
             rightSlider = new Slider
@@ -81,7 +82,7 @@ namespace qController
             };
             rightSlider.ValueChanged += (sender, args) =>
             {
-                qController.qClient.sendArgs("/cue/selected/sliderLevel/2", (float)args.NewValue);
+                qController.qClient.sendArgs("/cue_id/" + activeCue + "/sliderLevel/2", (float)args.NewValue);
             };
             mainG.Children.Add(mainSlider, 1, 0);
             mainG.Children.Add(leftSlider, 1, 1);
@@ -116,11 +117,7 @@ namespace qController
             mainG.Children.Add(rightLabel, 0, 2);
 
             Content = mainG;
-        }
-
-        public void UpdateSelectedCue(QCue cue)
-        {
-            type.Text = cue.type;
+            Margin = new Thickness(10);
         }
     }
 }

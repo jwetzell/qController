@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 namespace qController
 {
@@ -26,7 +27,7 @@ namespace qController
         public string displayName { get; set; }
         public bool isLoaded { get; set; }
         public string notes { get; set; }
-
+        public List<double> levels { get; set; }
         public string getIconString()
         {
             switch (type)

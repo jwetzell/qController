@@ -53,7 +53,6 @@ namespace qController
                     icon.FontSize = 20;
                     var label = new Label { VerticalOptions = LayoutOptions.FillAndExpand };
                     label.SetBinding(Label.TextProperty, "Title");
-                    Console.WriteLine(label.Text);
                     if (label.Text == "Disconnect")
                     {
                         label.TextColor = Color.DarkRed;

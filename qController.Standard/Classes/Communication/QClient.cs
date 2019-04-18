@@ -99,22 +99,22 @@ namespace qController
 
         public void UpdateSpecificCue(string cue_id)
         {
-            Console.WriteLine("Cue needs to be updated: " + cue_id);
+            Console.WriteLine("Updating specific cue: " + cue_id);
             string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\",\"notes\"]";
             string address = "/cue_id/" + cue_id + "/valuesForKeys";
-
             sendAndReceiveStringArgs(address, valuesForKeys);
         }
 
         public void UpdateSelectedCue()
         {
+            Console.WriteLine("Updating selected cue");
             string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\",\"notes\"]";
             sendAndReceiveStringArgs("/cue/selected/valuesForKeys", valuesForKeys);
         }
 
         public void UpdateWorkspace(string ws_id)
         {
-            Console.WriteLine("Workspace needs to be updaeted: " + ws_id);
+            Console.WriteLine("Workspace needs to be updated: " + ws_id);
         }
 
         public void Close()

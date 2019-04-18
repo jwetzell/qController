@@ -39,6 +39,22 @@ namespace qController
                 }
             }
         }
+
+        public void UpdateLevels(string cue_id, List<double> levels)
+        {
+            for (int i = 0; i < data.Count; i++)
+            {
+                for (int j = 0; j < data[i].cues.Count; j++)
+                {
+                    if (data[i].cues[j].uniqueID == cue_id)
+                    {
+                        Console.WriteLine("Cue found and levels updated");
+                        data[i].cues[j].levels = levels;
+                    }
+                }
+            }
+        }
+
         public void PrintStats()
         {
             foreach (var cueList in data)
