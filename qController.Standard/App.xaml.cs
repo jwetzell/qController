@@ -7,6 +7,7 @@ namespace qController
         public static INavigation iNav;
         public static NavigationPage NavigationPage { get; private set; }
         public static RootPage rootPage;
+        public static string QFont;
 
         public static bool MenuIsPresented
         {
@@ -26,6 +27,18 @@ namespace qController
 
             /*MainPage = new NavigationPage(new QConnectionPage());
             iNav = MainPage.Navigation;*/
+
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    QFont = "qfont";
+                    break;
+                case Device.Android:
+                    QFont = "qfont.ttf#qfont";
+                    break;
+
+            }
+
             var menuPage = new MenuPage();
             rootPage = new RootPage();
             NavigationPage = new NavigationPage(new QConnectionPage());

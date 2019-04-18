@@ -20,7 +20,7 @@ namespace qController
 
     public partial class RootPage : MasterDetailPage
     {
-        MenuPage MenuPage;
+        public MenuPage MenuPage;
         public delegate void MenuItemSelectedHandler(object source, MenuEventArgs args);
         public event MenuItemSelectedHandler MenuItemSelected;
 
@@ -34,7 +34,7 @@ namespace qController
         {
             MenuPage = (MenuPage)Master;
 
-            MenuPage.ListView.ItemSelected += OnItemSelected;
+            MenuPage.listView.ItemSelected += OnItemSelected;
         }
 
         void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -42,7 +42,7 @@ namespace qController
             var item = e.SelectedItem as MasterPageItem;
             if (item != null)
             {
-                MenuPage.ListView.SelectedItem = null;
+                MenuPage.listView.SelectedItem = null;
                 IsPresented = false;
                 if (MenuItemSelected != null)
                     MenuItemSelected(this, new MenuEventArgs { Command = item.Command });

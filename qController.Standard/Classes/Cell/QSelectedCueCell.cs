@@ -9,7 +9,6 @@ namespace qController
         Label number;
         Label type;
         Label notes;
-
         public QSelectedCueCell()
         {
             Padding = new Thickness(5);
@@ -66,23 +65,29 @@ namespace qController
                 }
             };
 
-            number = new Label { Text = "N/A"};
-            number.FontAttributes = FontAttributes.Bold;
-            number.FontSize = 30;
-            number.Margin = new Thickness(5);
+            number = new Label { 
+                Text = "N/A",
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 30,
+                Margin = new Thickness(5)
+            };
 
+            name = new Label { 
+                Text = "N/A",
+                FontAttributes = FontAttributes.Bold,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = 20,
+                Margin = new Thickness(0)
+            };
 
-            name = new Label { Text = "N/A" };
-            name.FontAttributes = FontAttributes.Bold;
-            name.HorizontalTextAlignment = TextAlignment.Center;
-            name.FontSize = 20;
-            name.Margin = new Thickness(0);
-
-            type = new Label { Text = "N/A" };
-            type.FontAttributes = FontAttributes.Bold;
-            type.VerticalTextAlignment = TextAlignment.Center;
-            type.HorizontalTextAlignment = TextAlignment.End;
-            type.Margin = new Thickness(5);
+            type = new Label { 
+                Text = "", 
+                FontFamily = App.QFont,
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.End,
+                Margin = new Thickness(5),
+                FontSize = 27
+            };
 
             notes = new Label { Text = "Viewing Notes Currently Unavailable" };
             notes.HorizontalTextAlignment = TextAlignment.Center;
@@ -112,7 +117,7 @@ namespace qController
         {
             name.Text = cue.name;
             number.Text = cue.number;
-            type.Text = cue.type;
+            type.Text = cue.getIconString();
             notes.Text = cue.notes;
         }
     }

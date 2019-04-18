@@ -20,7 +20,6 @@ namespace qController
 
         private void OnMenuItemSelected(object source, MenuEventArgs args)
         {
-            Console.WriteLine("Menu Item Selected: " + args.Command);
             if(args.Command == "scan")
             {
                 Scan();
@@ -63,10 +62,10 @@ namespace qController
 
             lstView.BackgroundColor = Color.FromHex("4A4A4A");
             BackgroundColor = Color.FromHex("4A4A4A"); 
-            var scanButtonGesture = new TapGestureRecognizer();
+            var menuButtonGesture = new TapGestureRecognizer();
 
-            scanButtonGesture.Tapped += showMenu;
-            menuButton.GestureRecognizers.Add(scanButtonGesture);
+            menuButtonGesture.Tapped += showMenu;
+            menuButton.GestureRecognizers.Add(menuButtonGesture);
 
         }
 

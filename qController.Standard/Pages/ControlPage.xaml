@@ -10,7 +10,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
               </Grid.ColumnDefinitions>
-              <Image x:Name = "backButton" HorizontalOptions = "Start" Margin="20,10,20,10" Grid.Row="0" Grid.Column="0" />
+              <Label x:Name = "menuButton" FontFamily = "{StaticResource qfont}"  HorizontalOptions = "Start" Margin="20,10,20,10" Grid.Row="0" Grid.Column="0" FontSize="25"/>
             </Grid>
         </StackLayout>
 	</ContentPage.Content>

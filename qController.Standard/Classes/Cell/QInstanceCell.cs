@@ -11,8 +11,6 @@ namespace qController
 
             Label nameLabel = new Label();
             Label addressLabel = new Label();
-            Image connectButton = new Image();
-            Image deleteButton = new Image();
 
             Label connectLabel = new Label();
             Label deleteLabel = new Label();
@@ -21,12 +19,10 @@ namespace qController
             var deleteTapGesture = new TapGestureRecognizer();
 
             connectTapGesture.Tapped += Connect;
-            connectButton.GestureRecognizers.Add(connectTapGesture);
             connectLabel.GestureRecognizers.Add(connectTapGesture);
 
 
             deleteTapGesture.Tapped += Delete;
-            deleteButton.GestureRecognizers.Add(deleteTapGesture);
             deleteLabel.GestureRecognizers.Add(deleteTapGesture);
 
             InitItems();
@@ -79,15 +75,6 @@ namespace qController
                 nameLabel.FontAttributes = FontAttributes.Bold;
                 nameLabel.FontSize = 20;
 
-                connectButton.HorizontalOptions = LayoutOptions.CenterAndExpand;
-                connectButton.VerticalOptions = LayoutOptions.CenterAndExpand;
-                connectButton.Source = "connect.png";
-
-
-                deleteButton.HorizontalOptions = LayoutOptions.CenterAndExpand;
-                deleteButton.VerticalOptions = LayoutOptions.CenterAndExpand;
-                deleteButton.Source = "delete.png";
-
                 addressLabel.HorizontalTextAlignment = TextAlignment.Center;
                 addressLabel.VerticalTextAlignment = TextAlignment.Start;
 
@@ -103,20 +90,8 @@ namespace qController
                 deleteLabel.FontSize = 40;
                 deleteLabel.TextColor = Color.Red;
 
-                string qfont = "";
-
-                switch (Device.RuntimePlatform)
-                {
-                    case Device.iOS:
-                        qfont = "qfont";
-                        break;
-                    case Device.Android:
-                        qfont = "qfont.ttf#qfont";
-                        break;
-
-                }
-                connectLabel.FontFamily = qfont;
-                deleteLabel.FontFamily = qfont;
+                connectLabel.FontFamily = App.QFont;
+                deleteLabel.FontFamily = App.QFont;
             }
 
 
@@ -130,7 +105,7 @@ namespace qController
 
             void Connect(object sender, EventArgs e)
             {
-                App.NavigationPage.Navigation.PushModalAsync(new NavigationPage(new ControlPage(nameLabel.Text,addressLabel.Text)));
+                App.NavigationPage.Navigation.PushAsync(new ControlPage(nameLabel.Text,addressLabel.Text));
 
                 Console.WriteLine("Connect To " + nameLabel.Text + " Pressed");
 

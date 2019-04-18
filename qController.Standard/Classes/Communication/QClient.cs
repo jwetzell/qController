@@ -12,12 +12,16 @@ namespace qController
         public QParser qParser;
         public QReceiver qReceiver;
 
+        string Address;
+        int Port;
         public QClient(string address, int port)
         {
+            Address = address;
+            Port = port;
             qParser = new QParser();
-            qReceiver = new QReceiver(port + 1);
-            tcpSender = new TCPSender(address, port);
-            udpSender = new UDPSender(address, port);
+            qReceiver = new QReceiver(Port + 1);
+            tcpSender = new TCPSender(Address, Port);
+            udpSender = new UDPSender(Address, Port);
 
             tcpSender.MessageReceived += OnMessageReceived;
             qReceiver.UpdateMessageReceived += OnMessageReceived;
@@ -44,11 +48,15 @@ namespace qController
         }
         public void sendStringUDP(string address)
         {
+            udpSender = new UDPSender(Address,Port);
             udpSender.Send(new OscMessage(address));
+            udpSender.Close();
         }
         public void sendArgsUDP(string address, params object[] args)
         {
+            udpSender = new UDPSender(Address, Port);
             udpSender.Send(new OscMessage(address, args));
+            udpSender.Close();
         }
         public void sendAndReceiveString(string address)
         {

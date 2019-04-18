@@ -11,7 +11,6 @@ namespace qController
         Label instanceName = new Label();
         QSelectedCueCell qCell;
         QSelectedCueOptionsCell qSelectedCueOptions;
-        QCueListView qCueListView;
         Grid mainG;
         ListView listView;
         public ControlPage(string name, string address)
@@ -23,18 +22,30 @@ namespace qController
             qController.qClient.qParser.WorkspaceUpdated += WorkspaceUpdated;
             qController.qClient.qParser.PlaybackPositionUpdated += PlaybackPositionUpdated;
             qController.qClient.qParser.CueInfoUpdated += OnCueUpdateReceived;
-            NavigationPage.SetHasNavigationBar(this, false);
-            instanceName.Text = name;
 
+            instanceName.Text = name;
+            App.rootPage.MenuItemSelected += OnMenuItemSelected;
 
             InitGUI();
 
         }
 
+        private void OnMenuItemSelected(object source, MenuEventArgs args)
+        {
+            if (args.Command.Contains("/"))
+            {
+                Console.WriteLine("Cue selected: " + args.Command);
+                qController.qClient.sendStringUDP(args.Command);
+            }else if (args.Command == "disconnect")
+            {
+                Back();
+            }
+        }
+
         private void InitGUI()
         {
 
-
+            NavigationPage.SetHasNavigationBar(this, false);
             instanceName.HorizontalTextAlignment = TextAlignment.Center;
             instanceName.HorizontalOptions = LayoutOptions.CenterAndExpand;
             instanceName.VerticalOptions = LayoutOptions.CenterAndExpand;
@@ -42,11 +53,11 @@ namespace qController
             topBar.BackgroundColor = Color.FromHex("71AEFF");
 
             BackgroundColor = Color.FromHex("4A4A4A");
-            backButton.Source = ImageSource.FromFile("back");
+            menuButton.Text = "\uF0C9";
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
-                    backButton.Margin = new Thickness(20, 35, 20, 10);
+                    menuButton.Margin = new Thickness(20, 35, 20, 10);
                     instanceName.Margin = new Thickness(20, 35, 20, 10);
                     break;
 
@@ -61,10 +72,10 @@ namespace qController
             buttons.Add(new QButton("Pause", "/pause"));
             buttons.Add(new QButton("Resume", "/resume"));
 
-            var backButtonGesture = new TapGestureRecognizer();
+            var menuButtonGesture = new TapGestureRecognizer();
 
-            backButtonGesture.Tapped += Back;
-            backButton.GestureRecognizers.Add(backButtonGesture);
+            menuButtonGesture.Tapped += ShowMenu;
+            menuButton.GestureRecognizers.Add(menuButtonGesture);
 
 
             qCell = new QSelectedCueCell();
@@ -85,7 +96,8 @@ namespace qController
                     new ColumnDefinition{Width = new GridLength(1,GridUnitType.Star)},
                     new ColumnDefinition{Width = new GridLength(1,GridUnitType.Star)},
                     new ColumnDefinition{Width = new GridLength(1,GridUnitType.Star)}
-                }
+                },
+                Margin = new Thickness(10)
             };
 
 
@@ -121,9 +133,6 @@ namespace qController
 
             sLayout.Children.Add(mainG);
 
-            qCueListView = new QCueListView();
-
-            //sLayout.Children.Add(qCueListView);
 
         }
 
@@ -132,11 +141,17 @@ namespace qController
             qController.qClient.sendStringUDP(((QButton)sender).OSCCommand);
         }
 
-        void Back(object sender, EventArgs e)
+        void ShowMenu(object sender, EventArgs e)
         {
-            App.NavigationPage.Navigation.PopModalAsync();
+            //App.NavigationPage.Navigation.PopAsync();
+            App.MenuIsPresented = true;
         }
 
+        void Back()
+        {
+            App.rootPage.MenuPage.ChangeToHome();
+            App.NavigationPage.Navigation.PopAsync();
+        }
         public void SelectedCueUpdated(object sender, CueEventArgs e){
             Device.BeginInvokeOnMainThread(()=>{
                 if (e.Cue.type.Equals("Audio"))
@@ -157,10 +172,8 @@ namespace qController
         {
             if(e.UpdatedWorkspace.data.Count > 0)
             {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    qCueListView.UpdateWithWorkspace(e.UpdatedWorkspace);
-                });
+
+                App.rootPage.MenuPage.ChangeToWorkspace(e.UpdatedWorkspace);
                 qController.qWorkspace = e.UpdatedWorkspace;
                 Console.WriteLine("Workspace updated in ControlPage: " + qController.qWorkspace.workspace_id);
             }
