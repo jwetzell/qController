@@ -26,7 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidSigningKeyStore>/Users/jwetzell/Dropbox/App Stuff/Android/keystores/android.keystore</AndroidSigningKeyStore>
-    <AndroidSupportedAbis>x86;armeabi;armeabi-v7a;arm64-v8a;x86_64</AndroidSupportedAbis>
+    <AndroidSupportedAbis>x86;armeabi-v7a;arm64-v8a;x86_64</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
