@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Xamarin.Forms;
 
 namespace qController
@@ -13,6 +14,7 @@ namespace qController
         public QClient qClient;
         public QWorkSpace qWorkspace;
         public string playbackPosition;
+        public Stopwatch sw;
 		public QController(string address, int port)
         {
             qClient = new QClient(address, port);
@@ -23,10 +25,33 @@ namespace qController
             qClient.qParser.PlaybackPositionUpdated += this.OnPlaybackPositionUpdated;
             qClient.qParser.CueInfoUpdated += this.OnCueUpdateReceived;
             qClient.qParser.AudioLevelsUpdated += this.OnAudioLevelsUpdated;
+            qClient.qParser.ChildrenUpdated += this.OnChildrenUpdated;
             qClient.sendArgsUDP("/updates", 1);
             qClient.sendArgsUDP("/updates", 1);
             qClient.sendAndReceiveString("/cueLists");
 
+        }
+
+        private void OnChildrenUpdated(object source, ChildrenEventArgs args)
+        {
+            Console.WriteLine("Children Updated in QController: " + args.cue_id);
+            qWorkspace.UpdateChildren(args.cue_id, args.children);
+
+            foreach (var cueList in qWorkspace.data)
+            {
+                foreach (var cue in cueList.cues)
+                {
+                    if (cue.type == "Group")
+                    {
+                        if (cue.cues == null)
+                        {
+                            Console.WriteLine("Next Group Cue Found");
+                            qClient.sendStringUDP("/cue_id/" + cue.uniqueID + "/children");
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         private void OnAudioLevelsUpdated(object source, AudioLevelArgs args)
@@ -34,7 +59,6 @@ namespace qController
             if(qWorkspace != null)
                 qWorkspace.UpdateLevels(args.cue_id, args.levels);
         }
-
         public void Connect()
         {
             qClient.sendStringUDP("/connect");
@@ -50,12 +74,26 @@ namespace qController
             qClient.sendArgsUDP("/connect", pass);
         }
 
-        public void sendCommand(string cmd){
-            qClient.sendString(cmd);
-        }
-
         public void updateCueValue(QCue cue, string property, object newValue){
             //qClient.sendArgs("/cue_id/"+cue.uniqueID+"/"+property, newValue);
+        }
+
+        public void RefreshGroupCues()
+        {
+            if (qWorkspace.ChildrenPopulated())
+                return;
+            foreach (var cueList in qWorkspace.data)
+            {
+                foreach (var cue in cueList.cues)
+                {
+                    if (cue.type == "Group")
+                    {
+                        Console.WriteLine("First Group Cue Found");
+                        qClient.sendStringUDP("/cue_id/" + cue.uniqueID + "/children");
+                        break;
+                    }
+                }
+            }
         }
 
         public void OnSelectedCueUpdated(object source, CueEventArgs args)

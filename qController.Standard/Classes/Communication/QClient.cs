@@ -93,8 +93,6 @@ namespace qController
             {
                 UpdateWorkspace("not yet implemented");
             }
-
-         
         }
 
         public void UpdateSpecificCue(string cue_id)

@@ -55,7 +55,10 @@ namespace qController
                 case Device.iOS:
                     menuButton.Margin = new Thickness(20, 35, 20, 10);
                     break;
-
+                case Device.Android:
+                    topBar.HeightRequest = 50;
+                    menuButton.Margin = new Thickness(20, 10, 20, 10);
+                    break;
             }
 
             menuButton.Text = "\uF0C9";

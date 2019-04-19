@@ -9,7 +9,6 @@ namespace qController
         public List<QCueList> data { get; set; }
         public string workspace_id { get; set; }
         public string address { get; set; }
-
         public QCue GetCue(string cue_id)
         {
             QCue returnCue = null;
@@ -40,6 +39,23 @@ namespace qController
             }
         }
 
+        public void UpdateChildren(string cue_id, List<QCue> children)
+        {
+            for (int i = 0; i < data.Count; i++)
+            {
+                for (int j = 0; j < data[i].cues.Count; j++)
+                {
+                    if (data[i].cues[j].uniqueID == cue_id)
+                    {
+                        if(data[i].cues[j].type == "Group")
+                        {
+                            data[i].cues[j].cues = children;
+                        }
+                    }
+                }
+            }
+        }
+
         public void UpdateLevels(string cue_id, List<double> levels)
         {
             for (int i = 0; i < data.Count; i++)
@@ -53,6 +69,21 @@ namespace qController
                     }
                 }
             }
+        }
+
+        public bool ChildrenPopulated()
+        {
+            for (int i = 0; i < data.Count; i++)
+            {
+                for (int j = 0; j < data[i].cues.Count; j++)
+                {
+                    if (data[i].cues[j].type == "Group" && data[i].cues[j].cues == null)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         public void PrintStats()

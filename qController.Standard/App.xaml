@@ -3,7 +3,7 @@
 	<Application.Resources>
 		<!-- Application resource dictionary -->
         <OnPlatform x:Key="qfont" x:TypeArguments="x:String">
-            <On Platform="Android" Value="qfont.otf#qfont" />
+            <On Platform="Android" Value="qfont.ttf#qfont" />
             <On Platform="iOS" Value="qfont" />
         </OnPlatform>
 	</Application.Resources>

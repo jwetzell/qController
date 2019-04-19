@@ -115,7 +115,7 @@ namespace qController
 
         public void UpdateSelectedCue(QCue cue)
         {
-            name.Text = cue.name;
+            name.Text = cue.listName;
             number.Text = cue.number;
             type.Text = cue.getIconString();
             notes.Text = cue.notes;

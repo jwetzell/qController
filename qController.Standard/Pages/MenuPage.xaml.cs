@@ -10,6 +10,7 @@ namespace qController
 
         public ListView listView;
         public ObservableCollection<MenuPageItem> items;
+        int subLevel = 0;
         public MenuPage()
         {
             Title = "Menu";
@@ -88,26 +89,52 @@ namespace qController
                 });
                 foreach (var cue in cueList.cues)
                 {
-                    var cueIcon = cue.getIconString();
-                    var cueTitle = "";
-
-                    if(cue.number != "")
-                    {
-                        cueTitle = "\t" + cue.number + " - " + cue.listName;
-                    }
-                    else
-                    {
-                        cueTitle = "\t" + cue.listName;
-                    }
-
-                    items.Add(new MenuPageItem
-                    {
-                        Title = cueTitle,
-                        Icon = cueIcon,
-                        Command = "/select_id/" + cue.uniqueID
-                    });
+                    AddSubCues(cue, 0);
 
                 }
+            }
+        }
+
+        public void AddSubCues(QCue cue, int level)
+        {
+            var cueIcon = cue.getIconString();
+            var cueTitle = "";
+            for (int i = 0; i < level; i++)
+            {
+                cueTitle += "   ";
+            }
+            if (cue.number != "")
+            {
+                cueTitle += cue.number + " - " + cue.listName;
+            }
+            else
+            {
+                cueTitle += cue.listName;
+            }
+
+            if (cue.cues != null )
+            {          
+                items.Add(new MenuPageItem
+                {
+                    Title = cueTitle,
+                    Icon = cueIcon,
+                    Command = "/select_id/" + cue.uniqueID
+                });
+
+                //uncomment to load nested group cues
+                /*foreach (var sub_cue in cue.cues)
+                {
+                    AddSubCues(sub_cue,level + 1);
+                }*/
+            }
+            else
+            {
+                items.Add(new MenuPageItem
+                {
+                    Title = cueTitle,
+                    Icon = cueIcon,
+                    Command = "/select_id/" + cue.uniqueID
+                });
             }
         }
 

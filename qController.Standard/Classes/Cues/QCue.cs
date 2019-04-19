@@ -13,21 +13,22 @@ namespace qController
         public string colorName { get; set; }
         public string name { get; set; }
         public bool armed { get; set; }
-        public int translationX { get; set; }
+        public decimal translationX { get; set; }
         public bool isRunning { get; set; }
-        public int scaleX { get; set; }
+        public decimal scaleX { get; set; }
         public bool isPaused { get; set; }
-        public int translationY { get; set; }
-        public int preWait { get; set; }
-        public int opacity { get; set; }
-        public int scaleY { get; set; }
-        public int duration { get; set; }
-        public int postWait { get; set; }
+        public decimal translationY { get; set; }
+        public decimal preWait { get; set; }
+        public decimal opacity { get; set; }
+        public decimal scaleY { get; set; }
+        public decimal duration { get; set; }
+        public decimal postWait { get; set; }
         public bool isBroken { get; set; }
         public string displayName { get; set; }
         public bool isLoaded { get; set; }
         public string notes { get; set; }
         public List<double> levels { get; set; }
+        public List<QCue> cues { get; set; }
         public string getIconString()
         {
             switch (type)
