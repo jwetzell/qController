@@ -80,13 +80,13 @@ namespace qController
 
                 connectLabel.HorizontalOptions = LayoutOptions.CenterAndExpand;
                 connectLabel.VerticalOptions = LayoutOptions.CenterAndExpand;
-                connectLabel.Text = "\uF1EB";
+                connectLabel.Text = QIcon.WIFI;
                 connectLabel.FontSize = 40;
                 connectLabel.TextColor = Color.LimeGreen;
 
                 deleteLabel.HorizontalOptions = LayoutOptions.CenterAndExpand;
                 deleteLabel.VerticalOptions = LayoutOptions.CenterAndExpand;
-                deleteLabel.Text = "\uE802";
+                deleteLabel.Text = QIcon.TRASH_EMPTY;
                 deleteLabel.FontSize = 40;
                 deleteLabel.TextColor = Color.Red;
 
@@ -105,6 +105,7 @@ namespace qController
 
             void Connect(object sender, EventArgs e)
             {
+                App.rootPage.MenuPage.ChangeToControl();
                 App.NavigationPage.Navigation.PushAsync(new ControlPage(nameLabel.Text,addressLabel.Text));
 
                 Console.WriteLine("Connect To " + nameLabel.Text + " Pressed");

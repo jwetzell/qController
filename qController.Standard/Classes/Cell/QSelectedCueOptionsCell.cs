@@ -7,22 +7,25 @@ namespace qController
 {
     public class QSelectedCueOptionsCell : Frame
     {
-        void AudioLevelsUpdated(object source, AudioLevelArgs args)
+        void OnCueInfoUpdated(object source, CueEventArgs args)
         {
             Device.BeginInvokeOnMainThread(() => {
-                activeCue = args.cue_id;
-                levels = args.levels;
-                if (mainSlider != null)
+                activeCue = args.Cue.uniqueID;
+                if(args.Cue.levels != null)
                 {
-                   mainSlider.Value = levels[0];
-                }
-                if (leftSlider != null)
-                {
-                   leftSlider.Value = levels[1];
-                }
-                if (rightSlider != null)
-                {
-                    rightSlider.Value = levels[2];
+                    levels = args.Cue.levels[0];
+                    if (mainSlider != null)
+                    {
+                        mainSlider.Value = levels[0];
+                    }
+                    if (leftSlider != null)
+                    {
+                        leftSlider.Value = levels[1];
+                    }
+                    if (rightSlider != null)
+                    {
+                        rightSlider.Value = levels[2];
+                    }
                 }
             });
         }
@@ -34,7 +37,7 @@ namespace qController
         Slider rightSlider;
         public QSelectedCueOptionsCell(QController qController)
         {
-            qController.qClient.qParser.AudioLevelsUpdated += AudioLevelsUpdated;
+            qController.qClient.qParser.CueInfoUpdated += OnCueInfoUpdated;
             Padding = new Thickness(5);
             CornerRadius = 20;
             BackgroundColor = Color.FromHex("D8D8D8");

@@ -9,20 +9,20 @@ namespace qController
         public List<QCueList> data { get; set; }
         public string workspace_id { get; set; }
         public string address { get; set; }
+        public bool IsPopulated { get; set; }
         public QCue GetCue(string cue_id)
         {
-            QCue returnCue = null;
             foreach (var cueList in data)
             {
                 foreach (var cue in cueList.cues)
                 {
                     if(cue.uniqueID == cue_id)
                     {
-                        returnCue = cue;
+                        return cue;
                     }
                 }
             }
-            return returnCue;
+            return null;
         }
 
         public void UpdateCue(QCue cue)
@@ -34,6 +34,7 @@ namespace qController
                     if(data[i].cues[j].uniqueID == cue.uniqueID)
                     {
                         data[i].cues[j] = cue;
+                        return;
                     }
                 }
             }
@@ -50,25 +51,28 @@ namespace qController
                         if(data[i].cues[j].type == "Group")
                         {
                             data[i].cues[j].cues = children;
+                            return;
                         }
                     }
                 }
             }
         }
 
-        public void UpdateLevels(string cue_id, List<double> levels)
+        public QCue GetEmptyGroup()
         {
-            for (int i = 0; i < data.Count; i++)
+            foreach (var cueList in data)
             {
-                for (int j = 0; j < data[i].cues.Count; j++)
+                foreach (var cue in cueList.cues)
                 {
-                    if (data[i].cues[j].uniqueID == cue_id)
+                    if (cue.type == "Group" && cue.cues == null)
                     {
-                        Console.WriteLine("Cue found and levels updated");
-                        data[i].cues[j].levels = levels;
+                        Console.WriteLine("Next Group Cue Found");
+                        return cue;
                     }
                 }
             }
+            IsPopulated = true;
+            return null;
         }
 
         public bool ChildrenPopulated()
@@ -79,10 +83,12 @@ namespace qController
                 {
                     if (data[i].cues[j].type == "Group" && data[i].cues[j].cues == null)
                     {
+                        IsPopulated = false;
                         return false;
                     }
                 }
             }
+            IsPopulated = true;
             return true;
         }
 
@@ -91,7 +97,6 @@ namespace qController
             foreach (var cueList in data)
             {
                 Console.WriteLine(cueList.listName + "("+ cueList.cues.Count + " cues)");
-
             }
         }
     }

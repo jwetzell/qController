@@ -18,69 +18,15 @@ namespace qController
             InitializeComponent();
 
             qController = new QController(address, 53000);
-            qController.qClient.qParser.SelectedCueUpdated += SelectedCueUpdated;
             qController.qClient.qParser.WorkspaceUpdated += WorkspaceUpdated;
             qController.qClient.qParser.PlaybackPositionUpdated += PlaybackPositionUpdated;
             qController.qClient.qParser.CueInfoUpdated += OnCueUpdateReceived;
-            qController.qClient.qParser.ConnectionStatusChanged += OnConnectionStatusChanged;
             qController.qClient.qParser.ChildrenUpdated += OnChildrenUpdated;
             instanceName.Text = name;
             App.rootPage.MenuItemSelected += OnMenuItemSelected;
             qController.Connect();
             InitGUI();
             
-        }
-
-        private void OnChildrenUpdated(object source, ChildrenEventArgs args)
-        {
-            Console.WriteLine("Children Updated in ControlPage: " + args.cue_id);
-            qController.qWorkspace.UpdateChildren(args.cue_id, args.children);
-            if (qController.qWorkspace.ChildrenPopulated())
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    if (App.MenuIsPresented)
-                    {
-                        //App.MenuIsPresented = false;
-                        App.rootPage.MenuPage.ChangeToWorkspace(qController.qWorkspace);
-                        //App.MenuIsPresented = true;
-                    }
-                    else
-                    {
-                        App.rootPage.MenuPage.ChangeToWorkspace(qController.qWorkspace);
-
-                    }
-                });
-                qController.qClient.UpdateSelectedCue();
-            }
-        }
-
-        private void OnConnectionStatusChanged(object source, ConnectEventArgs args)
-        {
-            if (args.Status == "ok")
-            {
-                Console.WriteLine("Workspace has successfully connected");
-            }
-            else if (args.Status == "badpass")
-            {
-                Console.WriteLine("Password incorrect or no password supplied");
-            }
-            else
-            {
-                Console.WriteLine("Workspace not found");
-            }
-        }
-
-        private void OnMenuItemSelected(object source, MenuEventArgs args)
-        {
-            if (args.Command.Contains("/"))
-            {
-                Console.WriteLine("Cue selected: " + args.Command);
-                qController.qClient.sendStringUDP(args.Command);
-            }else if (args.Command == "disconnect")
-            {
-                Back();
-            }
         }
 
         private void InitGUI()
@@ -94,7 +40,7 @@ namespace qController
             topBar.BackgroundColor = Color.FromHex("71AEFF");
 
             BackgroundColor = Color.FromHex("4A4A4A");
-            menuButton.Text = "\uF0C9";
+            menuButton.Text = QIcon.MENU;
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
@@ -162,7 +108,6 @@ namespace qController
                     row = 0;
                     column = 2;
                 }
-
             }
 
             QButton goButton = new QButton("GO","/go");
@@ -192,22 +137,6 @@ namespace qController
             qController.Disconnect();
             App.rootPage.MenuPage.ChangeToHome();
             App.NavigationPage.Navigation.PopAsync();
-        }
-
-        public void SelectedCueUpdated(object sender, CueEventArgs e){
-            Device.BeginInvokeOnMainThread(()=>{
-                if (e.Cue.type.Equals("Audio"))
-                {
-                    //Console.WriteLine("CUE IS AN AUDIO CUE");
-                    sLayout.Children.Add(qSelectedCueOptions);
-                }
-                else
-                {
-                    //Console.WriteLine("CUE IS NOT AN AUDIO CUE");
-                    sLayout.Children.Remove(qSelectedCueOptions);
-                }
-                qCell.UpdateSelectedCue(e.Cue);
-            });
         }
 
         public void WorkspaceUpdated(object sender, WorkspaceEventArgs e)
@@ -248,12 +177,48 @@ namespace qController
                 Console.WriteLine("Cue that was updated is equal to the playback position.");
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    if (args.Cue.type.Equals("Audio"))
+                    if (args.Cue.levels != null)
                         sLayout.Children.Add(qSelectedCueOptions);
                     else
                         sLayout.Children.Remove(qSelectedCueOptions);
                     qCell.UpdateSelectedCue(args.Cue);
                 });
+            }
+        }
+
+        private void OnChildrenUpdated(object source, ChildrenEventArgs args)
+        {
+            Console.WriteLine("Children Updated in ControlPage: " + args.cue_id);
+            qController.qWorkspace.UpdateChildren(args.cue_id, args.children);
+            if (qController.qWorkspace.ChildrenPopulated())
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    if (App.MenuIsPresented)
+                    {
+                        //App.MenuIsPresented = false;
+                        App.rootPage.MenuPage.ChangeToWorkspace(qController.qWorkspace);
+                        //App.MenuIsPresented = true;
+                    }
+                    else
+                    {
+                        App.rootPage.MenuPage.ChangeToWorkspace(qController.qWorkspace);
+
+                    }
+                });
+                qController.qClient.UpdateSelectedCue();
+            }
+        }
+
+        private void OnMenuItemSelected(object source, MenuEventArgs args)
+        {
+            if (args.Command.Contains("/"))
+            {
+                qController.qClient.sendStringUDP(args.Command);
+            }
+            else if (args.Command == "disconnect")
+            {
+                Back();
             }
         }
 

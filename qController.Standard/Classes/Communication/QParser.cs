@@ -15,19 +15,8 @@ namespace qController
         }
     }
 
-    public class AudioLevelArgs : EventArgs
-    {
-        public string cue_id
-        {
-            get;
-            set;
-        }
-        public List<double> levels
-        {
-            get;
-            set;
-        }
-    }
+
+
     public class WorkspaceEventArgs : EventArgs
     {
         public QWorkSpace UpdatedWorkspace
@@ -36,6 +25,7 @@ namespace qController
             set;
         }
     }
+
     public class PlaybackPositionArgs : EventArgs
     {
         public string PlaybackPosition
@@ -44,6 +34,7 @@ namespace qController
             set;
         }
     }
+
     public class ConnectEventArgs : EventArgs
     {
         public string Status
@@ -52,6 +43,7 @@ namespace qController
             set;
         }
     }
+
     public class ChildrenEventArgs : EventArgs
     {
         public string cue_id
@@ -73,7 +65,6 @@ namespace qController
         }
 
         public delegate void SelectedCueUpdatedHandler(object source, CueEventArgs args);
-        public delegate void AudioLevelsUpdatedHandler(object source, AudioLevelArgs args);
         public delegate void WorkspaceUpdatedHandler(object source, WorkspaceEventArgs args);
         public delegate void CueInfoUpdatedHandler(object source, CueEventArgs args);
         public delegate void PlaybackPositionUpdatedHandler(object source, PlaybackPositionArgs args);
@@ -82,7 +73,6 @@ namespace qController
         public event ChildrenUpdateHandler ChildrenUpdated;
         public event ConnectionStatusHandler ConnectionStatusChanged;
         public event SelectedCueUpdatedHandler SelectedCueUpdated;
-        public event AudioLevelsUpdatedHandler AudioLevelsUpdated;
         public event WorkspaceUpdatedHandler WorkspaceUpdated;
         public event CueInfoUpdatedHandler CueInfoUpdated;
         public event PlaybackPositionUpdatedHandler PlaybackPositionUpdated;
@@ -92,15 +82,10 @@ namespace qController
             {
                 if (msg.Address.Contains("valuesForKeys"))
                 {
-                    if (msg.Address.Contains("WithArguments"))
-                        ParseLevelInfo(msg);
-                    else
-                        ParseCueUpdateInfo(msg);
+                    ParseCueUpdateInfo(msg);
                 }
                 else if (msg.Address.Contains("notes"))
                     ParseNoteInfo(msg);
-                else if (msg.Address.Contains("levels"))
-                    ParseLevelInfo(msg);
                 else if (msg.Address.Contains("cueLists"))
                     ParseWorkspaceInfo(msg);
                 else if (msg.Address.Contains("playbackPosition"))
@@ -140,6 +125,7 @@ namespace qController
         public void ParseCueUpdateInfo(OscMessage msg)
         {
             JToken cueUpdate = OSC2JSON(msg);
+            Console.WriteLine(OSC2JSON(msg).ToString());
             QCue cue = JsonConvert.DeserializeObject<QCue>(cueUpdate.ToString());
             OnCueInfoUpdated(cue);
         }
@@ -152,12 +138,6 @@ namespace qController
 
         public void ParseNoteInfo(OscMessage msg){
             //JToken cueInfo = OSC2JSON(msg);
-        }
-
-        public void ParseLevelInfo(OscMessage msg){
-            var cue_id = msg.Address.Split('/')[3];
-            JToken levels = OSC2JSON(msg)[0];
-            OnAudioLevelsUpdated(cue_id, levels.ToObject<List<double>>());
         }
 
         public void ParseWorkspaceInfo(OscMessage msg)
@@ -194,11 +174,6 @@ namespace qController
         {
             if (SelectedCueUpdated != null)
                 SelectedCueUpdated(this, new CueEventArgs() { Cue = cue });
-        }
-
-        protected virtual void OnAudioLevelsUpdated(string id, List<double> audioLevels){
-            if (AudioLevelsUpdated != null)
-                AudioLevelsUpdated(this, new AudioLevelArgs { cue_id = id, levels = audioLevels });
         }
 
         protected virtual void OnCueInfoUpdated(QCue cue)

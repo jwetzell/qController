@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using Xamarin.Forms;
 
 namespace qController
@@ -69,16 +70,19 @@ namespace qController
             };
 
         }
-
-        public void ChangeToWorkspace(QWorkSpace workspace)
+        public void ChangeToControl()
         {
             items.Clear();
             items.Add(new MenuPageItem
             {
                 Title = "Disconnect",
-                Icon = "\uE803",
+                Icon = QIcon.CANCEL,
                 Command = "disconnect"
             });
+        }
+        public void ChangeToWorkspace(QWorkSpace workspace)
+        {
+            ChangeToControl();
             foreach (var cueList in workspace.data)
             {
                 items.Add(new MenuPageItem
@@ -90,7 +94,6 @@ namespace qController
                 foreach (var cue in cueList.cues)
                 {
                     AddSubCues(cue, 0);
-
                 }
             }
         }
@@ -122,10 +125,10 @@ namespace qController
                 });
 
                 //uncomment to load nested group cues
-                /*foreach (var sub_cue in cue.cues)
+                foreach (var sub_cue in cue.cues)
                 {
                     AddSubCues(sub_cue,level + 1);
-                }*/
+                }
             }
             else
             {

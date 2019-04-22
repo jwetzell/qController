@@ -66,14 +66,14 @@ namespace qController
             };
 
             number = new Label { 
-                Text = "N/A",
+                Text = "",
                 FontAttributes = FontAttributes.Bold,
                 FontSize = 30,
                 Margin = new Thickness(5)
             };
 
             name = new Label { 
-                Text = "N/A",
+                Text = "Loading Workspace....",
                 FontAttributes = FontAttributes.Bold,
                 HorizontalTextAlignment = TextAlignment.Center,
                 FontSize = 20,
@@ -81,7 +81,7 @@ namespace qController
             };
 
             type = new Label { 
-                Text = "", 
+                Text = QIcon.SPIN3, 
                 FontFamily = App.QFont,
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.End,
@@ -89,14 +89,14 @@ namespace qController
                 FontSize = 27
             };
 
-            notes = new Label { Text = "Viewing Notes Currently Unavailable" };
+            notes = new Label { Text = "Loading Cue Lists and Playhead Position" };
             notes.HorizontalTextAlignment = TextAlignment.Center;
             notes.Margin = new Thickness(0, 0, 0, 10);
 
             topGrid.Children.Add(number, 0, 0);
             topGrid.Children.Add(type, 4, 0);
-            Grid.SetColumnSpan(number, 2);
-            Grid.SetColumnSpan(type, 3);
+            Grid.SetColumnSpan(number, 3);
+            Grid.SetColumnSpan(type, 1);
 
             bottomGrid.Children.Add(name, 0, 0);
             bottomGrid.Children.Add(notes, 0, 1);

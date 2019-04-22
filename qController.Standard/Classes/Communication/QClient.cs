@@ -14,6 +14,11 @@ namespace qController
 
         string Address;
         int Port;
+
+
+        public delegate void WorkspaceDisconnectHandler(object source, EventArgs args);
+        public event WorkspaceDisconnectHandler WorkspaceDisconnect;
+
         public QClient(string address, int port)
         {
             Address = address;
@@ -26,7 +31,6 @@ namespace qController
             tcpSender.MessageReceived += OnMessageReceived;
             qReceiver.UpdateMessageReceived += OnMessageReceived;
 
-            
         }
 
         private void OnMessageReceived(object source, MessageEventArgs args)
@@ -73,7 +77,7 @@ namespace qController
         {
             if (msg.Address.Contains("disconnect"))
             {
-                Console.WriteLine("Workspace is disonnecting");
+                OnWorkspaceDisconnect();
             }
             else if (msg.Address.Contains("cue_id"))
             {
@@ -87,32 +91,37 @@ namespace qController
                     qParser.ParseMessage(msg);
                     UpdateSelectedCue();
                 }
-
             }
             else if (msg.Address.Contains("workspace"))
-            {
+            { 
                 UpdateWorkspace("not yet implemented");
             }
         }
 
         public void UpdateSpecificCue(string cue_id)
         {
-            Console.WriteLine("Updating specific cue: " + cue_id);
-            string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\",\"notes\"]";
+
+            string valuesForKeys = "[\"number\",\"uniqueID\",\"flagged\",\"listName\",\"type\",\"colorName\",\"name\",\"armed\",\"displayName\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"notes\",\"levels\"]";
+
             string address = "/cue_id/" + cue_id + "/valuesForKeys";
             sendAndReceiveStringArgs(address, valuesForKeys);
         }
 
         public void UpdateSelectedCue()
         {
-            Console.WriteLine("Updating selected cue");
-            string valuesForKeys = "[\"displayName\",\"number\",\"type\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"uniqueID\",\"flagged\",\"listName\",\"colorName\",\"name\",\"armed\",\"notes\"]";
+            string valuesForKeys = "[\"number\",\"uniqueID\",\"flagged\",\"listName\",\"type\",\"colorName\",\"name\",\"armed\",\"displayName\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"notes\",\"levels\"]"; 
             sendAndReceiveStringArgs("/cue/selected/valuesForKeys", valuesForKeys);
         }
 
         public void UpdateWorkspace(string ws_id)
         {
             Console.WriteLine("Workspace needs to be updated: " + ws_id);
+        }
+
+        protected virtual void OnWorkspaceDisconnect()
+        {
+            if (WorkspaceDisconnect != null)
+                WorkspaceDisconnect(this, new EventArgs());
         }
 
         public void Close()
