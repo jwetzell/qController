@@ -70,6 +70,8 @@ namespace qController
         public delegate void PlaybackPositionUpdatedHandler(object source, PlaybackPositionArgs args);
         public delegate void ConnectionStatusHandler(object source, ConnectEventArgs args);
         public delegate void ChildrenUpdateHandler(object source, ChildrenEventArgs args);
+        public delegate void WorkspaceDisconnectHandler(object source, EventArgs args);
+        public event WorkspaceDisconnectHandler WorkspaceDisconnect;
         public event ChildrenUpdateHandler ChildrenUpdated;
         public event ConnectionStatusHandler ConnectionStatusChanged;
         public event SelectedCueUpdatedHandler SelectedCueUpdated;
@@ -96,6 +98,10 @@ namespace qController
                     ParseConnectInfo(msg);
                 else if (msg.Address.Contains("children"))
                     ParseChildrenInfo(msg);
+                else if (msg.Address.Contains("workspaces"))
+                    ParseInstanceInfo(msg);
+                else if (msg.Address.Contains("disconnect"))
+                    OnWorkspaceDisconnect();
                 else
                 {
                     Console.WriteLine("Unknown message type");
@@ -125,7 +131,6 @@ namespace qController
         public void ParseCueUpdateInfo(OscMessage msg)
         {
             JToken cueUpdate = OSC2JSON(msg);
-            Console.WriteLine(OSC2JSON(msg).ToString());
             QCue cue = JsonConvert.DeserializeObject<QCue>(cueUpdate.ToString());
             OnCueInfoUpdated(cue);
         }
@@ -136,8 +141,15 @@ namespace qController
             OnSelectedCueUpdated(cue);
         }
 
+        public void ParseInstanceInfo(OscMessage msg)
+        {
+            //Console.WriteLine(OSC2JSON(msg));
+            return;
+        }
+
         public void ParseNoteInfo(OscMessage msg){
             //JToken cueInfo = OSC2JSON(msg);
+            return;
         }
 
         public void ParseWorkspaceInfo(OscMessage msg)
@@ -196,6 +208,11 @@ namespace qController
         {
             if (ChildrenUpdated != null)
                 ChildrenUpdated(this, new ChildrenEventArgs() { cue_id = id, children = cues });
+        }
+        protected virtual void OnWorkspaceDisconnect()
+        {
+            if (WorkspaceDisconnect != null)
+                WorkspaceDisconnect(this, new EventArgs());
         }
 
     }

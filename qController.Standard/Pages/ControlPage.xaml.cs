@@ -84,7 +84,8 @@ namespace qController
                     new ColumnDefinition{Width = new GridLength(1,GridUnitType.Star)},
                     new ColumnDefinition{Width = new GridLength(1,GridUnitType.Star)}
                 },
-                Margin = new Thickness(10)
+                Margin = new Thickness(10),
+                IsVisible = false
             };
 
 
@@ -143,10 +144,21 @@ namespace qController
         {
             if(e.UpdatedWorkspace.data.Count > 0)
             {
-
                 App.rootPage.MenuPage.ChangeToWorkspace(e.UpdatedWorkspace);
                 qController.qWorkspace = e.UpdatedWorkspace;
-                //qController.RefreshGroupCues();
+                qController.qWorkspace.CheckPopulated();
+                if (qController.qWorkspace.IsPopulated)
+                {
+                    if (qCell.activeCue == null)
+                    {
+                        QCue noSelect = new QCue();
+                        noSelect.listName = "No Cue Selected";
+                        noSelect.type = "";
+                        noSelect.notes = "Workspace has loaded but no cue is selected";
+                        noSelect.number = "!";
+                        qCell.UpdateSelectedCue(noSelect);
+                    }
+                }
                 Console.WriteLine("Workspace updated in ControlPage: " + qController.qWorkspace.workspace_id);
             }
         }
@@ -182,6 +194,8 @@ namespace qController
                     else
                         sLayout.Children.Remove(qSelectedCueOptions);
                     qCell.UpdateSelectedCue(args.Cue);
+                    if (!mainG.IsVisible)
+                        mainG.IsVisible = true;
                 });
             }
         }
@@ -190,15 +204,13 @@ namespace qController
         {
             Console.WriteLine("Children Updated in ControlPage: " + args.cue_id);
             qController.qWorkspace.UpdateChildren(args.cue_id, args.children);
-            if (qController.qWorkspace.ChildrenPopulated())
+            if (qController.qWorkspace.IsPopulated)
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     if (App.MenuIsPresented)
                     {
-                        //App.MenuIsPresented = false;
                         App.rootPage.MenuPage.ChangeToWorkspace(qController.qWorkspace);
-                        //App.MenuIsPresented = true;
                     }
                     else
                     {
@@ -207,6 +219,7 @@ namespace qController
                     }
                 });
                 qController.qClient.UpdateSelectedCue();
+                App.showToast("Workspace cues loaded...");
             }
         }
 

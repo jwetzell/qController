@@ -47,7 +47,7 @@ namespace qController
         private void OnChildrenUpdated(object source, ChildrenEventArgs args)
         {
             qController.qWorkspace.UpdateChildren(args.cue_id, args.children);
-
+            Console.WriteLine("Populated: " + qController.qWorkspace.IsPopulated);
             if (!qController.qWorkspace.IsPopulated)
             {
                 QCue cue = qController.qWorkspace.GetEmptyGroup();
@@ -56,13 +56,20 @@ namespace qController
                     qController.qClient.sendStringUDP("/cue_id/" + cue.uniqueID + "/children");
                 }
             }
+            else
+            {
+                qController.qClient.UpdateSelectedCue();
+            }
         }
 
         public void OnWorkspaceUpdated(object source, WorkspaceEventArgs args)
         {
             qController.qWorkspace = args.UpdatedWorkspace;
             qController.playbackPosition = null;
-            qController.qClient.UpdateSelectedCue();
+            qController.qWorkspace.CheckPopulated();
+            RefreshGroupCues();
+            //qController.qClient.UpdateSelectedCue();
+            
         }
 
         public void OnPlaybackPositionUpdated(object source, PlaybackPositionArgs args)
@@ -72,8 +79,14 @@ namespace qController
 
         public void RefreshGroupCues()
         {
-            if (qController.qWorkspace.ChildrenPopulated())
+            if (qController.qWorkspace.IsPopulated)
+            {
+                Console.WriteLine("Workspace group cues are already populated");
+                App.showToast("Workspace cues have been loaded....");
+                qController.qClient.UpdateSelectedCue();
                 return;
+            }
+            Console.WriteLine("Workspace group cues are not populated");
             foreach (var cueList in qController.qWorkspace.data)
             {
                 foreach (var cue in cueList.cues)

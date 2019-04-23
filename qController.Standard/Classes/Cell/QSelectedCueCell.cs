@@ -9,6 +9,7 @@ namespace qController
         Label number;
         Label type;
         Label notes;
+        public QCue activeCue;
         public QSelectedCueCell()
         {
             Padding = new Thickness(5);
@@ -115,6 +116,7 @@ namespace qController
 
         public void UpdateSelectedCue(QCue cue)
         {
+            activeCue = cue;
             name.Text = cue.listName;
             number.Text = cue.number;
             type.Text = cue.getIconString();

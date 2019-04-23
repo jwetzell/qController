@@ -16,8 +16,7 @@ namespace qController
         int Port;
 
 
-        public delegate void WorkspaceDisconnectHandler(object source, EventArgs args);
-        public event WorkspaceDisconnectHandler WorkspaceDisconnect;
+
 
         public QClient(string address, int port)
         {
@@ -77,7 +76,7 @@ namespace qController
         {
             if (msg.Address.Contains("disconnect"))
             {
-                OnWorkspaceDisconnect();
+                qParser.ParseMessage(msg);
             }
             else if (msg.Address.Contains("cue_id"))
             {
@@ -118,11 +117,6 @@ namespace qController
             Console.WriteLine("Workspace needs to be updated: " + ws_id);
         }
 
-        protected virtual void OnWorkspaceDisconnect()
-        {
-            if (WorkspaceDisconnect != null)
-                WorkspaceDisconnect(this, new EventArgs());
-        }
 
         public void Close()
         {

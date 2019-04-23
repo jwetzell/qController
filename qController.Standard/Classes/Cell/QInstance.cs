@@ -2,6 +2,8 @@
 using System.Net;
 using System.Net.NetworkInformation;
 using Xamarin.Forms;
+using SharpOSC;
+using System.Threading;
 
 namespace qController
 {

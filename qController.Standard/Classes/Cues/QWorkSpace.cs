@@ -51,6 +51,7 @@ namespace qController
                         if(data[i].cues[j].type == "Group")
                         {
                             data[i].cues[j].cues = children;
+                            CheckPopulated();
                             return;
                         }
                     }
@@ -75,7 +76,7 @@ namespace qController
             return null;
         }
 
-        public bool ChildrenPopulated()
+        public bool CheckPopulated()
         {
             for (int i = 0; i < data.Count; i++)
             {

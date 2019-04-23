@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Acr.UserDialogs;
+using Xamarin.Forms;
 
 namespace qController
 {
@@ -62,6 +63,14 @@ namespace qController
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        public static void showToast(string message)
+        {
+            var toastConfig = new ToastConfig(message);
+            toastConfig.SetDuration(3000);
+            toastConfig.SetPosition(ToastPosition.Bottom);
+            UserDialogs.Instance.Toast(toastConfig);
         }
     }
 }

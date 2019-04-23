@@ -5,6 +5,7 @@ using Acr.UserDialogs;
 using Acr.Settings;
 using Zeroconf;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace qController
 {
@@ -37,7 +38,6 @@ namespace qController
         {
             NavigationPage.SetHasNavigationBar(this, false);
             lstView.ItemsSource = QStorage.qInstances;
-
 
             lstView.ItemTemplate = new DataTemplate(typeof(QInstanceCell));
             lstView.SeparatorVisibility = SeparatorVisibility.None;
@@ -98,7 +98,7 @@ namespace qController
                             if (!qName.Ok)
                                 return;
                             QStorage.AddInstance(qName.Text,qAddress.Text);
-                            showToast("Manual Workspace Added!");
+                            App.showToast("Manual Workspace Added!");
                         }
 
                     });
@@ -109,7 +109,7 @@ namespace qController
 
         async void Scan(){
             bool workspacesFound = false;
-            showToast("Scanning for Workspaces...");
+            App.showToast("Scanning for Workspaces...");
             Console.WriteLine("Begin Scanning");
 
             IReadOnlyList<IZeroconfHost> results = await ZeroconfResolver.ResolveAsync("_qlab._udp.local.",TimeSpan.FromSeconds(3));
@@ -118,7 +118,8 @@ namespace qController
                 {
                     if (result != null)
                     {
-                        QStorage.AddInstance(result.DisplayName, result.IPAddress);
+                        QInstance instance = new QInstance(result.DisplayName, result.IPAddress);
+                        QStorage.AddInstance(instance);
                         Console.WriteLine(result.DisplayName + " @ " + result.IPAddress + " added");
                         workspacesFound = true;
                     }
@@ -126,9 +127,9 @@ namespace qController
             }
 
             if(workspacesFound){
-                showToast("Workspace Found and Added!");
+                App.showToast("Workspace Found and Added!");
             }else{
-                showToast("No Workspaces Found!");
+                App.showToast("No Workspaces Found!");
             }
         }
 
