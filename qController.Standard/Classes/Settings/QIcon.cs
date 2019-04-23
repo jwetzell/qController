@@ -33,7 +33,7 @@ namespace qController
 
         public const string MINUS_SQUARED = "\uF146";
 
-        public const string RIGHT = "\uF148";
+        public const string RIGHT = "\uF178";
 
         public const string DOT_CIRCLED = "\uF192";
 
