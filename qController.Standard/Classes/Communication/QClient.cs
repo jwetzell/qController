@@ -42,12 +42,26 @@ namespace qController
 
         public void sendString(string address)
         {
-            tcpSender.Send(new OscMessage(address));
+            try
+            {
+                tcpSender.Send(new OscMessage(address));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("SEND EXCEPTION: " + ex.Message);
+            }
         }
 
         public void sendArgs(string address, object args)
         {
-            tcpSender.Send(new OscMessage(address, args));
+            try
+            {
+                tcpSender.Send(new OscMessage(address, args));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("SEND ARGS EXCEPTION: " + ex.Message);
+            }
         }
         public void sendStringUDP(string address)
         {
@@ -64,11 +78,26 @@ namespace qController
         public void sendAndReceiveString(string address)
         {
             tcpSender.SendAndReceive(new OscMessage(address));
+            try
+            {
+                tcpSender.SendAndReceive(new OscMessage(address));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("SEND AND RECIEVE EXCEPTION: " + ex.Message);
+            }
         }
 
         public void sendAndReceiveStringArgs(string address, params object[] args)
         {
-            tcpSender.SendAndReceive(new OscMessage(address,args));
+            try
+            {
+                tcpSender.SendAndReceive(new OscMessage(address, args));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("SEND AND RECEIVE ARGS EXCEPTION: " + ex.Message);
+            }
         }
 
 

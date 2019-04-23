@@ -52,7 +52,6 @@ namespace SharpOSC
             byte[] slipData = SlipEncode(message);
             NetworkStream netStream = client.GetStream();
             netStream.Write(slipData.ToArray(), 0, slipData.ToArray().Length);
-            netStream.Close();
         }
 
         public async void Receive()
@@ -84,9 +83,8 @@ namespace SharpOSC
                 }
             } catch(Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine("RECEIVE EXCEPTION: " + e.ToString());
             }
-            netStream.Close();
             OnMessageReceived(response);
         }
 
