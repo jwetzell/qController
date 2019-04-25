@@ -9,7 +9,7 @@ namespace qController
     public class QController
     {
 
-        QUpdater qUpdater;
+        public QUpdater qUpdater;
         public QClient qClient;
         public QWorkSpace qWorkspace;
         public string playbackPosition;
@@ -19,14 +19,24 @@ namespace qController
             qClient = new QClient(address, port);
             qUpdater = new QUpdater(this);
             qUpdater.Start();
+            //Connect();
 
-            qClient.sendArgsUDP("/updates", 1);
-            qClient.sendAndReceiveString("/cueLists");
+            Connect();
+            KickOff();
+           
         }
 
         public void Connect()
         {
-            qClient.sendStringUDP("/connect");
+            Console.WriteLine("QCONTROLLER CONNECT CALLED");
+            //qClient.sendStringUDP("/connect");
+            qClient.sendArgsUDP("/updates", 1);
+            qClient.sendAndReceiveString("/cueLists");
+        }
+
+        public void KickOff()
+        {
+            qClient.sendArgsUDP("/workspaces");
         }
 
         public void Disconnect()

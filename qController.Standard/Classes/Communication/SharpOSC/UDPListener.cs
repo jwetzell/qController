@@ -151,7 +151,8 @@ namespace SharpOSC
 				{
 					byte[] bytes = queue.Dequeue();
 					var packet = OscPacket.GetPacket(bytes);
-					return packet;
+                    Console.WriteLine("Raw UDP In: " + System.Text.Encoding.ASCII.GetString(bytes));
+                    return packet;
 				}
 				else
 					return null;

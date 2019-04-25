@@ -77,7 +77,6 @@ namespace qController
         }
         public void sendAndReceiveString(string address)
         {
-            tcpSender.SendAndReceive(new OscMessage(address));
             try
             {
                 tcpSender.SendAndReceive(new OscMessage(address));
@@ -110,14 +109,14 @@ namespace qController
             else if (msg.Address.Contains("cue_id"))
             {
                 var updateID = msg.Address.Split('/').Last();
-                UpdateSpecificCue(updateID);
+                //UpdateSpecificCue(updateID);
             }
             else if (msg.Address.Contains("playbackPosition"))
             {
                 if (msg.Arguments.Count > 0)
                 {
                     qParser.ParseMessage(msg);
-                    UpdateSelectedCue();
+                    //UpdateSelectedCue();
                 }
             }
             else if (msg.Address.Contains("workspace"))
@@ -128,9 +127,7 @@ namespace qController
 
         public void UpdateSpecificCue(string cue_id)
         {
-
             string valuesForKeys = "[\"number\",\"uniqueID\",\"flagged\",\"listName\",\"type\",\"colorName\",\"name\",\"armed\",\"displayName\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"notes\",\"levels\"]";
-
             string address = "/cue_id/" + cue_id + "/valuesForKeys";
             sendAndReceiveStringArgs(address, valuesForKeys);
         }

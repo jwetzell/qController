@@ -44,6 +44,15 @@ namespace qController
         }
     }
 
+    public class WorkspaceInfoArgs : EventArgs
+    {
+        public List<QInfo> WorkspaceInfo
+        {
+            get;
+            set;
+        }
+    }
+
     public class ChildrenEventArgs : EventArgs
     {
         public string cue_id
@@ -71,6 +80,8 @@ namespace qController
         public delegate void ConnectionStatusHandler(object source, ConnectEventArgs args);
         public delegate void ChildrenUpdateHandler(object source, ChildrenEventArgs args);
         public delegate void WorkspaceDisconnectHandler(object source, EventArgs args);
+        public delegate void WorkspaceInfoHandler(object source, WorkspaceInfoArgs args);
+        public event WorkspaceInfoHandler WorkspaceInfoReceived;
         public event WorkspaceDisconnectHandler WorkspaceDisconnect;
         public event ChildrenUpdateHandler ChildrenUpdated;
         public event ConnectionStatusHandler ConnectionStatusChanged;
@@ -86,22 +97,20 @@ namespace qController
                 {
                     ParseCueUpdateInfo(msg);
                 }
-                else if (msg.Address.Contains("notes"))
-                    ParseNoteInfo(msg);
                 else if (msg.Address.Contains("cueLists"))
                     ParseWorkspaceInfo(msg);
                 else if (msg.Address.Contains("playbackPosition"))
                     ParsePositionUpdateInfo(msg);
                 else if (msg.Address.Contains("thump"))
                     Console.WriteLine("Heartbeat Received");
+                else if (msg.Address.Contains("disconnect"))
+                    OnWorkspaceDisconnect();
                 else if (msg.Address.Contains("connect"))
                     ParseConnectInfo(msg);
                 else if (msg.Address.Contains("children"))
                     ParseChildrenInfo(msg);
                 else if (msg.Address.Contains("workspaces"))
-                    ParseInstanceInfo(msg);
-                else if (msg.Address.Contains("disconnect"))
-                    OnWorkspaceDisconnect();
+                    ParseQInfo(msg);
                 else
                 {
                     Console.WriteLine("Unknown message type");
@@ -116,8 +125,11 @@ namespace qController
         
         public void ParseConnectInfo(OscMessage msg)
         {
-            JToken connectStatus = OSC2JSON(msg);
-            OnConnectionStatusChanged(connectStatus.ToString());
+            if (msg.Arguments.Count > 0)
+            {
+                JToken connectStatus = OSC2JSON(msg);
+                OnConnectionStatusChanged(connectStatus.ToString());
+            }
         }
 
         public void ParsePositionUpdateInfo(OscMessage msg)
@@ -141,15 +153,11 @@ namespace qController
             OnSelectedCueUpdated(cue);
         }
 
-        public void ParseInstanceInfo(OscMessage msg)
+        public void ParseQInfo(OscMessage msg)
         {
-            //Console.WriteLine(OSC2JSON(msg));
-            return;
-        }
-
-        public void ParseNoteInfo(OscMessage msg){
-            //JToken cueInfo = OSC2JSON(msg);
-            return;
+            JToken qInfo = OSC2JSON(msg);
+            List<QInfo> qWorkspaceInfo = JsonConvert.DeserializeObject<List<QInfo>>(qInfo.ToString());
+            OnWorkspaceInfoReceived(qWorkspaceInfo);
         }
 
         public void ParseWorkspaceInfo(OscMessage msg)
@@ -213,6 +221,11 @@ namespace qController
         {
             if (WorkspaceDisconnect != null)
                 WorkspaceDisconnect(this, new EventArgs());
+        }
+        protected virtual void OnWorkspaceInfoReceived(List<QInfo> workspaces)
+        {
+            if (WorkspaceInfoReceived != null)
+                WorkspaceInfoReceived(this, new WorkspaceInfoArgs() { WorkspaceInfo = workspaces });
         }
 
     }

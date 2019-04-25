@@ -67,18 +67,6 @@ namespace qController
             qController.qWorkspace = args.UpdatedWorkspace;
             qController.playbackPosition = null;
             qController.qWorkspace.CheckPopulated();
-            RefreshGroupCues();
-            //qController.qClient.UpdateSelectedCue();
-            
-        }
-
-        public void OnPlaybackPositionUpdated(object source, PlaybackPositionArgs args)
-        {
-            qController.playbackPosition = args.PlaybackPosition;
-        }
-
-        public void RefreshGroupCues()
-        {
             if (qController.qWorkspace.IsPopulated)
             {
                 Console.WriteLine("Workspace group cues are already populated");
@@ -86,6 +74,19 @@ namespace qController
                 qController.qClient.UpdateSelectedCue();
                 return;
             }
+            //RefreshGroupCues();
+            //qController.qClient.UpdateSelectedCue();
+
+        }
+
+        public void OnPlaybackPositionUpdated(object source, PlaybackPositionArgs args)
+        {
+            qController.playbackPosition = args.PlaybackPosition;
+            qController.qClient.UpdateSpecificCue(args.PlaybackPosition);
+        }
+
+        public void RefreshGroupCues()
+        {
             Console.WriteLine("Workspace group cues are not populated");
             foreach (var cueList in qController.qWorkspace.data)
             {

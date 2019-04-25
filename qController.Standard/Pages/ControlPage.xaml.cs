@@ -18,15 +18,31 @@ namespace qController
             InitializeComponent();
 
             qController = new QController(address, 53000);
+            qController.qClient.qParser.WorkspaceInfoReceived += WorkspaceInfoReceived;
             qController.qClient.qParser.WorkspaceUpdated += WorkspaceUpdated;
             qController.qClient.qParser.PlaybackPositionUpdated += PlaybackPositionUpdated;
             qController.qClient.qParser.CueInfoUpdated += OnCueUpdateReceived;
             qController.qClient.qParser.ChildrenUpdated += OnChildrenUpdated;
-            instanceName.Text = name;
             App.rootPage.MenuItemSelected += OnMenuItemSelected;
-            qController.Connect();
+
+            instanceName.Text = name;
+
             InitGUI();
-            
+
+
+        }
+
+        private void WorkspaceInfoReceived(object source, WorkspaceInfoArgs args)
+        {
+            if(args.WorkspaceInfo.Count > 1)
+            {
+                Console.WriteLine("MULTIPLE WORKSPACES ON SELECTED COMPUTER");
+            }
+            else
+            {
+                Console.WriteLine("ONLY ONE WORKSPACE ON SELECTED COMPUTER");
+                //qController.Connect();
+            }
         }
 
         private void InitGUI()
@@ -144,22 +160,25 @@ namespace qController
         {
             if(e.UpdatedWorkspace.data.Count > 0)
             {
-                App.rootPage.MenuPage.ChangeToWorkspace(e.UpdatedWorkspace);
                 qController.qWorkspace = e.UpdatedWorkspace;
                 qController.qWorkspace.CheckPopulated();
+
                 if (qController.qWorkspace.IsPopulated)
                 {
+                    App.rootPage.MenuPage.ChangeToWorkspace(e.UpdatedWorkspace);
                     if (qCell.activeCue == null)
                     {
-                        QCue noSelect = new QCue();
-                        noSelect.listName = "No Cue Selected";
-                        noSelect.type = "";
-                        noSelect.notes = "Workspace has loaded but no cue is selected";
-                        noSelect.number = "!";
-                        qCell.UpdateSelectedCue(noSelect);
+                        Device.BeginInvokeOnMainThread(() => {
+                            QCue noSelect = new QCue();
+                            noSelect.listName = "No Cue Selected";
+                            noSelect.type = "";
+                            noSelect.notes = "Workspace has loaded but no cue is selected";
+                            noSelect.number = "!";
+                            qCell.UpdateSelectedCue(noSelect);
+                        });
                     }
+                    Console.WriteLine("Workspace updated in ControlPage: " + qController.qWorkspace.workspace_id);
                 }
-                Console.WriteLine("Workspace updated in ControlPage: " + qController.qWorkspace.workspace_id);
             }
         }
 
@@ -183,12 +202,11 @@ namespace qController
         public void OnCueUpdateReceived(object sender, CueEventArgs args)
         {
             qController.qWorkspace.UpdateCue(args.Cue);
-            Console.WriteLine("Cue updated in ControlPage: " + args.Cue.uniqueID);
             if (args.Cue.uniqueID == qController.playbackPosition)
             {
-                Console.WriteLine("Cue that was updated is equal to the playback position.");
                 Device.BeginInvokeOnMainThread(() =>
                 {
+                    Console.WriteLine("Refreshing Currently Displayed Cue");
                     if (args.Cue.levels != null)
                         sLayout.Children.Add(qSelectedCueOptions);
                     else

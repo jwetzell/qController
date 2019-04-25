@@ -33,6 +33,7 @@ namespace qController
                 {
                     if(data[i].cues[j].uniqueID == cue.uniqueID)
                     {
+                        //Console.WriteLine("Cue found and updated in workspace: " + cue.uniqueID);
                         data[i].cues[j] = cue;
                         return;
                     }

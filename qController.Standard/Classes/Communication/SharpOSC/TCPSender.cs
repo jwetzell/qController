@@ -78,7 +78,7 @@ namespace SharpOSC
                         //Console.WriteLine(  "Thread " + num + ":  Bytes read: " + bytesRead + " - " + Encoding.ASCII.GetString(buffer));
                     } while (netStream.DataAvailable);
 
-                    //Console.WriteLine("Raw TCP In: " + System.Text.Encoding.ASCII.GetString(responseData.ToArray()));
+                    Console.WriteLine("Raw TCP In: " + System.Text.Encoding.ASCII.GetString(responseData.ToArray()));
                     response = (OscMessage)OscPacket.GetPacket(responseData.Skip(1).ToArray());
                 }
             } catch(Exception e)
@@ -90,6 +90,7 @@ namespace SharpOSC
 
         public void SendAndReceive(byte[] message)
         {
+
             client = new TcpClient(Address, Port);
             byte[] slipData = SlipEncode(message);
             NetworkStream netStream = client.GetStream();
@@ -99,6 +100,8 @@ namespace SharpOSC
 
         public void SendAndReceive(OscPacket packet)
         {
+            OscMessage msg = (OscMessage)packet;
+            Console.WriteLine("TCP Message Sent: " + msg.Address);
             byte[] data = packet.GetBytes();
             SendAndReceive(data);
         }
