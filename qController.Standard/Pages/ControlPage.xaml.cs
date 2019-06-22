@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using System.Collections;
-
+using Acr.UserDialogs;
 namespace qController
 {
     public partial class ControlPage : ContentPage
@@ -29,7 +29,7 @@ namespace qController
 
             InitGUI();
 
-
+            qController.KickOff();
         }
 
         private void WorkspaceInfoReceived(object source, WorkspaceInfoArgs args)
@@ -37,17 +37,41 @@ namespace qController
             if(args.WorkspaceInfo.Count > 1)
             {
                 Console.WriteLine("MULTIPLE WORKSPACES ON SELECTED COMPUTER");
+                PromptForWorkspace(args.WorkspaceInfo);
             }
             else
             {
                 Console.WriteLine("ONLY ONE WORKSPACE ON SELECTED COMPUTER");
-                //qController.Connect();
+                qController.Connect(args.WorkspaceInfo[0].uniqueID);
+
+                Device.BeginInvokeOnMainThread(() => {
+                    FinishUI();
+                });
             }
+        }
+
+        private void PromptForWorkspace(List<QInfo> workspaces)
+        {
+            ActionSheetConfig config = new ActionSheetConfig();
+            config.SetTitle("Select Workspace");
+            for (int i = 0; i < workspaces.Count; i++)
+            {
+                QInfo workspace = workspaces[i];
+                config.Add(workspace.displayName, new Action(() => { 
+                    Console.WriteLine("Workspace Selected: " + workspace.displayName);
+                    qController.Connect(workspace.uniqueID);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        FinishUI();
+                    });
+                }));
+            }
+            UserDialogs.Instance.ActionSheet(config);
         }
 
         private void InitGUI()
         {
-
+            App.rootPage.MenuPage.ChangeToControl();
             NavigationPage.SetHasNavigationBar(this, false);
             instanceName.HorizontalTextAlignment = TextAlignment.Center;
             instanceName.HorizontalOptions = LayoutOptions.CenterAndExpand;
@@ -65,16 +89,6 @@ namespace qController
                     break;
 
             }
-
-            List<QButton> buttons = new List<QButton>();
-
-            buttons.Add(new QButton("Previous", "/select/previous"));
-            buttons.Add(new QButton("Panic", "/panic"));
-            buttons.Add(new QButton("Next", "/select/next"));
-            buttons.Add(new QButton("Preview", "/preview"));
-            buttons.Add(new QButton("Pause", "/pause"));
-            buttons.Add(new QButton("Resume", "/resume"));
-
             var menuButtonGesture = new TapGestureRecognizer();
 
             menuButtonGesture.Tapped += ShowMenu;
@@ -82,9 +96,37 @@ namespace qController
 
 
             qCell = new QSelectedCueCell();
-            qSelectedCueOptions = new QSelectedCueOptionsCell(qController);
-
             sLayout.Children.Add(qCell);
+        }
+
+        void FinishUI()
+        {
+            string workspace_prefix = "/workspace/" + qController.qWorkspace.workspace_id;
+            List <QButton> buttons = new List<QButton>();
+
+            buttons.Add(new QButton("Previous", workspace_prefix + "/select/previous"));
+            buttons.Add(new QButton("Panic", workspace_prefix + "/panic"));
+            buttons.Add(new QButton("Next", workspace_prefix + "/select/next"));
+            buttons.Add(new QButton("Preview", "/preview"));
+            buttons.Add(new QButton("Pause", "/pause"));
+            buttons.Add(new QButton("Resume", "/resume"));
+
+
+            qSelectedCueOptions = new QSelectedCueOptionsCell();
+
+            qSelectedCueOptions.mainSlider.ValueChanged += (sender, args) =>
+            {
+                qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qSelectedCueOptions.activeCue + "/sliderLevel/0", (float)args.NewValue);
+            };
+            qSelectedCueOptions.leftSlider.ValueChanged += (sender, args) =>
+            {
+                qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qSelectedCueOptions.activeCue + "/sliderLevel/1", (float)args.NewValue);
+            };
+            qSelectedCueOptions.rightSlider.ValueChanged += (sender, args) =>
+            {
+                qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qSelectedCueOptions.activeCue + "/sliderLevel/2", (float)args.NewValue);
+            };
+
 
 
             mainG = new Grid
@@ -110,7 +152,7 @@ namespace qController
             foreach (var b in buttons)
             {
                 b.Clicked += sendOSC;
-                if(b.Text=="Panic")
+                if (b.Text == "Panic")
                 {
                     b.BackgroundColor = Color.IndianRed;
                 }
@@ -119,23 +161,23 @@ namespace qController
                     b.BackgroundColor = Color.FromHex("D8D8D8");
                 }
                 b.TextColor = Color.Black;
-                mainG.Children.Add(b,column,row);
+                mainG.Children.Add(b, column, row);
                 row++;
-                if(row == 3){
+                if (row == 3)
+                {
                     row = 0;
                     column = 2;
                 }
             }
 
-            QButton goButton = new QButton("GO","/go");
+            QButton goButton = new QButton("GO", workspace_prefix+"/go");
             goButton.Clicked += sendOSC;
             goButton.BackgroundColor = Color.SeaGreen;
             goButton.TextColor = Color.Black;
-            mainG.Children.Add(goButton,1,0);
-            Grid.SetRowSpan(goButton,3);
+            mainG.Children.Add(goButton, 1, 0);
+            Grid.SetRowSpan(goButton, 3);
 
             sLayout.Children.Add(mainG);
-
         }
 
         void sendOSC(object sender, EventArgs e)
@@ -176,6 +218,7 @@ namespace qController
                             noSelect.number = "!";
                             qCell.UpdateSelectedCue(noSelect);
                         });
+                        qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
                     }
                     Console.WriteLine("Workspace updated in ControlPage: " + qController.qWorkspace.workspace_id);
                 }
@@ -214,6 +257,14 @@ namespace qController
                     qCell.UpdateSelectedCue(args.Cue);
                     if (!mainG.IsVisible)
                         mainG.IsVisible = true;
+                    if(qSelectedCueOptions != null)
+                    {
+                        qSelectedCueOptions.activeCue = args.Cue.uniqueID;
+                        if (args.Cue.levels != null)
+                        {
+                            qSelectedCueOptions.UpdateLevels(args.Cue.levels[0]);
+                        }
+                    }
                 });
             }
         }
@@ -236,7 +287,7 @@ namespace qController
 
                     }
                 });
-                qController.qClient.UpdateSelectedCue();
+                qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
                 App.showToast("Workspace cues loaded...");
             }
         }

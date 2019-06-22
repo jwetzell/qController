@@ -20,18 +20,19 @@ namespace qController
             qUpdater = new QUpdater(this);
             qUpdater.Start();
             //Connect();
-
-            Connect();
-            KickOff();
+            //Connect();
+            //KickOff();
            
         }
 
-        public void Connect()
+        public void Connect(string workspace_id)
         {
-            Console.WriteLine("QCONTROLLER CONNECT CALLED");
+            Console.WriteLine("QCONTROLLER CONNECT CALLED: " + workspace_id);
+            qWorkspace = new QWorkSpace();
+            qWorkspace.workspace_id = workspace_id;
             //qClient.sendStringUDP("/connect");
-            qClient.sendArgsUDP("/updates", 1);
-            qClient.sendAndReceiveString("/cueLists");
+            qClient.sendArgsUDP("/workspace/"+workspace_id+"/updates", 1);
+            qClient.sendAndReceiveString("/workspace/"+workspace_id+"/cueLists");
         }
 
         public void KickOff()

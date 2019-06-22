@@ -58,7 +58,7 @@ namespace qController
             }
             else
             {
-                qController.qClient.UpdateSelectedCue();
+                qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
             }
         }
 
@@ -71,7 +71,7 @@ namespace qController
             {
                 Console.WriteLine("Workspace group cues are already populated");
                 App.showToast("Workspace cues have been loaded....");
-                qController.qClient.UpdateSelectedCue();
+                qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
                 return;
             }
             //RefreshGroupCues();
@@ -82,7 +82,7 @@ namespace qController
         public void OnPlaybackPositionUpdated(object source, PlaybackPositionArgs args)
         {
             qController.playbackPosition = args.PlaybackPosition;
-            qController.qClient.UpdateSpecificCue(args.PlaybackPosition);
+            qController.qClient.UpdateSpecificCue(qController.qWorkspace.workspace_id,args.PlaybackPosition);
         }
 
         public void RefreshGroupCues()
@@ -95,7 +95,7 @@ namespace qController
                     if (cue.type == "Group")
                     {
                         Console.WriteLine("First Group Cue Found");
-                        qController.qClient.sendStringUDP("/cue_id/" + cue.uniqueID + "/children");
+                        qController.qClient.sendStringUDP("/workspace/" + qController.qWorkspace.workspace_id + "/cue_id/" + cue.uniqueID + "/children");
                         break;
                     }
                 }
@@ -104,7 +104,7 @@ namespace qController
 
         public void SendThump()
         {
-            qController.qClient.sendStringUDP("/thump");
+            qController.qClient.sendStringUDP("/workspace/" + qController.qWorkspace.workspace_id + "/thump");
         }
 
         public void Kill(){

@@ -105,7 +105,6 @@ namespace qController
 
             void Connect(object sender, EventArgs e)
             {
-                App.rootPage.MenuPage.ChangeToControl();
                 App.NavigationPage.Navigation.PushAsync(new ControlPage(nameLabel.Text,addressLabel.Text));
 
                 Console.WriteLine("Connect To " + nameLabel.Text + " Pressed");

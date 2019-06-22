@@ -82,19 +82,21 @@ namespace qController
         }
         public void ChangeToWorkspace(QWorkSpace workspace)
         {
-            ChangeToControl();
-            foreach (var cueList in workspace.data)
+            for(int i = 0; i < workspace.data.Count; i++)
             {
+                var cueList = workspace.data[i];
                 items.Add(new MenuPageItem
                 {
                     Title = cueList.listName,
                     Icon = "",
                     Command = ""
                 });
-                foreach (var cue in cueList.cues)
+                for (int j = 0; j < cueList.cues.Count; j++)
                 {
+                    var cue = cueList.cues[j];
                     AddSubCues(cue, 0);
                 }
+
             }
         }
 
@@ -125,9 +127,10 @@ namespace qController
                 });
 
                 //uncomment to load nested group cues
-                foreach (var sub_cue in cue.cues)
+                for (int i = 0; i < cue.cues.Count; i++)
                 {
-                    AddSubCues(sub_cue,level + 1);
+                    var sub_cue = cue.cues[i];
+                    AddSubCues(sub_cue, level + 1);
                 }
             }
             else

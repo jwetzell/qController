@@ -7,37 +7,17 @@ namespace qController
 {
     public class QSelectedCueOptionsCell : Frame
     {
-        void OnCueInfoUpdated(object source, CueEventArgs args)
-        {
-            Device.BeginInvokeOnMainThread(() => {
-                activeCue = args.Cue.uniqueID;
-                if(args.Cue.levels != null)
-                {
-                    levels = args.Cue.levels[0];
-                    if (mainSlider != null)
-                    {
-                        mainSlider.Value = levels[0];
-                    }
-                    if (leftSlider != null)
-                    {
-                        leftSlider.Value = levels[1];
-                    }
-                    if (rightSlider != null)
-                    {
-                        rightSlider.Value = levels[2];
-                    }
-                }
-            });
-        }
 
-        List<double> levels;
-        string activeCue;
-        Slider mainSlider;
-        Slider leftSlider;
-        Slider rightSlider;
-        public QSelectedCueOptionsCell(QController qController)
+        public List<double> levels;
+        public string activeCue;
+        public Slider mainSlider;
+        public Slider leftSlider;
+        public Slider rightSlider;
+        public Label mainLabel;
+        public Label rightLabel;
+        public Label leftLabel;
+        public QSelectedCueOptionsCell()
         {
-            qController.qClient.qParser.CueInfoUpdated += OnCueInfoUpdated;
             Padding = new Thickness(5);
             CornerRadius = 20;
             BackgroundColor = Color.FromHex("D8D8D8");
@@ -63,30 +43,21 @@ namespace qController
                 Minimum = -60,
                 Maximum = 12
             };
-            mainSlider.ValueChanged += (sender, args) =>
-            {
-                qController.qClient.sendArgs("/cue_id/" + activeCue + "/sliderLevel/0", (float)args.NewValue);
-            };
+
 
             leftSlider = new Slider
             {
                 Minimum = -60,
                 Maximum = 12
             };
-            leftSlider.ValueChanged += (sender, args) =>
-            {
-                qController.qClient.sendArgs("/cue_id/" + activeCue + "/sliderLevel/1", (float)args.NewValue);
-            };
+
 
             rightSlider = new Slider
             {
                 Minimum = -60,
                 Maximum = 12
             };
-            rightSlider.ValueChanged += (sender, args) =>
-            {
-                qController.qClient.sendArgs("/cue_id/" + activeCue + "/sliderLevel/2", (float)args.NewValue);
-            };
+
             mainG.Children.Add(mainSlider, 1, 0);
             mainG.Children.Add(leftSlider, 1, 1);
             mainG.Children.Add(rightSlider, 1, 2);
@@ -94,21 +65,20 @@ namespace qController
             Grid.SetColumnSpan(mainSlider, 4);
             Grid.SetColumnSpan(leftSlider, 4);
             Grid.SetColumnSpan(rightSlider, 4);
-
-            Label mainLabel = new Label { 
+            mainLabel = new Label { 
                 Text = "MAIN:",
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center
             };
 
-            Label leftLabel = new Label
+            leftLabel = new Label
             {
                 Text = "LEFT:",
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center
             };
 
-            Label rightLabel = new Label
+            rightLabel = new Label
             {
                 Text = "RIGHT:",
                 VerticalTextAlignment = TextAlignment.Center,
@@ -121,6 +91,23 @@ namespace qController
 
             Content = mainG;
             Margin = new Thickness(10);
+        }
+
+        public void UpdateLevels(List<double> lin_levels)
+        {
+            levels = lin_levels;
+            if (mainSlider != null)
+            {
+                mainSlider.Value = levels[0];
+            }
+            if (leftSlider != null)
+            {
+                leftSlider.Value = levels[1];
+            }
+            if (rightSlider != null)
+            {
+                rightSlider.Value = levels[2];
+            }
         }
     }
 }

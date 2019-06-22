@@ -125,17 +125,18 @@ namespace qController
             }
         }
 
-        public void UpdateSpecificCue(string cue_id)
+        public void UpdateSpecificCue(string workspace_id,string cue_id)
         {
             string valuesForKeys = "[\"number\",\"uniqueID\",\"flagged\",\"listName\",\"type\",\"colorName\",\"name\",\"armed\",\"displayName\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"notes\",\"levels\"]";
-            string address = "/cue_id/" + cue_id + "/valuesForKeys";
+            string address = "/workspace/" + workspace_id + "/cue_id/" + cue_id + "/valuesForKeys";
             sendAndReceiveStringArgs(address, valuesForKeys);
         }
 
-        public void UpdateSelectedCue()
+        public void UpdateSelectedCue(string workspace_id)
         {
-            string valuesForKeys = "[\"number\",\"uniqueID\",\"flagged\",\"listName\",\"type\",\"colorName\",\"name\",\"armed\",\"displayName\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"notes\",\"levels\"]"; 
-            sendAndReceiveStringArgs("/cue/selected/valuesForKeys", valuesForKeys);
+            string valuesForKeys = "[\"number\",\"uniqueID\",\"flagged\",\"listName\",\"type\",\"colorName\",\"name\",\"armed\",\"displayName\",\"isBroken\",\"isLoaded\",\"isPaused\",\"isRunning\",\"preWait\",\"duration\",\"postWait\",\"translationX\",\"translationY\",\"opacity\",\"scaleX\",\"scaleY\",\"notes\",\"levels\"]";
+            string address = "/workspace/" + workspace_id + "/cue/selected/valuesForKeys"; 
+            sendAndReceiveStringArgs(address, valuesForKeys);
         }
 
         public void UpdateWorkspace(string ws_id)

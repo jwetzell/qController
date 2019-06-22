@@ -45,9 +45,6 @@
     <Compile Remove="Pages\HomePage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="App.xaml.cs">
-      <DependentUpon>*.xaml</DependentUpon>
-    </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Pages\ControlPage.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
     </Compile>
