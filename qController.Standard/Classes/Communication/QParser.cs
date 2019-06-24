@@ -15,8 +15,6 @@ namespace qController
         }
     }
 
-
-
     public class WorkspaceEventArgs : EventArgs
     {
         public QWorkSpace UpdatedWorkspace
@@ -66,6 +64,7 @@ namespace qController
             set;
         }
     }
+
     public class QParser
     {
         public QParser()
