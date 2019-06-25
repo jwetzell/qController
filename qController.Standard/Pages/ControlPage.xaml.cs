@@ -73,11 +73,14 @@ namespace qController
         {
             App.rootPage.MenuPage.ChangeToControl();
             NavigationPage.SetHasNavigationBar(this, false);
+
             instanceName.HorizontalTextAlignment = TextAlignment.Center;
             instanceName.HorizontalOptions = LayoutOptions.CenterAndExpand;
             instanceName.VerticalOptions = LayoutOptions.CenterAndExpand;
             topBar.Children.Add(instanceName, 1, 0);
             topBar.BackgroundColor = Color.FromHex("71AEFF");
+            topBar.HeightRequest = Math.Max(App.Height * .09, 65);
+
 
             BackgroundColor = Color.FromHex("4A4A4A");
             menuButton.Text = QIcon.MENU;
@@ -96,6 +99,8 @@ namespace qController
 
 
             qCell = new QSelectedCueCell();
+            qCell.HeightRequest = Math.Max(App.Height * .20, 125);
+
             sLayout.Children.Add(qCell);
         }
 

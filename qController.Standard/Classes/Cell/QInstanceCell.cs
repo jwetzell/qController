@@ -26,8 +26,7 @@ namespace qController
             deleteLabel.GestureRecognizers.Add(deleteTapGesture);
 
             InitItems();
-           
-
+          
 
             //SET BINDINGS
             nameLabel.SetBinding(Label.TextProperty, new Binding("name"));
@@ -63,11 +62,11 @@ namespace qController
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Padding = 30,
                 Margin = new Thickness(10,10,10,10),
-                CornerRadius=20
+                CornerRadius=20,
             };
             f.BackgroundColor = Color.FromHex("D8D8D8");
             View = f;
-
+           
             void InitItems()
             {
                 nameLabel.HorizontalTextAlignment = TextAlignment.Center;

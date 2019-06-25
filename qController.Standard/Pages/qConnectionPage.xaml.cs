@@ -30,13 +30,14 @@ namespace qController
                 AddWorkspace();
             }else if(args.Command == "open_link")
             {
-                Device.OpenUri(new Uri("http://www.example.com"));
+                Device.OpenUri(new Uri("http://www.jwetzell.com"));
             }
         }
 
         private void InitGUI()
         {
             NavigationPage.SetHasNavigationBar(this, false);
+            topBar.HeightRequest = Math.Max(App.Height * .09, 65);
             lstView.ItemsSource = QStorage.qInstances;
 
             lstView.ItemTemplate = new DataTemplate(typeof(QInstanceCell));

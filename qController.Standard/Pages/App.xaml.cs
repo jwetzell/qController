@@ -1,6 +1,6 @@
 ﻿using Acr.UserDialogs;
 using Xamarin.Forms;
-
+using Xamarin.Essentials;
 namespace qController
 {
     public partial class App : Application
@@ -9,7 +9,9 @@ namespace qController
         public static NavigationPage NavigationPage { get; private set; }
         public static RootPage rootPage;
         public static string QFont;
-
+        public static DisplayInfo mainDisplayInfo;
+        public static double Height;
+        public static double Width;
         public static bool MenuIsPresented
         {
             get
@@ -29,6 +31,11 @@ namespace qController
             /*MainPage = new NavigationPage(new QConnectionPage());
             iNav = MainPage.Navigation;*/
 
+            mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
+            Height = mainDisplayInfo.Height / mainDisplayInfo.Density;
+            Width = mainDisplayInfo.Width / mainDisplayInfo.Density;
+            System.Console.WriteLine(Height);
+            System.Console.WriteLine(Width);
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
