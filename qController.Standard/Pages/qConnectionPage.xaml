@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:qController" x:Class="qController.QConnectionPage">
     <StackLayout x:Name="sLayout">
@@ -10,7 +10,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
           </Grid.ColumnDefinitions>
-          <Label x:Name = "menuButton" FontFamily = "{StaticResource qfont}" HorizontalOptions = "Start" Margin="20,10,20,10" Grid.Row="0" Grid.Column="0" FontSize="25"/>
+          <Label x:Name = "menuButton" FontFamily = "{StaticResource qfont}" HorizontalOptions = "Start" VerticalOptions="End" Margin="20,10,20,10" Grid.Row="0" Grid.Column="0"/>
         </Grid>
         <ListView x:Name="lstView" HasUnevenRows = "true" >
         </ListView>

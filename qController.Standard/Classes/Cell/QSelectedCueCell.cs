@@ -21,7 +21,7 @@ namespace qController
                 RowDefinitions = 
                 {
                     new RowDefinition{Height = GridLength.Star},
-                    new RowDefinition{Height = GridLength.Star}
+                    new RowDefinition{Height = new GridLength(2, GridUnitType.Star)}
                 },
                 ColumnDefinitions = 
                 {
@@ -69,7 +69,7 @@ namespace qController
             number = new Label { 
                 Text = "",
                 FontAttributes = FontAttributes.Bold,
-                FontSize = 30,
+                FontSize = App.HeightUnit * 5,
                 Margin = new Thickness(5)
             };
 
@@ -77,7 +77,7 @@ namespace qController
                 Text = "Loading Workspace....",
                 FontAttributes = FontAttributes.Bold,
                 HorizontalTextAlignment = TextAlignment.Center,
-                FontSize = 20,
+                FontSize = App.HeightUnit * 3.5,
                 Margin = new Thickness(0)
             };
 
@@ -87,10 +87,13 @@ namespace qController
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.End,
                 Margin = new Thickness(5),
-                FontSize = 27
+                FontSize = App.HeightUnit * 5
             };
 
-            notes = new Label { Text = "Loading Cue Lists and Playhead Position" };
+            notes = new Label { 
+                Text = "Loading Cue Lists and Playhead Position",
+                HorizontalTextAlignment = TextAlignment.Center
+            };
             notes.HorizontalTextAlignment = TextAlignment.Center;
             notes.Margin = new Thickness(0, 0, 0, 10);
 

@@ -12,6 +12,8 @@ namespace qController
         public static DisplayInfo mainDisplayInfo;
         public static double Height;
         public static double Width;
+        public static double HeightUnit;
+        public static double WidthUnit;
         public static bool MenuIsPresented
         {
             get
@@ -34,6 +36,8 @@ namespace qController
             mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
             Height = mainDisplayInfo.Height / mainDisplayInfo.Density;
             Width = mainDisplayInfo.Width / mainDisplayInfo.Density;
+            HeightUnit = Height / 100.0;
+            WidthUnit = Width / 100.0;
             System.Console.WriteLine(Height);
             System.Console.WriteLine(Width);
             switch (Device.RuntimePlatform)

@@ -72,21 +72,22 @@ namespace qController
                 nameLabel.HorizontalTextAlignment = TextAlignment.Center;
                 nameLabel.VerticalTextAlignment = TextAlignment.End;
                 nameLabel.FontAttributes = FontAttributes.Bold;
-                nameLabel.FontSize = 20;
+                nameLabel.FontSize = App.HeightUnit * 3;
 
                 addressLabel.HorizontalTextAlignment = TextAlignment.Center;
                 addressLabel.VerticalTextAlignment = TextAlignment.Start;
+                addressLabel.FontSize = App.HeightUnit * 2.5;
 
                 connectLabel.HorizontalOptions = LayoutOptions.CenterAndExpand;
                 connectLabel.VerticalOptions = LayoutOptions.CenterAndExpand;
                 connectLabel.Text = QIcon.WIFI;
-                connectLabel.FontSize = 40;
+                connectLabel.FontSize = App.HeightUnit * 6;
                 connectLabel.TextColor = Color.LimeGreen;
 
                 deleteLabel.HorizontalOptions = LayoutOptions.CenterAndExpand;
                 deleteLabel.VerticalOptions = LayoutOptions.CenterAndExpand;
                 deleteLabel.Text = QIcon.TRASH_EMPTY;
-                deleteLabel.FontSize = 40;
+                deleteLabel.FontSize = App.HeightUnit * 6;
                 deleteLabel.TextColor = Color.Red;
 
                 connectLabel.FontFamily = App.QFont;

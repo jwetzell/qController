@@ -54,10 +54,12 @@ namespace qController
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
-                    menuButton.Margin = new Thickness(20, 35, 20, 10);
+                    menuButton.Margin = 
+                    menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
+                    menuButton.FontSize = App.Height * .04;
                     break;
                 case Device.Android:
-                    topBar.HeightRequest = 50;
+                    topBar.HeightRequest = Math.Max(App.Height * .09, 65);
                     menuButton.Margin = new Thickness(20, 10, 20, 10);
                     break;
             }
