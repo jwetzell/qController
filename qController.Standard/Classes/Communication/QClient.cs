@@ -36,8 +36,11 @@ namespace qController
         //one method for messages received whether from TCP or UDP (SAME MSG FORMAT)
         private void OnMessageReceived(object source, MessageEventArgs args)
         {
+            Console.WriteLine("QCLIENT MESSAGE RECEIVED: "+args.Message.Address);
             //try to find a better filtering process
             if (!args.Message.Address.Contains("update"))
+                qParser.ParseMessage(args.Message);
+            else if (args.Message.Address.Contains("playbackPosition") || args.Message.Address.Contains("cue_id") || args.Message.Address.Contains("cueList"))
                 qParser.ParseMessage(args.Message);
             else
                 ProcessUpdate(args.Message);
@@ -106,24 +109,7 @@ namespace qController
         public void ProcessUpdate(OscMessage msg)
         {
             Console.WriteLine("PROCESS UPDATE : " + msg.Address);
-            if (msg.Address.Contains("disconnect"))
-            {
-                qParser.ParseMessage(msg);
-            }
-            else if (msg.Address.Contains("cue_id"))
-            {
-                var updateID = msg.Address.Split('/').Last();
-                //UpdateSpecificCue(updateID);
-            }
-            else if (msg.Address.Contains("playbackPosition"))
-            {
-                if (msg.Arguments.Count > 0)
-                {
-                    qParser.ParseMessage(msg);
-                    //UpdateSelectedCue(); 
-                }
-            }
-            else if (msg.Address.Contains("workspace"))
+            if (msg.Address.Contains("workspace"))
             { 
                 UpdateWorkspace("not yet implemented");
             }

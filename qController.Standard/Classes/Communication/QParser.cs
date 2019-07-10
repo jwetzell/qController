@@ -113,8 +113,7 @@ namespace qController
                     ParseQInfo(msg);
                 else
                 {
-                    Console.WriteLine("Unknown message type");
-                    Console.WriteLine(msg.Address);
+                    Console.WriteLine("QParser/Unknown message type: " + msg.Address);
                     foreach (var item in msg.Arguments)
                     {
                         Console.WriteLine(item);
