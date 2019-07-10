@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Class used for overall Workspace control (ONLY REPRESENTS ONE WORKSPACE)
+//Contains all necessary items to facilitate communication (sending, receiving) to a QLab workspace 
+//Also contains the local QWorkspace object which stores all the information that is used in displaying
+//STILL NEED TO WORK ON PASSWORD PROTECTED WORKSPACES
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;

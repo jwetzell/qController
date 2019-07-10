@@ -1,4 +1,5 @@
-﻿using System;
+﻿//General information about a QLab Workspace
+using System;
 namespace qController
 {
     public class QInfo

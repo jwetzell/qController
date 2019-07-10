@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Class pertains to the local copy of a workspace, with methods for fetching/updating information inside
+
+using System;
 using System.Collections.Generic;
 
 namespace qController

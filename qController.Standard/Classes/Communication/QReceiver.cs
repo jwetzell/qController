@@ -1,4 +1,4 @@
-﻿//this class is used for receiving workspace update messages
+﻿//Class used for receiving workspace update messages
 
 using System;
 using SharpOSC;

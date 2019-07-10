@@ -1,4 +1,7 @@
-﻿using System;
+﻿//Class used for updating local "copy" of workspace info, cue-lists, cues, etc.
+//CLEAN UP WORKSPACE LOADING STUFF STILL SENDING INDIVIDUAL REQUESTS FOR GROUP CUES?
+
+using System;
 using System.Threading;
 using Xamarin.Forms;
 using SharpOSC;
@@ -26,6 +29,7 @@ namespace qController
             updateThread.Start();
         }
 
+        //Attemp at a "keep alive" message
         public void UpdateLoop()
         {
             active = true;
@@ -50,6 +54,7 @@ namespace qController
             Console.WriteLine("Populated: " + qController.qWorkspace.IsPopulated);
             if (!qController.qWorkspace.IsPopulated)
             {
+                Console.WriteLine("IS THIS BEING CALLED");
                 QCue cue = qController.qWorkspace.GetEmptyGroup();
                 if(cue != null)
                 {
@@ -71,10 +76,10 @@ namespace qController
             {
                 Console.WriteLine("Workspace group cues are already populated");
                 App.showToast("Workspace cues have been loaded....");
+                //get selected cue
                 qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
                 return;
             }
-            //RefreshGroupCues();
             //qController.qClient.UpdateSelectedCue();
 
         }
@@ -83,23 +88,6 @@ namespace qController
         {
             qController.playbackPosition = args.PlaybackPosition;
             qController.qClient.UpdateSpecificCue(qController.qWorkspace.workspace_id,args.PlaybackPosition);
-        }
-
-        public void RefreshGroupCues()
-        {
-            Console.WriteLine("Workspace group cues are not populated");
-            foreach (var cueList in qController.qWorkspace.data)
-            {
-                foreach (var cue in cueList.cues)
-                {
-                    if (cue.type == "Group")
-                    {
-                        Console.WriteLine("First Group Cue Found");
-                        qController.qClient.sendStringUDP("/workspace/" + qController.qWorkspace.workspace_id + "/cue_id/" + cue.uniqueID + "/children");
-                        break;
-                    }
-                }
-            }
         }
 
         public void SendThump()

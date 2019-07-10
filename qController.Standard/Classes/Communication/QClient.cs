@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Class used to facilitate communication with a QInstance
+//Listens for incoming messages via qReceiver (UDP) and tcpSender (TCP)
+//WEIRD MESSAGE PARSING RULES NEED FIXED
+
+using System;
 using System.Linq;
 using System.Threading;
 using SharpOSC;
@@ -15,9 +19,6 @@ namespace qController
         string Address;
         int Port;
 
-
-
-
         public QClient(string address, int port)
         {
             Address = address;
@@ -32,8 +33,10 @@ namespace qController
 
         }
 
+        //one method for messages received whether from TCP or UDP (SAME MSG FORMAT)
         private void OnMessageReceived(object source, MessageEventArgs args)
         {
+            //try to find a better filtering process
             if (!args.Message.Address.Contains("update"))
                 qParser.ParseMessage(args.Message);
             else
@@ -102,6 +105,7 @@ namespace qController
 
         public void ProcessUpdate(OscMessage msg)
         {
+            Console.WriteLine("PROCESS UPDATE : " + msg.Address);
             if (msg.Address.Contains("disconnect"))
             {
                 qParser.ParseMessage(msg);
@@ -116,7 +120,7 @@ namespace qController
                 if (msg.Arguments.Count > 0)
                 {
                     qParser.ParseMessage(msg);
-                    //UpdateSelectedCue();
+                    //UpdateSelectedCue(); 
                 }
             }
             else if (msg.Address.Contains("workspace"))
@@ -143,7 +147,6 @@ namespace qController
         {
             Console.WriteLine("Workspace needs to be updated: " + ws_id);
         }
-
 
         public void Close()
         {

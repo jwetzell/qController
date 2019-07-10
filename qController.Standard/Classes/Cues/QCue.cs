@@ -34,6 +34,8 @@ namespace qController
 
         //info loaded from /children
         public List<QCue> cues { get; set; }
+
+        //get string for icon font from cue type
         public string getIconString()
         {
             return QIcon.GetIconFromType(type);
