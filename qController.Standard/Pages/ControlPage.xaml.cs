@@ -8,7 +8,6 @@ namespace qController
     public partial class ControlPage : ContentPage
     {
         QController qController;
-        Label instanceName = new Label();
         QSelectedCueCell qCell;
         QSelectedCueOptionsCell qSelectedCueOptions;
         Grid mainG;
@@ -74,23 +73,23 @@ namespace qController
             App.rootPage.MenuPage.ChangeToControl();
             NavigationPage.SetHasNavigationBar(this, false);
 
-            instanceName.HorizontalTextAlignment = TextAlignment.Center;
-            instanceName.HorizontalOptions = LayoutOptions.CenterAndExpand;
-            instanceName.VerticalOptions = LayoutOptions.CenterAndExpand;
-            topBar.Children.Add(instanceName, 1, 0);
             topBar.BackgroundColor = Color.FromHex("71AEFF");
             topBar.HeightRequest = Math.Max(App.Height * .09, 65);
 
 
             BackgroundColor = Color.FromHex("4A4A4A");
             menuButton.Text = QIcon.MENU;
+ 
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
-                    menuButton.Margin = new Thickness(20, 35, 20, 10);
-                    instanceName.Margin = new Thickness(20, 35, 20, 10);
+                    menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
+                    menuButton.FontSize = App.Height * .04;
                     break;
-
+                case Device.Android:
+                    menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
+                    menuButton.FontSize = App.Height * .04;
+                    break;
             }
             var menuButtonGesture = new TapGestureRecognizer();
 

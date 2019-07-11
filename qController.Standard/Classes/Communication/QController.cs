@@ -22,11 +22,11 @@ namespace qController
         {
             qClient = new QClient(address, port);
             qUpdater = new QUpdater(this);
-            qUpdater.Start();
+
             //Connect();
             //Connect();
             //KickOff();
-           
+
         }
 
         public void Connect(string workspace_id)
@@ -34,6 +34,7 @@ namespace qController
             Console.WriteLine("QCONTROLLER CONNECT CALLED: " + workspace_id);
             qWorkspace = new QWorkSpace();
             qWorkspace.workspace_id = workspace_id;
+            qUpdater.Start();
             qClient.sendStringUDP("/connect");
             qClient.sendArgsUDP("/workspace/"+workspace_id+"/updates", 1);
             qClient.sendAndReceiveString("/workspace/"+workspace_id+"/cueLists");
