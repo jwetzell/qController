@@ -74,7 +74,6 @@ namespace qController
             NavigationPage.SetHasNavigationBar(this, false);
 
             topBar.BackgroundColor = Color.FromHex("71AEFF");
-            topBar.HeightRequest = Math.Max(App.Height * .09, 65);
 
 
             BackgroundColor = Color.FromHex("4A4A4A");
@@ -83,12 +82,14 @@ namespace qController
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
+                    topBar.HeightRequest = Math.Max(App.Height * .09, 65);
                     menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
                     menuButton.FontSize = App.Height * .04;
                     break;
                 case Device.Android:
+                    topBar.HeightRequest = App.Height * .08;
                     menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
-                    menuButton.FontSize = App.Height * .04;
+                    menuButton.FontSize = App.Height * .05;
                     break;
             }
             var menuButtonGesture = new TapGestureRecognizer();
