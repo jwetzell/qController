@@ -34,12 +34,11 @@ namespace qController
             iNav = MainPage.Navigation;*/
 
             mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
+
             Height = mainDisplayInfo.Height / mainDisplayInfo.Density;
             Width = mainDisplayInfo.Width / mainDisplayInfo.Density;
             HeightUnit = Height / 100.0;
             WidthUnit = Width / 100.0;
-            System.Console.WriteLine(Height);
-            System.Console.WriteLine(Width);
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
