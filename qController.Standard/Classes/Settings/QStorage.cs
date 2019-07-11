@@ -19,15 +19,18 @@ namespace qController
             }
         }
 
-        public static void AddInstance(string name, string address){
-            if(!Contains(name,address)){
-                AddInstance(new QInstance(name, address));
-                Console.WriteLine("Adding Instance: " + name + " @ " + address);
-            }
+        public static bool AddInstance(string name, string address){
+            return AddInstance(new QInstance(name, address));
         }
-        public static void AddInstance(QInstance q){
-            qInstances.Add(q);
-            updateStorage();
+
+        public static bool AddInstance(QInstance q){
+            if(!Contains(q.name, q.address)){
+                qInstances.Add(q);
+                updateStorage();
+                return true;
+            }else{
+                return false;
+            }
         }
 
         public static void RemoveInstance(string name, string address){
@@ -51,7 +54,8 @@ namespace qController
         public static bool Contains(string name, string address){
             foreach (var item in qInstances)
             {
-                if (item.name == name && item.address == address)
+                //Console.WriteLine("Item name: " + item.name + " Found Name: " + name);
+                if (item.address == address)
                 {
                     return true;
                 }

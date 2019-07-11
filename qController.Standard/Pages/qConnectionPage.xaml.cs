@@ -112,7 +112,7 @@ namespace qController
 
         async void Scan(){
             bool workspacesFound = false;
-            App.showToast("Scanning for Workspaces...");
+            App.showToast("Scanning for Instances...");
             Console.WriteLine("Begin Scanning");
 
             IReadOnlyList<IZeroconfHost> results = await ZeroconfResolver.ResolveAsync("_qlab._udp.local.",TimeSpan.FromSeconds(3));
@@ -122,17 +122,18 @@ namespace qController
                     if (result != null)
                     {
                         QInstance instance = new QInstance(result.DisplayName, result.IPAddress);
-                        QStorage.AddInstance(instance);
-                        Console.WriteLine(result.DisplayName + " @ " + result.IPAddress + " added");
-                        workspacesFound = true;
+                        if(QStorage.AddInstance(instance)){
+                            Console.WriteLine(result.DisplayName + " @ " + result.IPAddress + " added");
+                            workspacesFound = true;
+                        }
                     }
                 }
             }
 
             if(workspacesFound){
-                App.showToast("Workspace Found and Added!");
+                App.showToast("Instance Found and Added!");
             }else{
-                App.showToast("No Workspaces Found!");
+                App.showToast("No New Instances Found!");
             }
         }
 

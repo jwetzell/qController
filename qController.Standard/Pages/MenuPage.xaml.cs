@@ -143,6 +143,22 @@ namespace qController
             }
         }
 
+        public void ChangeCueName(string cue_id, string name){
+            for(int i = 0; i < items.Count; i++)
+            {
+                if (items[i].Command.Contains(cue_id))
+                {
+                    var item = items[i];
+                    items.RemoveAt(i);
+                    item.Title = name;
+                    items.Insert(i, item);
+                    Console.WriteLine("CUE OBJECT FOUND IN MENU TRYING TO UPDATE");
+                    return;
+                }
+            }
+            
+        }
+
         public void ChangeToHome()
         {
             items.Clear();

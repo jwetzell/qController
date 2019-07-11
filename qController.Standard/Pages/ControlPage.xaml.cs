@@ -250,6 +250,7 @@ namespace qController
         public void OnCueUpdateReceived(object sender, CueEventArgs args)
         {
             qController.qWorkspace.UpdateCue(args.Cue);
+            App.rootPage.MenuPage.ChangeCueName(args.Cue.uniqueID, args.Cue.listName);
             if (qController.playbackPosition == null)
             {
                 qController.playbackPosition = args.Cue.uniqueID;
