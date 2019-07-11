@@ -54,7 +54,6 @@ namespace qController
                         if(data[i].cues[j].type == "Group")
                         {
                             data[i].cues[j].cues = children;
-                            CheckPopulated();
                             return;
                         }
                     }

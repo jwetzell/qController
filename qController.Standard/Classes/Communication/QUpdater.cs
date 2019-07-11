@@ -1,5 +1,4 @@
 ﻿//Class used for updating local "copy" of workspace info, cue-lists, cues, etc.
-//CLEAN UP WORKSPACE LOADING STUFF STILL SENDING INDIVIDUAL REQUESTS FOR GROUP CUES?
 
 using System;
 using System.Threading;
@@ -17,8 +16,6 @@ namespace qController
         {
             qController = controller;
             updateThread = new Thread(new ThreadStart(UpdateLoop));
-
-            qController.qClient.qParser.ChildrenUpdated += OnChildrenUpdated;
             qController.qClient.qParser.CueInfoUpdated += OnCueUpdateReceived;
             qController.qClient.qParser.WorkspaceUpdated += OnWorkspaceUpdated;
             qController.qClient.qParser.PlaybackPositionUpdated += OnPlaybackPositionUpdated;
@@ -42,28 +39,11 @@ namespace qController
         public void OnCueUpdateReceived(object source, CueEventArgs args)
         {
             qController.qWorkspace.UpdateCue(args.Cue);
-            if (qController.playbackPosition == null)
-            {
-                qController.playbackPosition = args.Cue.uniqueID;
-            }
-        }
 
-        private void OnChildrenUpdated(object source, ChildrenEventArgs args)
-        {
-            qController.qWorkspace.UpdateChildren(args.cue_id, args.children);
-            Console.WriteLine("Populated: " + qController.qWorkspace.IsPopulated);
-            if (!qController.qWorkspace.IsPopulated)
+            if (args.Cue.type == "Group")
             {
-                Console.WriteLine("IS THIS BEING CALLED");
-                QCue cue = qController.qWorkspace.GetEmptyGroup();
-                if(cue != null)
-                {
-                    qController.qClient.sendStringUDP("/cue_id/" + cue.uniqueID + "/children");
-                }
-            }
-            else
-            {
-                qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
+                //Console.WriteLine("QUpdater/Updated cue was group cue, sending children request");
+                qController.qClient.sendStringUDP("/cue_id/" + args.Cue.uniqueID + "/children");
             }
         }
 
@@ -80,8 +60,6 @@ namespace qController
                 qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
                 return;
             }
-            //qController.qClient.UpdateSelectedCue();
-
         }
 
         public void OnPlaybackPositionUpdated(object source, PlaybackPositionArgs args)

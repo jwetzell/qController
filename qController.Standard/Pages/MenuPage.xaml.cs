@@ -96,7 +96,6 @@ namespace qController
                     var cue = cueList.cues[j];
                     AddSubCues(cue, 0);
                 }
-
             }
         }
 

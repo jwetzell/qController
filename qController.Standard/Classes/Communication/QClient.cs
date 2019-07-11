@@ -40,8 +40,13 @@ namespace qController
             //try to find a better filtering process
             if (!args.Message.Address.Contains("update"))
                 qParser.ParseMessage(args.Message);
-            else if (args.Message.Address.Contains("playbackPosition") || args.Message.Address.Contains("cue_id") || args.Message.Address.Contains("cueList"))
+            else if (args.Message.Address.Contains("playbackPosition") || args.Message.Address.Contains("cueList") || args.Message.Address.Contains("dashboard"))
                 qParser.ParseMessage(args.Message);
+            else if (args.Message.Address.Contains("cue_id"))
+            {
+                var parts = args.Message.Address.Split('/');
+                UpdateSpecificCue(parts[3], parts[5]);
+            }
             else
                 ProcessUpdate(args.Message);
         }

@@ -250,6 +250,11 @@ namespace qController
         public void OnCueUpdateReceived(object sender, CueEventArgs args)
         {
             qController.qWorkspace.UpdateCue(args.Cue);
+            if (qController.playbackPosition == null)
+            {
+                qController.playbackPosition = args.Cue.uniqueID;
+            }
+
             if (args.Cue.uniqueID == qController.playbackPosition)
             {
                 Device.BeginInvokeOnMainThread(() =>
@@ -278,23 +283,11 @@ namespace qController
         {
             Console.WriteLine("Children Updated in ControlPage: " + args.cue_id);
             qController.qWorkspace.UpdateChildren(args.cue_id, args.children);
-            if (qController.qWorkspace.IsPopulated)
+            Device.BeginInvokeOnMainThread(() =>
             {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    if (App.MenuIsPresented)
-                    {
-                        App.rootPage.MenuPage.ChangeToWorkspace(qController.qWorkspace);
-                    }
-                    else
-                    {
-                        App.rootPage.MenuPage.ChangeToWorkspace(qController.qWorkspace);
-
-                    }
-                });
-                qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
-                App.showToast("Workspace cues loaded...");
-            }
+                App.rootPage.MenuPage.ChangeToControl();
+                App.rootPage.MenuPage.ChangeToWorkspace(qController.qWorkspace);
+            });
         }
 
         private void OnMenuItemSelected(object source, MenuEventArgs args)
