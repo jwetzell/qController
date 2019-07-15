@@ -99,15 +99,18 @@ namespace qController
 
 
             qCell = new QSelectedCueCell();
-
+            
             
             qCell.SelectedCueEdited += OnSelectedCueEdited;
+
+            AbsoluteLayout.SetLayoutBounds(qCell, new Rectangle(0, 0.13, 1, 0.30));
+            AbsoluteLayout.SetLayoutFlags(qCell, AbsoluteLayoutFlags.All);
             sLayout.Children.Add(qCell);
         }
 
         private void OnSelectedCueEdited(object source, CueEditArgs args)
         {
-            string address = "/workspace/" + qController.qWorkspace.workspace_id + "/cue_id/" + args.CueID + "/" + args.Property
+            string address = "/workspace/" + qController.qWorkspace.workspace_id + "/cue_id/" + args.CueID + "/" + args.Property;
             qController.qClient.sendArgsUDP(address, args.NewValue);
         }
         void FinishUI()
@@ -130,8 +133,22 @@ namespace qController
             };
 
             qControlsBlock = new QControlsBlock(qController);
-            
+
+            AbsoluteLayout.SetLayoutBounds(qControlsBlock, new Rectangle(0, 0.53, 1, 0.25));
+            AbsoluteLayout.SetLayoutFlags(qControlsBlock, AbsoluteLayoutFlags.All);
             sLayout.Children.Add(qControlsBlock);
+
+            Button b = new Button{
+                Text = "L",
+                TextColor = Color.Black,
+                HeightRequest = App.HeightUnit * 10,
+                WidthRequest = App.HeightUnit * 10,
+                CornerRadius = (int)(App.HeightUnit * 5),
+                BackgroundColor = Color.Blue
+            };
+            AbsoluteLayout.SetLayoutBounds(b, new Rectangle(0.99, 0.99, App.HeightUnit * 10, App.HeightUnit * 10));
+            AbsoluteLayout.SetLayoutFlags(b, AbsoluteLayoutFlags.PositionProportional);
+            //sLayout.Children.Add(b);
         }
 
         void ShowMenu(object sender, EventArgs e)
@@ -143,7 +160,10 @@ namespace qController
         void Back()
         {
             qController.Disconnect();
-            App.rootPage.MenuPage.ChangeToHome();
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                App.rootPage.MenuPage.ChangeToHome();
+            });
             App.NavigationPage.Navigation.PopAsync();
         }
 
@@ -156,7 +176,10 @@ namespace qController
 
                 if (qController.qWorkspace.IsPopulated)
                 {
-                    App.rootPage.MenuPage.ChangeToWorkspace(e.UpdatedWorkspace);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        App.rootPage.MenuPage.ChangeToWorkspace(e.UpdatedWorkspace);
+                    });                    
                     if (qCell.activeCue == null)
                     {
                         Device.BeginInvokeOnMainThread(() => {
@@ -181,20 +204,23 @@ namespace qController
             QCue cue = qController.qWorkspace.GetCue(qController.playbackPosition);
             if(cue != null)
             {
-                Device.BeginInvokeOnMainThread(() => {
+                /*Device.BeginInvokeOnMainThread(() => {
                     if (cue.type.Equals("Audio"))
                         sLayout.Children.Add(qSelectedCueOptions);
                     else
                         sLayout.Children.Remove(qSelectedCueOptions);
                     qCell.UpdateSelectedCue(cue);
-                });
+                });*/
             }
         }
 
         public void OnCueUpdateReceived(object sender, CueEventArgs args)
         {
             qController.qWorkspace.UpdateCue(args.Cue);
-            App.rootPage.MenuPage.ChangeCueName(args.Cue.uniqueID, args.Cue.listName);
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                App.rootPage.MenuPage.ChangeCueName(args.Cue.uniqueID, args.Cue.listName);
+            });
             if (qController.playbackPosition == null)
             {
                 qController.playbackPosition = args.Cue.uniqueID;
@@ -205,10 +231,10 @@ namespace qController
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Console.WriteLine("Refreshing Currently Displayed Cue");
-                    if (args.Cue.levels != null)
+                    /*if (args.Cue.levels != null)
                         sLayout.Children.Add(qSelectedCueOptions);
                     else
-                        sLayout.Children.Remove(qSelectedCueOptions);
+                        sLayout.Children.Remove(qSelectedCueOptions);*/
                     qCell.UpdateSelectedCue(args.Cue);
                     //if (!mainG.IsVisible)
                       //  mainG.IsVisible = true;

@@ -35,10 +35,7 @@ namespace qController
         public QCue activeCue;
         public QSelectedCueCell()
         {
-            Padding = new Thickness(5);
-            CornerRadius = 20;
-            BackgroundColor = Color.FromHex("D8D8D8");
-            HeightRequest = App.HeightUnit * 25;
+        
             Grid mainG = new Grid
             {
                 Padding = new Thickness(0),
@@ -115,13 +112,56 @@ namespace qController
             notes = new Label { 
                 Text = "Loading Cue Lists and Playhead Position",
                 HorizontalTextAlignment = TextAlignment.Center,
-                Margin = new Thickness(0,0,0,10)
+                Margin = new Thickness(0,0,0,10),
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand
             };
-            notes.VerticalOptions = LayoutOptions.FillAndExpand;
-            notes.HorizontalOptions = LayoutOptions.FillAndExpand;
 
+            
+            //BACKGROUND COLORS FOR TESTING ONLY 
+            //notes.BackgroundColor = Color.Red;
+            //number.BackgroundColor = Color.Red;
+            //name.BackgroundColor = Color.Red;
+            //type.BackgroundColor = Color.Red;
+            //topGrid.BackgroundColor = Color.Green;
+            //bottomGrid.BackgroundColor = Color.Green;
+
+            topGrid.Children.Add(number, 0, 0);
+            topGrid.Children.Add(type, 4, 0);
+            Grid.SetColumnSpan(number, 3);
+            Grid.SetColumnSpan(type, 1);
+
+            bottomGrid.Children.Add(name, 0, 0);
+            bottomGrid.Children.Add(notes, 0, 1);
+            Grid.SetColumnSpan(name, 5);
+            Grid.SetColumnSpan(notes,5);
+
+            mainG.Children.Add(topGrid, 0, 0);
+            Grid.SetColumnSpan(topGrid, 5);
+
+            mainG.Children.Add(bottomGrid, 0, 1);
+            Grid.SetColumnSpan(bottomGrid, 5);
+
+            Padding = new Thickness(5);
+            CornerRadius = 20;
+            BackgroundColor = Color.FromHex("D8D8D8");
+            HeightRequest = App.HeightUnit * 25;
+            Margin = new Thickness(10);
+            Content = mainG;
+
+            SetupDoubleTapEdit();
+        }
+
+        void SetupDoubleTapEdit()
+        {
             var notesDoubleTap = new TapGestureRecognizer();
+            var nameDoubleTap = new TapGestureRecognizer();
+            var numberDoubleTap = new TapGestureRecognizer();
+
             notesDoubleTap.NumberOfTapsRequired = 2;
+            nameDoubleTap.NumberOfTapsRequired = 2;
+            numberDoubleTap.NumberOfTapsRequired = 2;
+
             notesDoubleTap.Tapped += (s, e) =>
             {
                 UserDialogs.Instance.Prompt(new PromptConfig
@@ -140,33 +180,43 @@ namespace qController
                     }
                 });
             };
+
+            nameDoubleTap.Tapped += (s, e) =>
+            {
+                UserDialogs.Instance.Prompt(new PromptConfig
+                {
+                    Title = "Update Name",
+                    Message = "Change name to update",
+                    OkText = "Update",
+                    Text = name.Text,
+                    OnAction = (qName) =>
+                    {
+                        if (!qName.Ok)
+                            return;
+                        OnSelectedCueEdited("name", qName.Text);
+                    }
+                });
+            };
+
+            numberDoubleTap.Tapped += (s, e) =>
+            {
+                UserDialogs.Instance.Prompt(new PromptConfig
+                {
+                    Title = "Update Number",
+                    Message = "Change number to update",
+                    OkText = "Update",
+                    Text = number.Text,
+                    OnAction = (qNumber) =>
+                    {
+                        if (!qNumber.Ok)
+                            return;
+                        OnSelectedCueEdited("number", qNumber.Text);
+                    }
+                });
+            };
             notes.GestureRecognizers.Add(notesDoubleTap);
-
-            notes.BackgroundColor = Color.FromHex("FF0000");
-            number.BackgroundColor = Color.Red;
-            name.BackgroundColor = Color.Red;
-            type.BackgroundColor = Color.Red;
-
-            topGrid.Children.Add(number, 0, 0);
-            topGrid.Children.Add(type, 4, 0);
-            Grid.SetColumnSpan(number, 3);
-            Grid.SetColumnSpan(type, 1);
-
-            bottomGrid.Children.Add(name, 0, 0);
-            bottomGrid.Children.Add(notes, 0, 1);
-            Grid.SetColumnSpan(name, 5);
-            Grid.SetColumnSpan(notes,5);
-
-            mainG.Children.Add(topGrid, 0, 0);
-            Grid.SetColumnSpan(topGrid, 5);
-
-            mainG.Children.Add(bottomGrid, 0, 1);
-            Grid.SetColumnSpan(bottomGrid, 5);
-
-            topGrid.BackgroundColor = Color.FromHex("00FF00");
-            bottomGrid.BackgroundColor = Color.FromHex("00FF00");
-            Margin = new Thickness(10);
-            Content = mainG;
+            name.GestureRecognizers.Add(nameDoubleTap);
+            number.GestureRecognizers.Add(numberDoubleTap);
         }
 
         public void UpdateSelectedCue(QCue cue)

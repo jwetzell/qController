@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="qController.ControlPage">
 	<ContentPage.Content>
-        <StackLayout x:Name="sLayout">
-            <Grid x:Name="topBar" HorizontalOptions="FillAndExpand">
+        <AbsoluteLayout x:Name="sLayout">
+            <Grid x:Name="topBar" HorizontalOptions="FillAndExpand" AbsoluteLayout.LayoutBounds="0,0,1,.09" AbsoluteLayout.LayoutFlags="All">
               <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
               </Grid.RowDefinitions>
@@ -13,6 +13,6 @@
               <Label x:Name = "menuButton" FontFamily = "{StaticResource qfont}"  HorizontalOptions = "Start" VerticalOptions="End" Margin="20,10,20,10" Grid.Row="0" Grid.Column="0" FontSize="25"/>
               <Label x:Name = "instanceName" HorizontalTextAlignment="Center" HorizontalOptions = "CenterAndExpand" VerticalOptions="End" Margin="20,10,20,10" Grid.Row="0" Grid.Column="1"/>
             </Grid>
-        </StackLayout>
+        </AbsoluteLayout>
 	</ContentPage.Content>
 </ContentPage>

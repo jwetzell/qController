@@ -21,7 +21,7 @@ namespace qController
             IsVisible = true;
             
 
-            BackgroundColor = Color.FromHex("4A4A4A");
+            BackgroundColor = Color.Transparent;
             //highlight Button Grid
             //BackgroundColor = Color.FromHex("FF0000");
 
