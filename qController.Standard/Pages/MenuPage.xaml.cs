@@ -39,6 +39,7 @@ namespace qController
             listView = new ListView
             {
                 ItemsSource = items,
+                RowHeight = (int)(App.HeightUnit * 6),
                 ItemTemplate = new DataTemplate(() =>
                 {
                     var grid = new Grid { Padding = new Thickness(5, 10) };
@@ -52,16 +53,26 @@ namespace qController
                     icon.SetBinding(Label.TextProperty, "Icon");
                     icon.HorizontalTextAlignment = TextAlignment.Center;
                     icon.VerticalTextAlignment = TextAlignment.Center;
-                    icon.FontSize = 20;
+                    icon.FontSize = App.HeightUnit * 3;
                     var label = new Label { VerticalOptions = LayoutOptions.FillAndExpand };
                     label.SetBinding(Label.TextProperty, "Title");
                     if (label.Text == "Disconnect")
                     {
                         label.TextColor = Color.DarkRed;
                     }
+                    switch (Device.RuntimePlatform)
+                    {
+                        case Device.iOS:
+                            label.FontSize = App.HeightUnit * 3;
+                            break;
+                        case Device.Android:
+                            label.FontSize = App.HeightUnit * 2.2;
+                            break;
+                    }                    
                     grid.Children.Add(icon);
                     grid.Children.Add(label, 1, 0);
-                    return new ViewCell { View = grid };
+                    return new ViewCell {View = grid};
+                  
                 })
             };
             Content = new StackLayout

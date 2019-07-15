@@ -11,7 +11,7 @@ namespace qController
         QSelectedCueCell qCell;
         QSelectedCueOptionsCell qSelectedCueOptions;
         Grid mainG;
-
+        QControlsBlock qControlsBlock;
         public ControlPage(string name, string address)
         {
             InitializeComponent();
@@ -99,24 +99,13 @@ namespace qController
 
 
             qCell = new QSelectedCueCell();
-            qCell.HeightRequest = Math.Max(App.Height * .20, 125);
-
             sLayout.Children.Add(qCell);
         }
 
         void FinishUI()
         {
             string workspace_prefix = "/workspace/" + qController.qWorkspace.workspace_id;
-            List <QButton> buttons = new List<QButton>();
-
-            buttons.Add(new QButton("Previous", workspace_prefix + "/select/previous"));
-            buttons.Add(new QButton("Panic", workspace_prefix + "/panic"));
-            buttons.Add(new QButton("Next", workspace_prefix + "/select/next"));
-            buttons.Add(new QButton("Preview", "/preview"));
-            buttons.Add(new QButton("Pause", "/pause"));
-            buttons.Add(new QButton("Resume", "/resume"));
-
-
+            
             qSelectedCueOptions = new QSelectedCueOptionsCell();
 
             qSelectedCueOptions.mainSlider.ValueChanged += (sender, args) =>
@@ -132,62 +121,9 @@ namespace qController
                 qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qSelectedCueOptions.activeCue + "/sliderLevel/2", (float)args.NewValue);
             };
 
-
-
-            mainG = new Grid
-            {
-                Padding = new Thickness(0),
-                RowDefinitions = {
-                    new RowDefinition{Height = GridLength.Auto},
-                    new RowDefinition{Height = GridLength.Auto},
-                    new RowDefinition{Height = GridLength.Auto}
-                },
-                ColumnDefinitions = {
-                    new ColumnDefinition{Width = new GridLength(1,GridUnitType.Star)},
-                    new ColumnDefinition{Width = new GridLength(1,GridUnitType.Star)},
-                    new ColumnDefinition{Width = new GridLength(1,GridUnitType.Star)}
-                },
-                Margin = new Thickness(10),
-                IsVisible = false
-            };
-
-
-            int row = 0;
-            int column = 0;
-            foreach (var b in buttons)
-            {
-                b.Clicked += sendOSC;
-                if (b.Text == "Panic")
-                {
-                    b.BackgroundColor = Color.IndianRed;
-                }
-                else
-                {
-                    b.BackgroundColor = Color.FromHex("D8D8D8");
-                }
-                b.TextColor = Color.Black;
-                mainG.Children.Add(b, column, row);
-                row++;
-                if (row == 3)
-                {
-                    row = 0;
-                    column = 2;
-                }
-            }
-
-            QButton goButton = new QButton("GO", workspace_prefix+"/go");
-            goButton.Clicked += sendOSC;
-            goButton.BackgroundColor = Color.SeaGreen;
-            goButton.TextColor = Color.Black;
-            mainG.Children.Add(goButton, 1, 0);
-            Grid.SetRowSpan(goButton, 3);
-
-            sLayout.Children.Add(mainG);
-        }
-
-        void sendOSC(object sender, EventArgs e)
-        {
-            qController.qClient.sendStringUDP(((QButton)sender).OSCCommand);
+            qControlsBlock = new QControlsBlock(qController);
+            
+            sLayout.Children.Add(qControlsBlock);
         }
 
         void ShowMenu(object sender, EventArgs e)
@@ -266,8 +202,8 @@ namespace qController
                     else
                         sLayout.Children.Remove(qSelectedCueOptions);
                     qCell.UpdateSelectedCue(args.Cue);
-                    if (!mainG.IsVisible)
-                        mainG.IsVisible = true;
+                    //if (!mainG.IsVisible)
+                      //  mainG.IsVisible = true;
                     if(qSelectedCueOptions != null)
                     {
                         qSelectedCueOptions.activeCue = args.Cue.uniqueID;

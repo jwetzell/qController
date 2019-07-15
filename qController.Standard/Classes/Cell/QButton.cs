@@ -5,16 +5,40 @@ namespace qController
 {
     public class QButton : Button
     {
-        public string OSCCommand
+        public QCommand qCommand
         {
             get;
             set;
         }
-        public QButton(string text, string cmd)
-        {
-            Text = text;
-            OSCCommand = cmd;
-        }
 
+        public QButton(QCommand command){
+            qCommand = command;
+            Text = qCommand.text;
+            TextColor = Color.Black;
+
+            if (qCommand.osc.Contains("go"))
+            {
+                BackgroundColor = Color.SeaGreen;
+                switch (Device.RuntimePlatform)
+                {
+                    case Device.iOS:
+                        FontSize = App.HeightUnit * 4;
+                        FontAttributes = FontAttributes.Bold;
+                        break;
+                    case Device.Android:
+                        FontSize = App.HeightUnit * 4;
+                        FontAttributes = FontAttributes.Bold;
+                        break;
+                }
+            }
+            else if (qCommand.osc.Contains("panic"))
+            {
+                BackgroundColor = Color.IndianRed;
+            }
+            else
+            {
+                BackgroundColor = Color.FromHex("D8D8D8");
+            }
+        }
     }
 }

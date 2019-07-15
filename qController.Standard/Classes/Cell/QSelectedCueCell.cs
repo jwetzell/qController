@@ -15,6 +15,7 @@ namespace qController
             Padding = new Thickness(5);
             CornerRadius = 20;
             BackgroundColor = Color.FromHex("D8D8D8");
+            HeightRequest = App.HeightUnit * 25;
             Grid mainG = new Grid
             {
                 Padding = new Thickness(0),
@@ -53,8 +54,8 @@ namespace qController
                 Padding = new Thickness(0),
                 RowDefinitions =
                 {
-                    new RowDefinition{Height = GridLength.Auto},
-                    new RowDefinition{Height = GridLength.Auto}
+                    new RowDefinition{Height = new GridLength(1,GridUnitType.Star)},
+                    new RowDefinition{Height = new GridLength(2,GridUnitType.Star)}
                 },
                 ColumnDefinitions =
                 {
@@ -69,8 +70,7 @@ namespace qController
             number = new Label { 
                 Text = "",
                 FontAttributes = FontAttributes.Bold,
-                FontSize = App.HeightUnit * 5,
-                Margin = new Thickness(5)
+                FontSize = App.HeightUnit * 5
             };
 
             name = new Label { 
@@ -86,16 +86,34 @@ namespace qController
                 FontFamily = App.QFont,
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.End,
-                Margin = new Thickness(5),
                 FontSize = App.HeightUnit * 5
             };
 
             notes = new Label { 
                 Text = "Loading Cue Lists and Playhead Position",
-                HorizontalTextAlignment = TextAlignment.Center
+                HorizontalTextAlignment = TextAlignment.Center,
+                Margin = new Thickness(0,0,0,10)
             };
-            notes.HorizontalTextAlignment = TextAlignment.Center;
-            notes.Margin = new Thickness(0, 0, 0, 10);
+            notes.VerticalOptions = LayoutOptions.FillAndExpand;
+            notes.HorizontalOptions = LayoutOptions.FillAndExpand;
+
+
+            notes.BackgroundColor = Color.FromHex("FF0000");
+            number.BackgroundColor = Color.Red;
+            name.BackgroundColor = Color.Red;
+            type.BackgroundColor = Color.Red;
+
+            var notesDoubleTap = new TapGestureRecognizer();
+            notesDoubleTap.NumberOfTapsRequired = 2;
+            notesDoubleTap.Tapped += (s, e) =>
+            {
+                Console.WriteLine("Notes double tapped");
+            };
+
+            number.GestureRecognizers.Add(notesDoubleTap);
+            type.GestureRecognizers.Add(notesDoubleTap);
+            name.GestureRecognizers.Add(notesDoubleTap);
+            notes.GestureRecognizers.Add(notesDoubleTap);
 
             topGrid.Children.Add(number, 0, 0);
             topGrid.Children.Add(type, 4, 0);
@@ -113,6 +131,8 @@ namespace qController
             mainG.Children.Add(bottomGrid, 0, 1);
             Grid.SetColumnSpan(bottomGrid, 5);
 
+            topGrid.BackgroundColor = Color.FromHex("00FF00");
+            bottomGrid.BackgroundColor = Color.FromHex("00FF00");
             Margin = new Thickness(10);
             Content = mainG;
         }
@@ -124,6 +144,9 @@ namespace qController
             number.Text = cue.number;
             type.Text = cue.getIconString();
             notes.Text = cue.notes;
+            if(notes.Text == ""){
+                notes.Text = " ";
+            }
         }
     }
 }
