@@ -99,9 +99,17 @@ namespace qController
 
 
             qCell = new QSelectedCueCell();
+
+            
+            qCell.SelectedCueEdited += OnSelectedCueEdited;
             sLayout.Children.Add(qCell);
         }
 
+        private void OnSelectedCueEdited(object source, CueEditArgs args)
+        {
+            string address = "/workspace/" + qController.qWorkspace.workspace_id + "/cue_id/" + args.CueID + "/" + args.Property
+            qController.qClient.sendArgsUDP(address, args.NewValue);
+        }
         void FinishUI()
         {
             string workspace_prefix = "/workspace/" + qController.qWorkspace.workspace_id;

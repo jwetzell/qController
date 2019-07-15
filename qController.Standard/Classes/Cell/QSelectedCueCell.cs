@@ -1,14 +1,37 @@
 ﻿using System;
+using Acr.UserDialogs;
 using Xamarin.Forms;
 
 namespace qController
 {
+    public class CueEditArgs : EventArgs
+    {
+        public string CueID
+        {
+            get;
+            set;
+        }
+        public string Property
+        {
+            get;
+            set;
+        }
+        public string NewValue
+        {
+            get;
+            set;
+        }
+    }
+
     public class QSelectedCueCell : Frame
     {
+        public delegate void SelectedCueEditedHandler(object source, CueEditArgs args);
+        public event SelectedCueEditedHandler SelectedCueEdited;
+
         Label name;
         Label number;
         Label type;
-        Label notes;
+        public Label notes;
         public QCue activeCue;
         public QSelectedCueCell()
         {
@@ -97,23 +120,32 @@ namespace qController
             notes.VerticalOptions = LayoutOptions.FillAndExpand;
             notes.HorizontalOptions = LayoutOptions.FillAndExpand;
 
+            var notesDoubleTap = new TapGestureRecognizer();
+            notesDoubleTap.NumberOfTapsRequired = 2;
+            notesDoubleTap.Tapped += (s, e) =>
+            {
+                UserDialogs.Instance.Prompt(new PromptConfig
+                {
+                    Title = "Update Notes",
+                    Message = "Changes notes to update",
+                    OkText = "Update",
+                    Text = notes.Text,
+                    OnAction = (qNotes) =>
+                    {
+                        if (!qNotes.Ok)
+                            return;
+                        OnSelectedCueEdited("notes", qNotes.Text);
+
+
+                    }
+                });
+            };
+            notes.GestureRecognizers.Add(notesDoubleTap);
 
             notes.BackgroundColor = Color.FromHex("FF0000");
             number.BackgroundColor = Color.Red;
             name.BackgroundColor = Color.Red;
             type.BackgroundColor = Color.Red;
-
-            var notesDoubleTap = new TapGestureRecognizer();
-            notesDoubleTap.NumberOfTapsRequired = 2;
-            notesDoubleTap.Tapped += (s, e) =>
-            {
-                Console.WriteLine("Notes double tapped");
-            };
-
-            number.GestureRecognizers.Add(notesDoubleTap);
-            type.GestureRecognizers.Add(notesDoubleTap);
-            name.GestureRecognizers.Add(notesDoubleTap);
-            notes.GestureRecognizers.Add(notesDoubleTap);
 
             topGrid.Children.Add(number, 0, 0);
             topGrid.Children.Add(type, 4, 0);
@@ -144,9 +176,13 @@ namespace qController
             number.Text = cue.number;
             type.Text = cue.getIconString();
             notes.Text = cue.notes;
-            if(notes.Text == ""){
-                notes.Text = " ";
-            }
+        }
+
+        protected virtual void OnSelectedCueEdited(string prop, string value)
+        {
+            if (SelectedCueEdited != null)
+                SelectedCueEdited(this, new CueEditArgs() { CueID = activeCue.uniqueID, Property = prop, NewValue = value }) ;
+
         }
     }
 }
