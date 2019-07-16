@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
 
 namespace qController
 {
-    public class QSelectedCueOptionsCell : Frame
+    public class QLevelsCell : Frame
     {
 
         public List<double> levels;
@@ -16,14 +15,16 @@ namespace qController
         public Label mainLabel;
         public Label rightLabel;
         public Label leftLabel;
-        public QSelectedCueOptionsCell()
+        public QLevelsCell()
         {
             Padding = new Thickness(5);
             CornerRadius = 20;
-            BackgroundColor = Color.Transparent;
-
+            BorderColor = Color.Black;
+            HasShadow = true;
+            BackgroundColor = Color.FromHex("D8D8D8");
+            IsVisible = false;
             //highlight for testing
-            BackgroundColor = Color.Red;
+            //BackgroundColor = Color.Red;
 
 
             Grid mainG = new Grid
@@ -63,14 +64,9 @@ namespace qController
                 Maximum = 12
             };
 
-            mainG.Children.Add(mainSlider, 1, 0);
-            mainG.Children.Add(leftSlider, 1, 1);
-            mainG.Children.Add(rightSlider, 1, 2);
-
-            Grid.SetColumnSpan(mainSlider, 4);
-            Grid.SetColumnSpan(leftSlider, 4);
-            Grid.SetColumnSpan(rightSlider, 4);
-            mainLabel = new Label { 
+            
+            mainLabel = new Label
+            {
                 Text = "MAIN:",
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center
@@ -78,17 +74,25 @@ namespace qController
 
             leftLabel = new Label
             {
-                Text = "LEFT:",
+                Text = "0:",
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center
             };
 
             rightLabel = new Label
             {
-                Text = "RIGHT:",
+                Text = "1:",
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center
             };
+
+            mainG.Children.Add(mainSlider, 1, 0);
+            mainG.Children.Add(leftSlider, 1, 1);
+            mainG.Children.Add(rightSlider, 1, 2);
+
+            Grid.SetColumnSpan(mainSlider, 4);
+            Grid.SetColumnSpan(leftSlider, 4);
+            Grid.SetColumnSpan(rightSlider, 4);
 
             mainG.Children.Add(mainLabel, 0, 0);
             mainG.Children.Add(leftLabel, 0, 1);

@@ -116,7 +116,6 @@ namespace qController
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand
             };
-
             
             //BACKGROUND COLORS FOR TESTING ONLY 
             //notes.BackgroundColor = Color.Red;

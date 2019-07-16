@@ -28,48 +28,58 @@ namespace qController
             else if(args.Command == "add")
             {
                 AddWorkspace();
-            }else if(args.Command == "open_link")
+            }
+            else if (args.Command == "feedback")
             {
-                Device.OpenUri(new Uri("http://www.jwetzell.com"));
+                Console.WriteLine("Give Feedback selected");
+            }
+            else if(args.Command == "support")
+            {
+                UserDialogs.Instance.Confirm(new ConfirmConfig
+                {
+                    Title = "Support the Project",
+                    Message = "This application will never be a paid app or contain any sort of ads, but if you choose to show your support you may do so by clicking the Donate button below. Thank you!",
+                    OkText = "Donate",
+                    OnAction = (response) =>
+                    {
+                        if (response)
+                            Device.OpenUri(new Uri("https://linktr.ee/JoelWetzell"));
+                    }
+                });
             }
         }
 
         private void InitGUI()
         {
             NavigationPage.SetHasNavigationBar(this, false);
-            lstView.ItemsSource = QStorage.qInstances;
+            listView.ItemsSource = QStorage.qInstances;
 
-            lstView.ItemTemplate = new DataTemplate(typeof(QInstanceCell));
-            lstView.SeparatorVisibility = SeparatorVisibility.None;
-            lstView.ItemTapped += (object sender, ItemTappedEventArgs e) =>
+            listView.ItemTemplate = new DataTemplate(typeof(QInstanceCell));
+            listView.SeparatorVisibility = SeparatorVisibility.None;
+            listView.ItemTapped += (object sender, ItemTappedEventArgs e) =>
             {
                 // don't do anything if we just de-selected the row
                 if (e.Item == null) return;
                 // do something with e.SelectedItem
                 ((ListView)sender).SelectedItem = null; // de-select the row
             };
-            topBar.BackgroundColor = Color.FromHex("71AEFF");
+
+            menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
 
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
                     topBar.HeightRequest = Math.Max(App.Height * .09, 65);
-                    menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
                     menuButton.FontSize = App.Height * .04;
                     break;
                 case Device.Android:
                     topBar.HeightRequest = App.Height * .08;
-                    menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
                     menuButton.FontSize = App.Height * .05;
                     break;
             }
 
-            menuButton.Text = "\uF0C9";
-
-            lstView.BackgroundColor = Color.FromHex("4A4A4A");
             BackgroundColor = Color.FromHex("4A4A4A"); 
             var menuButtonGesture = new TapGestureRecognizer();
-
             menuButtonGesture.Tapped += showMenu;
             menuButton.GestureRecognizers.Add(menuButtonGesture);
 
@@ -109,7 +119,6 @@ namespace qController
 			});
         }
 
-
         async void Scan(){
             bool workspacesFound = false;
             App.showToast("Scanning for Instances...");
@@ -141,14 +150,5 @@ namespace qController
         {
             App.MenuIsPresented = true;
         }
-
-        void showToast(string message)
-        {
-            var toastConfig = new ToastConfig(message);
-            toastConfig.SetDuration(3000);
-            toastConfig.SetPosition(ToastPosition.Bottom);
-            UserDialogs.Instance.Toast(toastConfig);
-        }
-
     }
 }

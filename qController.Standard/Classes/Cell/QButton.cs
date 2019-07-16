@@ -15,7 +15,7 @@ namespace qController
             qCommand = command;
             Text = qCommand.text;
             TextColor = Color.Black;
-
+            FontSize = App.HeightUnit * 2.5;
             if (qCommand.osc.Contains("go"))
             {
                 BackgroundColor = Color.SeaGreen;

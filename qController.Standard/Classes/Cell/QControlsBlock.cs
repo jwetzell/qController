@@ -23,7 +23,7 @@ namespace qController
 
             BackgroundColor = Color.Transparent;
             //highlight Button Grid
-            BackgroundColor = Color.FromHex("FF0000");
+            //BackgroundColor = Color.FromHex("FF0000");
 
             List<QCommand> commands = new List<QCommand>();
             commands.Add(QCommands.PREVIOUS);

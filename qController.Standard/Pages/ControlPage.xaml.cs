@@ -9,7 +9,7 @@ namespace qController
     {
         QController qController;
         QSelectedCueCell qCell;
-        QSelectedCueOptionsCell qSelectedCueOptions;
+        QLevelsCell qLevelsCell;
         ShadowButton showLevelsButton;
         Grid mainG;
         QControlsBlock qControlsBlock;
@@ -74,19 +74,13 @@ namespace qController
             App.rootPage.MenuPage.ChangeToControl();
             NavigationPage.SetHasNavigationBar(this, false);
 
-            topBar.BackgroundColor = Color.FromHex("71AEFF");
-
-
             BackgroundColor = Color.FromHex("4A4A4A");
-            menuButton.Text = QIcon.MENU;
 
             qCell = new QSelectedCueCell();
 
-
             qCell.SelectedCueEdited += OnSelectedCueEdited;
+
             AbsoluteLayout.SetLayoutFlags(qCell, AbsoluteLayoutFlags.All);
-
-
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
@@ -107,8 +101,6 @@ namespace qController
             menuButtonGesture.Tapped += ShowMenu;
             menuButton.GestureRecognizers.Add(menuButtonGesture);
 
-
-            
             sLayout.Children.Add(qCell);
         }
 
@@ -117,80 +109,67 @@ namespace qController
             string address = "/workspace/" + qController.qWorkspace.workspace_id + "/cue_id/" + args.CueID + "/" + args.Property;
             qController.qClient.sendArgsUDP(address, args.NewValue);
         }
+
         void FinishUI()
         {
             string workspace_prefix = "/workspace/" + qController.qWorkspace.workspace_id;
             
-            qSelectedCueOptions = new QSelectedCueOptionsCell();
+            qLevelsCell = new QLevelsCell();
 
-            qSelectedCueOptions.mainSlider.ValueChanged += (sender, args) =>
+            qLevelsCell.mainSlider.ValueChanged += (sender, args) =>
             {
-                qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qSelectedCueOptions.activeCue + "/sliderLevel/0", (float)args.NewValue);
+                qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/0", (float)args.NewValue);
             };
-            qSelectedCueOptions.leftSlider.ValueChanged += (sender, args) =>
+            qLevelsCell.leftSlider.ValueChanged += (sender, args) =>
             {
-                qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qSelectedCueOptions.activeCue + "/sliderLevel/1", (float)args.NewValue);
+                qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/1", (float)args.NewValue);
             };
-            qSelectedCueOptions.rightSlider.ValueChanged += (sender, args) =>
+            qLevelsCell.rightSlider.ValueChanged += (sender, args) =>
             {
-                qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qSelectedCueOptions.activeCue + "/sliderLevel/2", (float)args.NewValue);
+                qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/2", (float)args.NewValue);
             };
 
-            
-            qControlsBlock = new QControlsBlock(qController);
-
-            switch (Device.RuntimePlatform)
+            Button showLevelsInnerButton = new Button
             {
-                case Device.iOS:
-                    AbsoluteLayout.SetLayoutBounds(qControlsBlock, new Rectangle(0, 0.53, 1, 0.25));
-                    AbsoluteLayout.SetLayoutFlags(qControlsBlock, AbsoluteLayoutFlags.All);
-                    AbsoluteLayout.SetLayoutBounds(qSelectedCueOptions, new Rectangle(0,0.50,1,0.25));
-                    AbsoluteLayout.SetLayoutFlags(qSelectedCueOptions, AbsoluteLayoutFlags.All);
-                    break;
-                case Device.Android:
-                    AbsoluteLayout.SetLayoutBounds(qControlsBlock, new Rectangle(0, 0.58, 1, 0.25));
-                    AbsoluteLayout.SetLayoutFlags(qControlsBlock, AbsoluteLayoutFlags.All);
-                    AbsoluteLayout.SetLayoutBounds(qSelectedCueOptions, new Rectangle(0,0.70,1,0.25));
-                    AbsoluteLayout.SetLayoutFlags(qSelectedCueOptions, AbsoluteLayoutFlags.All);
-                    break;
-            }
-            sLayout.Children.Add(qControlsBlock);
-
-            sLayout.Children.Add(qSelectedCueOptions);
-            
-
-            Button b = new Button{
                 Text = QIcon.SLIDERS,
                 TextColor = Color.Black,
                 FontFamily = App.QFont,
                 FontSize = App.HeightUnit * 4,
                 VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions =LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
                 HeightRequest = App.HeightUnit * 8,
                 WidthRequest = App.HeightUnit * 8,
                 CornerRadius = (int)(App.HeightUnit * 4),
                 BackgroundColor = Color.LightBlue
             };
-            b.Clicked += (s, e) =>
+            showLevelsInnerButton.Clicked += (s, e) =>
             {
-                qSelectedCueOptions.IsVisible = !qSelectedCueOptions.IsVisible;
+                qLevelsCell.IsVisible = !qLevelsCell.IsVisible;
             };
 
-            showLevelsButton = new ShadowButton(b);
+            showLevelsButton = new ShadowButton(showLevelsInnerButton);
+            qControlsBlock = new QControlsBlock(qController);
+
+            AbsoluteLayout.SetLayoutFlags(qControlsBlock, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutFlags(qLevelsCell, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutFlags(showLevelsButton, AbsoluteLayoutFlags.PositionProportional);
 
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
+                    AbsoluteLayout.SetLayoutBounds(qControlsBlock, new Rectangle(0, 0.53, 1, 0.25));
+                    AbsoluteLayout.SetLayoutBounds(qLevelsCell, new Rectangle(0.9,0.40,0.8,0.25));
                     AbsoluteLayout.SetLayoutBounds(showLevelsButton, new Rectangle(0.04, 0.34, App.HeightUnit * 8, App.HeightUnit * 8));
-                    AbsoluteLayout.SetLayoutFlags(showLevelsButton, AbsoluteLayoutFlags.PositionProportional);
                     break;
                 case Device.Android:
+                    AbsoluteLayout.SetLayoutBounds(qControlsBlock, new Rectangle(0, 0.58, 1, 0.25));
+                    AbsoluteLayout.SetLayoutBounds(qLevelsCell, new Rectangle(0.9, 0.40, 0.8, 0.25));
                     AbsoluteLayout.SetLayoutBounds(showLevelsButton, new Rectangle(0.04, 0.39, App.HeightUnit * 8, App.HeightUnit * 8));
-                    AbsoluteLayout.SetLayoutFlags(showLevelsButton, AbsoluteLayoutFlags.PositionProportional);
                     break;
             }
-            
-            
+
+            sLayout.Children.Add(qControlsBlock);
+            sLayout.Children.Add(qLevelsCell);
             sLayout.Children.Add(showLevelsButton);
         }
 
@@ -221,7 +200,7 @@ namespace qController
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         App.rootPage.MenuPage.ChangeToWorkspace(e.UpdatedWorkspace);
-                    });                    
+                    }); 
                     if (qCell.activeCue == null)
                     {
                         Device.BeginInvokeOnMainThread(() => {
@@ -278,14 +257,12 @@ namespace qController
                     else
                         showLevelsButton.IsVisible = false;
                     qCell.UpdateSelectedCue(args.Cue);
-                    //if (!mainG.IsVisible)
-                      //  mainG.IsVisible = true;
-                    if(qSelectedCueOptions != null)
+                    if(qLevelsCell != null)
                     {
-                        qSelectedCueOptions.activeCue = args.Cue.uniqueID;
+                        qLevelsCell.activeCue = args.Cue.uniqueID;
                         if (args.Cue.levels != null)
                         {
-                            qSelectedCueOptions.UpdateLevels(args.Cue.levels[0]);
+                            qLevelsCell.UpdateLevels(args.Cue.levels[0]);
                         }
                     }
                 });

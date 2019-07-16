@@ -57,14 +57,14 @@ namespace qController
             Frame f = new Frame
             {
                 Content = mainG,
-                OutlineColor = Color.Black,
+                BorderColor = Color.Black,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Padding = 30,
                 Margin = new Thickness(10,10,10,10),
                 CornerRadius=20,
+                BackgroundColor = Color.FromHex("D8D8D8")
             };
-            f.BackgroundColor = Color.FromHex("D8D8D8");
             View = f;
            
             void InitItems()
@@ -106,9 +106,7 @@ namespace qController
             void Connect(object sender, EventArgs e)
             {
                 App.NavigationPage.Navigation.PushAsync(new ControlPage(nameLabel.Text,addressLabel.Text));
-
                 Console.WriteLine("Connect To " + nameLabel.Text + " Pressed");
-
             }
         }
     }

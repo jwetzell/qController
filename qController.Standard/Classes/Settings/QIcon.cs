@@ -47,6 +47,9 @@ namespace qController
 
         public const string COMMENTING_O = "\uF27B";
 
+        public const string DOLLAR = "\uF155";
+        public const string MAIL = "\uE812";
+
 
         public static string GetIconFromType(string type)
         {

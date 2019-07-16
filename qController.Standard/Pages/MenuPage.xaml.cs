@@ -18,24 +18,8 @@ namespace qController
             InitializeComponent();
             items = new ObservableCollection<MenuPageItem>();
 
-            items.Add(new MenuPageItem
-            {
-                Title = "Scan Network",
-                Icon = "\uE800",
-                Command = "scan"
-            });
-            items.Add(new MenuPageItem
-            {
-                Title = "Add Manually",
-                Icon = "\uE801",
-                Command = "add"
-            });
-            /*items.Add(new MenuPageItem
-            {
-                Title = "Open Link",
-                Icon = "\uF0C9",
-                Command = "open_link"
-            });*/
+            ChangeToHome();
+            
             listView = new ListView
             {
                 ItemsSource = items,
@@ -90,6 +74,7 @@ namespace qController
                 Icon = QIcon.CANCEL,
                 Command = "disconnect"
             });
+            
         }
         public void ChangeToWorkspace(QWorkSpace workspace)
         {
@@ -184,6 +169,18 @@ namespace qController
                 Title = "Add Manually",
                 Icon = "\uE801",
                 Command = "add"
+            }); 
+            items.Add(new MenuPageItem
+            {
+                Title = "Send Feedback",
+                Icon = QIcon.MAIL,
+                Command = "feedback"
+            });
+            items.Add(new MenuPageItem
+            {
+                Title = "Support Project",
+                Icon = QIcon.DOLLAR,
+                Command = "support"
             });
         }
     }
