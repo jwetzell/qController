@@ -142,7 +142,6 @@ namespace qController
             mainG.Children.Add(bottomGrid, 0, 1);
             Grid.SetColumnSpan(bottomGrid, 5);
 
-            Padding = new Thickness(5);
             CornerRadius = 20;
             BackgroundColor = Color.FromHex("D8D8D8");
             HeightRequest = App.HeightUnit * 25;

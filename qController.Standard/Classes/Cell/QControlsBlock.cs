@@ -23,7 +23,7 @@ namespace qController
 
             BackgroundColor = Color.Transparent;
             //highlight Button Grid
-            //BackgroundColor = Color.FromHex("FF0000");
+            BackgroundColor = Color.FromHex("FF0000");
 
             List<QCommand> commands = new List<QCommand>();
             commands.Add(QCommands.PREVIOUS);
@@ -51,9 +51,9 @@ namespace qController
             {
                 Padding = new Thickness(0),
                 RowDefinitions = {
-                    new RowDefinition{Height = GridLength.Auto},
-                    new RowDefinition{Height = GridLength.Auto},
-                    new RowDefinition{Height = GridLength.Auto}
+                    new RowDefinition{Height = GridLength.Star},
+                    new RowDefinition{Height = GridLength.Star},
+                    new RowDefinition{Height = GridLength.Star}
                 },
                 ColumnDefinitions = {
                     new ColumnDefinition{Width = new GridLength(1,GridUnitType.Star)},

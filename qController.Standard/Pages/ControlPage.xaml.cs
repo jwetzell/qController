@@ -10,6 +10,7 @@ namespace qController
         QController qController;
         QSelectedCueCell qCell;
         QSelectedCueOptionsCell qSelectedCueOptions;
+        ShadowButton showLevelsButton;
         Grid mainG;
         QControlsBlock qControlsBlock;
         public ControlPage(string name, string address)
@@ -78,15 +79,24 @@ namespace qController
 
             BackgroundColor = Color.FromHex("4A4A4A");
             menuButton.Text = QIcon.MENU;
- 
+
+            qCell = new QSelectedCueCell();
+
+
+            qCell.SelectedCueEdited += OnSelectedCueEdited;
+            AbsoluteLayout.SetLayoutFlags(qCell, AbsoluteLayoutFlags.All);
+
+
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
+                    AbsoluteLayout.SetLayoutBounds(qCell, new Rectangle(0, 0.13, 1, 0.30));
                     topBar.HeightRequest = Math.Max(App.Height * .09, 65);
                     menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
                     menuButton.FontSize = App.Height * .04;
                     break;
                 case Device.Android:
+                    AbsoluteLayout.SetLayoutBounds(qCell, new Rectangle(0, 0.13, 1, 0.35));
                     topBar.HeightRequest = App.Height * .08;
                     menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
                     menuButton.FontSize = App.Height * .05;
@@ -98,13 +108,7 @@ namespace qController
             menuButton.GestureRecognizers.Add(menuButtonGesture);
 
 
-            qCell = new QSelectedCueCell();
             
-            
-            qCell.SelectedCueEdited += OnSelectedCueEdited;
-
-            AbsoluteLayout.SetLayoutBounds(qCell, new Rectangle(0, 0.13, 1, 0.30));
-            AbsoluteLayout.SetLayoutFlags(qCell, AbsoluteLayoutFlags.All);
             sLayout.Children.Add(qCell);
         }
 
@@ -132,28 +136,66 @@ namespace qController
                 qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qSelectedCueOptions.activeCue + "/sliderLevel/2", (float)args.NewValue);
             };
 
+            
             qControlsBlock = new QControlsBlock(qController);
 
-            AbsoluteLayout.SetLayoutBounds(qControlsBlock, new Rectangle(0, 0.53, 1, 0.25));
-            AbsoluteLayout.SetLayoutFlags(qControlsBlock, AbsoluteLayoutFlags.All);
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    AbsoluteLayout.SetLayoutBounds(qControlsBlock, new Rectangle(0, 0.53, 1, 0.25));
+                    AbsoluteLayout.SetLayoutFlags(qControlsBlock, AbsoluteLayoutFlags.All);
+                    AbsoluteLayout.SetLayoutBounds(qSelectedCueOptions, new Rectangle(0,0.50,1,0.25));
+                    AbsoluteLayout.SetLayoutFlags(qSelectedCueOptions, AbsoluteLayoutFlags.All);
+                    break;
+                case Device.Android:
+                    AbsoluteLayout.SetLayoutBounds(qControlsBlock, new Rectangle(0, 0.58, 1, 0.25));
+                    AbsoluteLayout.SetLayoutFlags(qControlsBlock, AbsoluteLayoutFlags.All);
+                    AbsoluteLayout.SetLayoutBounds(qSelectedCueOptions, new Rectangle(0,0.70,1,0.25));
+                    AbsoluteLayout.SetLayoutFlags(qSelectedCueOptions, AbsoluteLayoutFlags.All);
+                    break;
+            }
             sLayout.Children.Add(qControlsBlock);
 
+            sLayout.Children.Add(qSelectedCueOptions);
+            
+
             Button b = new Button{
-                Text = "L",
+                Text = QIcon.SLIDERS,
                 TextColor = Color.Black,
-                HeightRequest = App.HeightUnit * 10,
-                WidthRequest = App.HeightUnit * 10,
-                CornerRadius = (int)(App.HeightUnit * 5),
-                BackgroundColor = Color.Blue
+                FontFamily = App.QFont,
+                FontSize = App.HeightUnit * 4,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions =LayoutOptions.FillAndExpand,
+                HeightRequest = App.HeightUnit * 8,
+                WidthRequest = App.HeightUnit * 8,
+                CornerRadius = (int)(App.HeightUnit * 4),
+                BackgroundColor = Color.LightBlue
             };
-            AbsoluteLayout.SetLayoutBounds(b, new Rectangle(0.99, 0.99, App.HeightUnit * 10, App.HeightUnit * 10));
-            AbsoluteLayout.SetLayoutFlags(b, AbsoluteLayoutFlags.PositionProportional);
-            //sLayout.Children.Add(b);
+            b.Clicked += (s, e) =>
+            {
+                qSelectedCueOptions.IsVisible = !qSelectedCueOptions.IsVisible;
+            };
+
+            showLevelsButton = new ShadowButton(b);
+
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    AbsoluteLayout.SetLayoutBounds(showLevelsButton, new Rectangle(0.04, 0.34, App.HeightUnit * 8, App.HeightUnit * 8));
+                    AbsoluteLayout.SetLayoutFlags(showLevelsButton, AbsoluteLayoutFlags.PositionProportional);
+                    break;
+                case Device.Android:
+                    AbsoluteLayout.SetLayoutBounds(showLevelsButton, new Rectangle(0.04, 0.39, App.HeightUnit * 8, App.HeightUnit * 8));
+                    AbsoluteLayout.SetLayoutFlags(showLevelsButton, AbsoluteLayoutFlags.PositionProportional);
+                    break;
+            }
+            
+            
+            sLayout.Children.Add(showLevelsButton);
         }
 
         void ShowMenu(object sender, EventArgs e)
         {
-            //App.NavigationPage.Navigation.PopAsync();
             App.MenuIsPresented = true;
         }
 
@@ -204,13 +246,13 @@ namespace qController
             QCue cue = qController.qWorkspace.GetCue(qController.playbackPosition);
             if(cue != null)
             {
-                /*Device.BeginInvokeOnMainThread(() => {
-                    if (cue.type.Equals("Audio"))
-                        sLayout.Children.Add(qSelectedCueOptions);
+                Device.BeginInvokeOnMainThread(() => {
+                    if (cue.levels != null)
+                        showLevelsButton.IsVisible = true;
                     else
-                        sLayout.Children.Remove(qSelectedCueOptions);
+                        showLevelsButton.IsVisible = false;
                     qCell.UpdateSelectedCue(cue);
-                });*/
+                });
             }
         }
 
@@ -231,10 +273,10 @@ namespace qController
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Console.WriteLine("Refreshing Currently Displayed Cue");
-                    /*if (args.Cue.levels != null)
-                        sLayout.Children.Add(qSelectedCueOptions);
+                    if (args.Cue.levels != null)
+                        showLevelsButton.IsVisible = true;
                     else
-                        sLayout.Children.Remove(qSelectedCueOptions);*/
+                        showLevelsButton.IsVisible = false;
                     qCell.UpdateSelectedCue(args.Cue);
                     //if (!mainG.IsVisible)
                       //  mainG.IsVisible = true;

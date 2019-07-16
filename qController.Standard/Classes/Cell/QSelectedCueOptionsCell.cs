@@ -20,7 +20,12 @@ namespace qController
         {
             Padding = new Thickness(5);
             CornerRadius = 20;
-            BackgroundColor = Color.FromHex("D8D8D8");
+            BackgroundColor = Color.Transparent;
+
+            //highlight for testing
+            BackgroundColor = Color.Red;
+
+
             Grid mainG = new Grid
             {
                 Padding = new Thickness(0),
