@@ -50,13 +50,13 @@ namespace qController
             }
         }
 
-        private void PromptForWorkspace(List<QInfo> workspaces)
+        private void PromptForWorkspace(List<QWorkspaceInfo> workspaces)
         {
             ActionSheetConfig config = new ActionSheetConfig();
             config.SetTitle("Select Workspace");
             for (int i = 0; i < workspaces.Count; i++)
             {
-                QInfo workspace = workspaces[i];
+                QWorkspaceInfo workspace = workspaces[i];
                 config.Add(workspace.displayName, new Action(() => { 
                     Console.WriteLine("Workspace Selected: " + workspace.displayName);
                     qController.Connect(workspace.uniqueID);
