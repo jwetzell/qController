@@ -5,13 +5,14 @@ using System.Collections.Generic;
 
 namespace qController
 {
-    public class QWorkSpace
+    public class QWorkspace
     {
         public string status { get; set; }
         public List<QCueList> data { get; set; }
         public string workspace_id { get; set; }
         public string address { get; set; }
         public bool IsPopulated { get; set; }
+
         public QCue GetCue(string cue_id)
         {
             foreach (var cueList in data)
@@ -59,23 +60,6 @@ namespace qController
                     }
                 }
             }
-        }
-
-        public QCue GetEmptyGroup()
-        {
-            foreach (var cueList in data)
-            {
-                foreach (var cue in cueList.cues)
-                {
-                    if (cue.type == "Group" && cue.cues == null)
-                    {
-                        Console.WriteLine("Next Group Cue Found");
-                        return cue;
-                    }
-                }
-            }
-            IsPopulated = true;
-            return null;
         }
 
         public bool CheckPopulated()

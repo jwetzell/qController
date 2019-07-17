@@ -79,7 +79,7 @@
       <HintPath>..\packages\Acr.Settings.9.0.1\lib\monoandroid80\Acr.Settings.dll</HintPath>
     </Reference>
     <Reference Include="Splat">
-      <HintPath>..\packages\Splat.8.0.1\lib\monoandroid81\Splat.dll</HintPath>
+      <HintPath>..\packages\Splat.8.0.5\lib\monoandroid81\Splat.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive">
       <HintPath>..\packages\System.Reactive.4.1.5\lib\netstandard2.0\System.Reactive.dll</HintPath>

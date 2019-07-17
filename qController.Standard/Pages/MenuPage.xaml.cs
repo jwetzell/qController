@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading;
 using Xamarin.Forms;
 
 namespace qController
@@ -76,7 +74,7 @@ namespace qController
             });
             
         }
-        public void ChangeToWorkspace(QWorkSpace workspace)
+        public void ChangeToWorkspace(QWorkspace workspace)
         {
             for(int i = 0; i < workspace.data.Count; i++)
             {

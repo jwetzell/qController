@@ -1,12 +1,9 @@
 ﻿//Class used to facilitate communication with a QInstance
 //Listens for incoming messages via qReceiver (UDP) and tcpSender (TCP)
 //WEIRD MESSAGE PARSING RULES NEED FIXED
-
 using System;
-using System.Linq;
-using System.Threading;
 using SharpOSC;
-using Newtonsoft.Json;
+
 namespace qController
 {
     public class QClient

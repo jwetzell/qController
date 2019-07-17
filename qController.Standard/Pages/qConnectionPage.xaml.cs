@@ -1,11 +1,8 @@
 ﻿using Xamarin.Forms;
-using System.Net;
 using System;
 using Acr.UserDialogs;
-using Acr.Settings;
 using Zeroconf;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 
 namespace qController
 {
@@ -52,10 +49,10 @@ namespace qController
         private void InitGUI()
         {
             NavigationPage.SetHasNavigationBar(this, false);
-            listView.ItemsSource = QStorage.qInstances;
 
+            //ListView Setup
+            listView.ItemsSource = QStorage.qInstances;
             listView.ItemTemplate = new DataTemplate(typeof(QInstanceCell));
-            listView.SeparatorVisibility = SeparatorVisibility.None;
             listView.ItemTapped += (object sender, ItemTappedEventArgs e) =>
             {
                 // don't do anything if we just de-selected the row
@@ -64,12 +61,11 @@ namespace qController
                 ((ListView)sender).SelectedItem = null; // de-select the row
             };
 
-            menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
-
+            //Platform Specific Setup
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
-                    topBar.HeightRequest = Math.Max(App.Height * .09, 65);
+                    topBar.HeightRequest = App.Height * .09;
                     menuButton.FontSize = App.Height * .04;
                     break;
                 case Device.Android:
@@ -78,10 +74,13 @@ namespace qController
                     break;
             }
 
-            BackgroundColor = Color.FromHex("4A4A4A"); 
+            BackgroundColor = Color.FromHex("4A4A4A");
+
+            //MenuButton Setup
             var menuButtonGesture = new TapGestureRecognizer();
             menuButtonGesture.Tapped += showMenu;
             menuButton.GestureRecognizers.Add(menuButtonGesture);
+            menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
 
         }
 

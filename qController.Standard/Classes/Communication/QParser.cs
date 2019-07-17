@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using SharpOSC;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
@@ -18,7 +17,7 @@ namespace qController
 
     public class WorkspaceEventArgs : EventArgs
     {
-        public QWorkSpace UpdatedWorkspace
+        public QWorkspace UpdatedWorkspace
         {
             get;
             set;
@@ -45,7 +44,7 @@ namespace qController
 
     public class WorkspaceInfoArgs : EventArgs
     {
-        public List<QInfo> WorkspaceInfo
+        public List<QWorkspaceInfo> WorkspaceInfo
         {
             get;
             set;
@@ -155,7 +154,7 @@ namespace qController
         public void ParseQInfo(OscMessage msg)
         {
             JToken qInfo = OSC2JSON(msg);
-            List<QInfo> qWorkspaceInfo = JsonConvert.DeserializeObject<List<QInfo>>(qInfo.ToString());
+            List<QWorkspaceInfo> qWorkspaceInfo = JsonConvert.DeserializeObject<List<QWorkspaceInfo>>(qInfo.ToString());
             OnWorkspaceInfoReceived(qWorkspaceInfo);
         }
 
@@ -163,7 +162,7 @@ namespace qController
         {
             if (msg.Arguments.Count > 0)
             {
-                QWorkSpace workspace = JsonConvert.DeserializeObject<QWorkSpace>(msg.Arguments[0].ToString());
+                QWorkspace workspace = JsonConvert.DeserializeObject<QWorkspace>(msg.Arguments[0].ToString());
                 OnWorkspaceUpdated(workspace);
             }
         }
@@ -184,7 +183,7 @@ namespace qController
             return json.GetValue("data");
         }
 
-        protected virtual void OnWorkspaceUpdated(QWorkSpace workspace)
+        protected virtual void OnWorkspaceUpdated(QWorkspace workspace)
         {
             if (WorkspaceUpdated != null)
                 WorkspaceUpdated(this, new WorkspaceEventArgs() { UpdatedWorkspace = workspace });
@@ -221,7 +220,7 @@ namespace qController
             if (WorkspaceDisconnect != null)
                 WorkspaceDisconnect(this, new EventArgs());
         }
-        protected virtual void OnWorkspaceInfoReceived(List<QInfo> workspaces)
+        protected virtual void OnWorkspaceInfoReceived(List<QWorkspaceInfo> workspaces)
         {
             if (WorkspaceInfoReceived != null)
                 WorkspaceInfoReceived(this, new WorkspaceInfoArgs() { WorkspaceInfo = workspaces });

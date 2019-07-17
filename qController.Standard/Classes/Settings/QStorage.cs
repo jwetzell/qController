@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Acr.Settings;
+
 namespace qController
 {
     public class QStorage

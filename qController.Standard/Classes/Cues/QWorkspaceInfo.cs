@@ -1,8 +1,7 @@
 ﻿//General information about a QLab Workspace
-using System;
 namespace qController
 {
-    public class QInfo
+    public class QWorkspaceInfo
     {
         public string version { get; set; }
         public string displayName { get; set; }

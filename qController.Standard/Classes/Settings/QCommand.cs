@@ -1,5 +1,4 @@
-﻿using System;
-namespace qController
+﻿namespace qController
 {
     public class QCommand
     {

@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace qController
 {
     public class MenuPageItem

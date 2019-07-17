@@ -1,6 +1,5 @@
 ﻿//IP Address verification
 //IMPLEMENT A ISREACHABLE METHOD TO BE ABLE TO DISPLAY ONLINE QINSTANCES
-using System;
 using System.Net;
 
 namespace qController

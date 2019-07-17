@@ -1,9 +1,8 @@
 ﻿//Class used for updating local "copy" of workspace info, cue-lists, cues, etc.
-
 using System;
 using System.Threading;
 using Xamarin.Forms;
-using SharpOSC;
+
 namespace qController
 {
     public class QUpdater
@@ -43,7 +42,7 @@ namespace qController
             if (args.Cue.type == "Group")
             {
                 //Console.WriteLine("QUpdater/Updated cue was group cue, sending children request");
-                qController.qClient.sendStringUDP("/cue_id/" + args.Cue.uniqueID + "/children");
+                qController.qClient.sendStringUDP("/workspace/"+qController.qWorkspace.workspace_id+"/cue_id/" + args.Cue.uniqueID + "/children");
             }
         }
 

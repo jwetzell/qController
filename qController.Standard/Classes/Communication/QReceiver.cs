@@ -1,8 +1,5 @@
 ﻿//Class used for receiving workspace update messages
-
-using System;
 using SharpOSC;
-using System.Net;
 using System.Threading;
 
 namespace qController

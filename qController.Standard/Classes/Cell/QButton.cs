@@ -1,5 +1,4 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace qController
 {
@@ -11,7 +10,8 @@ namespace qController
             set;
         }
 
-        public QButton(QCommand command){
+        public QButton(QCommand command)
+        {
             qCommand = command;
             Text = qCommand.text;
             TextColor = Color.Black;

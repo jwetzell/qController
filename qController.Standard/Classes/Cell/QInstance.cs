@@ -1,21 +1,14 @@
-﻿using System;
-using System.Net;
-using System.Net.NetworkInformation;
-using Xamarin.Forms;
-using SharpOSC;
-using System.Threading;
+﻿using Xamarin.Forms;
 
 namespace qController
 {
-
-
     public class QInstance : ViewCell
     {
         public string name { get; set; }
         public string address { get; set; }
         public QInstance()
         {
-            
+
         }
         public QInstance(string tName, string tAddress)
         {
@@ -38,5 +31,4 @@ namespace qController
             return true;
         }
     }
-        
 }

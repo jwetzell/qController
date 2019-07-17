@@ -1,10 +1,8 @@
 ﻿//Currently unused would like to reimplement eventually
 //Currently being done in qConnectionPage.xaml.cs Scan() method
-
 using System;
 using System.Collections.Generic;
 using Zeroconf;
-
 
 namespace qController
 {

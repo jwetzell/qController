@@ -4,22 +4,20 @@ using Xamarin.Forms;
 
 namespace qController
 {
-    public class QControlsBlock: Frame
+    public class QControlsBlock : Frame
     {
         Grid mainG;
         QController qController;
 
-        
+
         public QControlsBlock(QController controller)
         {
             qController = controller;
-            
-            
 
             Margin = new Thickness(10);
             Padding = new Thickness(0);
             IsVisible = true;
-            
+
 
             BackgroundColor = Color.Transparent;
             //highlight Button Grid
@@ -34,10 +32,11 @@ namespace qController
             commands.Add(QCommands.RESUME);
             //setCustomButtons(commands);
             setDefaultButtons();
-            
+
         }
 
-        void setDefaultButtons(){
+        void setDefaultButtons()
+        {
             List<QButton> buttons = new List<QButton>();
 
             buttons.Add(new QButton(QCommands.PREVIOUS));
@@ -65,7 +64,7 @@ namespace qController
 
             int row = 0;
             int column = 0;
-            for(int i = 0; i < buttons.Count; i++)
+            for (int i = 0; i < buttons.Count; i++)
             {
                 QButton b = buttons[i];
                 b.Clicked += sendOSC;
@@ -85,7 +84,8 @@ namespace qController
             Content = mainG;
         }
 
-        public void setCustomButtons(List<QCommand> commands){ 
+        public void setCustomButtons(List<QCommand> commands)
+        {
             mainG = new Grid
             {
                 Padding = new Thickness(0),
@@ -104,7 +104,7 @@ namespace qController
 
             int row = 0;
             int column = 0;
-            for(int i = 0; i < commands.Count; i++)
+            for (int i = 0; i < commands.Count; i++)
             {
                 QButton b = new QButton(commands[i]);
                 b.Clicked += sendOSC;
@@ -126,10 +126,11 @@ namespace qController
 
         void sendOSC(object sender, EventArgs e)
         {
-            if(((QButton)sender).qCommand.type == "WORKSPACE"){
+            if (((QButton)sender).qCommand.type == "WORKSPACE")
+            {
                 string workspace_prefix = "/workspace/" + qController.qWorkspace.workspace_id;
                 string command = workspace_prefix + ((QButton)sender).qCommand.osc;
-                qController.qClient.sendStringUDP(command);   
+                qController.qClient.sendStringUDP(command);
             }
         }
     }
