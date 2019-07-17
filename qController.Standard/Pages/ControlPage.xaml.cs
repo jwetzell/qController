@@ -26,7 +26,7 @@ namespace qController
             App.rootPage.MenuItemSelected += OnMenuItemSelected;
 
             instanceName.Text = name;
-
+            
             InitGUI();
 
             qController.KickOff();
@@ -75,12 +75,14 @@ namespace qController
             NavigationPage.SetHasNavigationBar(this, false);
 
             BackgroundColor = Color.FromHex("4A4A4A");
-
             qCell = new QSelectedCueCell();
 
             qCell.SelectedCueEdited += OnSelectedCueEdited;
-
+            
             AbsoluteLayout.SetLayoutFlags(qCell, AbsoluteLayoutFlags.All);
+
+            instanceName.FontSize = App.HeightUnit * 3;
+            
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
@@ -159,12 +161,12 @@ namespace qController
                 case Device.iOS:
                     AbsoluteLayout.SetLayoutBounds(qControlsBlock, new Rectangle(0, 0.53, 1, 0.25));
                     AbsoluteLayout.SetLayoutBounds(qLevelsCell, new Rectangle(0.9,0.40,0.8,0.25));
-                    AbsoluteLayout.SetLayoutBounds(showLevelsButton, new Rectangle(0.04, 0.34, App.HeightUnit * 8, App.HeightUnit * 8));
+                    AbsoluteLayout.SetLayoutBounds(showLevelsButton, new Rectangle(0.02, 0.34, App.HeightUnit * 8, App.HeightUnit * 8));
                     break;
                 case Device.Android:
                     AbsoluteLayout.SetLayoutBounds(qControlsBlock, new Rectangle(0, 0.58, 1, 0.25));
-                    AbsoluteLayout.SetLayoutBounds(qLevelsCell, new Rectangle(0.9, 0.40, 0.8, 0.25));
-                    AbsoluteLayout.SetLayoutBounds(showLevelsButton, new Rectangle(0.04, 0.39, App.HeightUnit * 8, App.HeightUnit * 8));
+                    AbsoluteLayout.SetLayoutBounds(qLevelsCell, new Rectangle(0.9, 0.45, 0.8, 0.25));
+                    AbsoluteLayout.SetLayoutBounds(showLevelsButton, new Rectangle(0.02, 0.39, App.HeightUnit * 8, App.HeightUnit * 8));
                     break;
             }
 
@@ -229,7 +231,10 @@ namespace qController
                     if (cue.levels != null)
                         showLevelsButton.IsVisible = true;
                     else
+                    {
                         showLevelsButton.IsVisible = false;
+                        qLevelsCell.IsVisible = false;
+                    }
                     qCell.UpdateSelectedCue(cue);
                 });
             }
@@ -255,7 +260,10 @@ namespace qController
                     if (args.Cue.levels != null)
                         showLevelsButton.IsVisible = true;
                     else
+                    {
                         showLevelsButton.IsVisible = false;
+                        qLevelsCell.IsVisible = false;
+                    }
                     qCell.UpdateSelectedCue(args.Cue);
                     if(qLevelsCell != null)
                     {

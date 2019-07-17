@@ -31,7 +31,7 @@ namespace qController
             }
             else if (args.Command == "feedback")
             {
-                Console.WriteLine("Give Feedback selected");
+                Device.OpenUri(new Uri("mailto:jwetzell1996@gmail.com"));
             }
             else if(args.Command == "support")
             {

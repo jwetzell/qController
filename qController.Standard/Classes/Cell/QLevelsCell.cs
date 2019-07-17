@@ -74,14 +74,14 @@ namespace qController
 
             leftLabel = new Label
             {
-                Text = "0:",
+                Text = "1:",
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center
             };
 
             rightLabel = new Label
             {
-                Text = "1:",
+                Text = "2:",
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center
             };
