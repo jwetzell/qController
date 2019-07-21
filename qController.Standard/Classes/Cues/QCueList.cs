@@ -13,5 +13,13 @@ namespace qController
         public string colorName { get; set; }
         public string name { get; set; }
         public bool armed { get; set; }
+
+        public string IconText
+        {
+            get
+            {
+                return QIcon.LIST;
+            }
+        }
     }
 }

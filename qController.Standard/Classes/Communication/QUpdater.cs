@@ -18,6 +18,16 @@ namespace qController
             qController.qClient.qParser.CueInfoUpdated += OnCueUpdateReceived;
             qController.qClient.qParser.WorkspaceUpdated += OnWorkspaceUpdated;
             qController.qClient.qParser.PlaybackPositionUpdated += OnPlaybackPositionUpdated;
+            qController.qClient.qParser.WorkspaceLoadError += OnWorkspaceLoadError;
+
+        }
+
+        private void OnWorkspaceLoadError(object source, WorkspaceEventArgs args)
+        {
+            Console.WriteLine("QUpdater: Loading cuelists has failed for some reason retrying");
+            qController.qClient.sendArgsUDP("/workspace/" + args.UpdatedWorkspace.workspace_id + "/connect");
+            qController.qClient.sendArgsUDP("/workspace/" + args.UpdatedWorkspace.workspace_id + "/updates", 1);
+            qController.qClient.sendAndReceiveString("/workspace/" + args.UpdatedWorkspace.workspace_id + "/cueLists");
 
         }
 
@@ -25,7 +35,7 @@ namespace qController
             updateThread.Start();
         }
 
-        //Attemp at a "keep alive" message
+        //Attempt at a "keep alive" message
         public void UpdateLoop()
         {
             active = true;
@@ -64,6 +74,7 @@ namespace qController
         public void OnPlaybackPositionUpdated(object source, PlaybackPositionArgs args)
         {
             qController.playbackPosition = args.PlaybackPosition;
+            Console.WriteLine("ControlPage: Update Specific Cue Called because of Playback Position Updated");
             qController.qClient.UpdateSpecificCue(qController.qWorkspace.workspace_id,args.PlaybackPosition);
         }
 

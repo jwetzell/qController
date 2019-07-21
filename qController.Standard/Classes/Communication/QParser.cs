@@ -80,6 +80,8 @@ namespace qController
         public delegate void ChildrenUpdateHandler(object source, ChildrenEventArgs args);
         public delegate void WorkspaceDisconnectHandler(object source, EventArgs args);
         public delegate void WorkspaceInfoHandler(object source, WorkspaceInfoArgs args);
+        public delegate void WorkspaceLoadErrorHandler(object source, WorkspaceEventArgs args);
+        public event WorkspaceLoadErrorHandler WorkspaceLoadError;
         public event WorkspaceInfoHandler WorkspaceInfoReceived;
         public event WorkspaceDisconnectHandler WorkspaceDisconnect;
         public event ChildrenUpdateHandler ChildrenUpdated;
@@ -162,8 +164,29 @@ namespace qController
         {
             if (msg.Arguments.Count > 0)
             {
-                QWorkspace workspace = JsonConvert.DeserializeObject<QWorkspace>(msg.Arguments[0].ToString());
-                OnWorkspaceUpdated(workspace);
+                var parts = msg.Address.Split('/');
+                string id = parts[3];
+
+                if (msg.Arguments[0].ToString() != "")
+                {
+                    try
+                    {
+                        Console.WriteLine(msg.Arguments.Count);
+                        Console.WriteLine(msg.Arguments[0].ToString().Length);
+
+                        QWorkspace workspace = JsonConvert.DeserializeObject<QWorkspace>(msg.Arguments[0].ToString());
+                        OnWorkspaceUpdated(workspace);
+                    }
+                    catch (Exception ex)
+                    {
+                        OnWorkspaceLoadError(id);
+                    }
+                    
+                }
+                else
+                {
+                    OnWorkspaceLoadError(id);
+                }
             }
         }
 
@@ -224,6 +247,11 @@ namespace qController
         {
             if (WorkspaceInfoReceived != null)
                 WorkspaceInfoReceived(this, new WorkspaceInfoArgs() { WorkspaceInfo = workspaces });
+        }
+        protected virtual void OnWorkspaceLoadError(string id)
+        {
+            if (WorkspaceLoadError != null)
+                WorkspaceLoadError(this, new WorkspaceEventArgs { UpdatedWorkspace = new QWorkspace(id) });
         }
 
     }

@@ -1,7 +1,7 @@
 ﻿using Acr.UserDialogs;
 using Xamarin.Forms;
 using Xamarin.Essentials;
-
+using System;
 namespace qController
 {
     public partial class App : Application
@@ -15,7 +15,7 @@ namespace qController
         public static double Width;
         public static double HeightUnit;
         public static double WidthUnit;
-
+        public static QController qControllerToResume;
         public static bool MenuIsPresented
         {
             get
@@ -59,22 +59,6 @@ namespace qController
             rootPage.Detail = NavigationPage;
             MainPage = rootPage;
             rootPage.Init();
-        }
-
-        protected override void OnStart()
-        {
-            // Handle when your app starts
-
-        }
-
-        protected override void OnSleep()
-        {
-            // Handle when your app sleeps
-        }
-
-        protected override void OnResume()
-        {
-            // Handle when your app resumes
         }
 
         public static void showToast(string message)

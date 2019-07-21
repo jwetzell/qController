@@ -10,8 +10,8 @@ namespace qController
         QController qController;
         QSelectedCueCell qCell;
         QLevelsCell qLevelsCell;
+        QCueListCell qCueListCell;
         ShadowButton showLevelsButton;
-        Grid mainG;
         QControlsBlock qControlsBlock;
         public ControlPage(string name, string address)
         {
@@ -23,6 +23,7 @@ namespace qController
             qController.qClient.qParser.PlaybackPositionUpdated += PlaybackPositionUpdated;
             qController.qClient.qParser.CueInfoUpdated += OnCueUpdateReceived;
             qController.qClient.qParser.ChildrenUpdated += OnChildrenUpdated;
+
             App.rootPage.MenuItemSelected += OnMenuItemSelected;
 
             instanceName.Text = name;
@@ -36,14 +37,13 @@ namespace qController
         {
             if(args.WorkspaceInfo.Count > 1)
             {
-                Console.WriteLine("MULTIPLE WORKSPACES ON SELECTED COMPUTER");
+                Console.WriteLine("ControlPage: MULTIPLE WORKSPACES ON SELECTED COMPUTER");
                 PromptForWorkspace(args.WorkspaceInfo);
             }
             else
             {
-                Console.WriteLine("ONLY ONE WORKSPACE ON SELECTED COMPUTER");
+                Console.WriteLine("ControlPage: ONLY ONE WORKSPACE ON SELECTED COMPUTER");
                 qController.Connect(args.WorkspaceInfo[0].uniqueID);
-
                 Device.BeginInvokeOnMainThread(() => {
                     FinishUI();
                 });
@@ -58,7 +58,7 @@ namespace qController
             {
                 QWorkspaceInfo workspace = workspaces[i];
                 config.Add(workspace.displayName, new Action(() => { 
-                    Console.WriteLine("Workspace Selected: " + workspace.displayName);
+                    Console.WriteLine("ControlPage: Workspace Selected " + workspace.displayName);
                     qController.Connect(workspace.uniqueID);
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -87,22 +87,23 @@ namespace qController
             {
                 case Device.iOS:
                     AbsoluteLayout.SetLayoutBounds(qCell, new Rectangle(0, 0.13, 1, 0.30));
-                    topBar.HeightRequest = Math.Max(App.Height * .09, 65);
-                    menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
+                    topBar.HeightRequest = App.Height * .09;
                     menuButton.FontSize = App.Height * .04;
                     break;
                 case Device.Android:
                     AbsoluteLayout.SetLayoutBounds(qCell, new Rectangle(0, 0.13, 1, 0.35));
-                    topBar.HeightRequest = App.Height * .08;
-                    menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
+                    topBar.HeightRequest = App.Height * .06;
                     menuButton.FontSize = App.Height * .05;
                     break;
             }
+
+            //Menu Button Setup
             var menuButtonGesture = new TapGestureRecognizer();
 
             menuButtonGesture.Tapped += ShowMenu;
             menuButton.GestureRecognizers.Add(menuButtonGesture);
-
+            menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
+            
             sLayout.Children.Add(qCell);
         }
 
@@ -156,6 +157,7 @@ namespace qController
             AbsoluteLayout.SetLayoutFlags(qLevelsCell, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(showLevelsButton, AbsoluteLayoutFlags.PositionProportional);
 
+
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
@@ -183,11 +185,13 @@ namespace qController
         void Back()
         {
             qController.Disconnect();
+            qController.Kill();
+            App.rootPage.MenuItemSelected -= OnMenuItemSelected;
             Device.BeginInvokeOnMainThread(() =>
             {
                 App.rootPage.MenuPage.ChangeToHome();
+                App.NavigationPage.Navigation.PopAsync();
             });
-            App.NavigationPage.Navigation.PopAsync();
         }
 
         public void WorkspaceUpdated(object sender, WorkspaceEventArgs e)
@@ -213,9 +217,10 @@ namespace qController
                             noSelect.number = "!";
                             qCell.UpdateSelectedCue(noSelect);
                         });
+                        Console.WriteLine("ControlPage: Update Selected Cue Called because of Inital Workspace Load");
                         qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
                     }
-                    Console.WriteLine("Workspace updated in ControlPage: " + qController.qWorkspace.workspace_id);
+                    Console.WriteLine("ControlPage: Workspace Updated " + qController.qWorkspace.workspace_id);
                 }
             }
         }
@@ -223,7 +228,7 @@ namespace qController
         public void PlaybackPositionUpdated(object sender, PlaybackPositionArgs e)
         {
             qController.playbackPosition = e.PlaybackPosition;
-            Console.WriteLine("Playback Position updated in ControlPage: " + qController.playbackPosition);
+            Console.WriteLine("ControlPage: Playback Position Updated " + qController.playbackPosition);
             QCue cue = qController.qWorkspace.GetCue(qController.playbackPosition);
             if(cue != null)
             {
@@ -242,50 +247,53 @@ namespace qController
 
         public void OnCueUpdateReceived(object sender, CueEventArgs args)
         {
-            qController.qWorkspace.UpdateCue(args.Cue);
-            Device.BeginInvokeOnMainThread(() =>
+            if(qController != null)
             {
-                App.rootPage.MenuPage.ChangeCueName(args.Cue.uniqueID, args.Cue.listName);
-            });
-            if (qController.playbackPosition == null)
-            {
-                qController.playbackPosition = args.Cue.uniqueID;
-            }
-
-            if (args.Cue.uniqueID == qController.playbackPosition)
-            {
-                Device.BeginInvokeOnMainThread(() =>
+                if(qController.qWorkspace != null)
                 {
-                    Console.WriteLine("Refreshing Currently Displayed Cue");
-                    if (args.Cue.levels != null)
-                        showLevelsButton.IsVisible = true;
-                    else
+                    qController.qWorkspace.UpdateCue(args.Cue);
+                    if (qController.playbackPosition == null)
                     {
-                        showLevelsButton.IsVisible = false;
-                        qLevelsCell.IsVisible = false;
+                        qController.playbackPosition = args.Cue.uniqueID;
                     }
-                    qCell.UpdateSelectedCue(args.Cue);
-                    if(qLevelsCell != null)
+
+                    if (args.Cue.uniqueID == qController.playbackPosition)
                     {
-                        qLevelsCell.activeCue = args.Cue.uniqueID;
-                        if (args.Cue.levels != null)
+                        Device.BeginInvokeOnMainThread(() =>
                         {
-                            qLevelsCell.UpdateLevels(args.Cue.levels[0]);
-                        }
-                    }
-                });
+                            Console.WriteLine("ControlPage: Refreshing Currently Displayed Cue");
+                            if (args.Cue.levels != null)
+                                showLevelsButton.IsVisible = true;
+                            else
+                            {
+                                showLevelsButton.IsVisible = false;
+                                qLevelsCell.IsVisible = false;
+                            }
+                            qCell.UpdateSelectedCue(args.Cue);
+                            if(qLevelsCell != null)
+                            {
+                                qLevelsCell.activeCue = args.Cue.uniqueID;
+                                if (args.Cue.levels != null)
+                                {
+                                    qLevelsCell.UpdateLevels(args.Cue.levels[0]);
+                                }
+                            }
+                        });
+                    } 
+                }
             }
+            
         }
 
         private void OnChildrenUpdated(object source, ChildrenEventArgs args)
         {
-            Console.WriteLine("Children Updated in ControlPage: " + args.cue_id);
-            qController.qWorkspace.UpdateChildren(args.cue_id, args.children);
-            Device.BeginInvokeOnMainThread(() =>
+            if(qController != null)
             {
-                App.rootPage.MenuPage.ChangeToControl();
-                App.rootPage.MenuPage.ChangeToWorkspace(qController.qWorkspace);
-            });
+                if(qController.qWorkspace != null)
+                {
+                    qController.qWorkspace.UpdateChildren(args.cue_id, args.children);  
+                }
+            }
         }
 
         private void OnMenuItemSelected(object source, MenuEventArgs args)
@@ -297,19 +305,55 @@ namespace qController
             else if (args.Command == "disconnect")
             {
                 Back();
+            }else if (args.Command.Contains("cueList"))
+            {
+                var parts = args.Command.Split(' ');
+                if(parts.Length > 1)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        qCueListCell = new QCueListCell(qController.qWorkspace.GetCueList(parts[1]));
+                        qCueListCell.closeButton.Clicked += CloseCueList;
+                        qCueListCell.cueListView.ItemSelected += OnCueListItemSelected;
+                        AbsoluteLayout.SetLayoutFlags(qCueListCell, AbsoluteLayoutFlags.All);
+                        AbsoluteLayout.SetLayoutBounds(qCueListCell, new Rectangle(0, 0.2, 1, 0.9));
+                        sLayout.Children.Add(qCueListCell);
+                    });
+                }
             }
         }
 
-        protected override void OnDisappearing()
+        private void CloseCueList(object sender, EventArgs e)
         {
-            base.OnDisappearing();
-            Console.WriteLine("Disappeared");
-            qController.Kill();
+            CloseCueList();
         }
-        protected override void OnAppearing()
+
+        private void CloseCueList()
         {
-            base.OnAppearing();
-            Console.WriteLine("Appeared");
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                sLayout.Children.Remove(qCueListCell);
+            });
+        }
+
+        private void OnCueListItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            QCue cue = (QCue)e.SelectedItem;
+            string selectCueOSC = "/workspace/" + qController.qWorkspace.workspace_id + "/select_id/" + cue.uniqueID;
+            qController.qClient.sendStringUDP(selectCueOSC);
+            CloseCueList();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            qController.Disconnect();
+            qController.Kill();
+            App.rootPage.MenuItemSelected -= OnMenuItemSelected;
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                App.rootPage.MenuPage.ChangeToHome();
+            });
+            return base.OnBackButtonPressed();
         }
     }
 }

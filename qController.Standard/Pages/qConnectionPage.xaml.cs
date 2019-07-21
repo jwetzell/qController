@@ -67,10 +67,12 @@ namespace qController
                 case Device.iOS:
                     topBar.HeightRequest = App.Height * .09;
                     menuButton.FontSize = App.Height * .04;
+                    menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);       
                     break;
                 case Device.Android:
-                    topBar.HeightRequest = App.Height * .08;
+                    topBar.HeightRequest = App.Height * .09;
                     menuButton.FontSize = App.Height * .05;
+                    menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);          
                     break;
             }
 
@@ -80,7 +82,6 @@ namespace qController
             var menuButtonGesture = new TapGestureRecognizer();
             menuButtonGesture.Tapped += showMenu;
             menuButton.GestureRecognizers.Add(menuButtonGesture);
-            menuButton.Margin = new Thickness(App.WidthUnit * 2, 0, 0, App.WidthUnit * 2);
 
         }
 

@@ -82,75 +82,10 @@ namespace qController
                 items.Add(new MenuPageItem
                 {
                     Title = cueList.listName,
-                    Icon = "",
-                    Command = ""
-                });
-                for (int j = 0; j < cueList.cues.Count; j++)
-                {
-                    var cue = cueList.cues[j];
-                    AddSubCues(cue, 0);
-                }
-            }
-        }
-
-        public void AddSubCues(QCue cue, int level)
-        {
-            var cueIcon = cue.getIconString();
-            var cueTitle = "";
-            for (int i = 0; i < level; i++)
-            {
-                cueTitle += "   ";
-            }
-            if (cue.number != "")
-            {
-                cueTitle += cue.number + " - " + cue.listName;
-            }
-            else
-            {
-                cueTitle += cue.listName;
-            }
-
-            if (cue.cues != null )
-            {          
-                items.Add(new MenuPageItem
-                {
-                    Title = cueTitle,
-                    Icon = cueIcon,
-                    Command = "/select_id/" + cue.uniqueID
-                });
-
-                //uncomment to load nested group cues
-                for (int i = 0; i < cue.cues.Count; i++)
-                {
-                    var sub_cue = cue.cues[i];
-                    AddSubCues(sub_cue, level + 1);
-                }
-            }
-            else
-            {
-                items.Add(new MenuPageItem
-                {
-                    Title = cueTitle,
-                    Icon = cueIcon,
-                    Command = "/select_id/" + cue.uniqueID
+                    Icon = cueList.IconText,
+                    Command = "cueList " + cueList.uniqueID
                 });
             }
-        }
-
-        public void ChangeCueName(string cue_id, string name){
-            for(int i = 0; i < items.Count; i++)
-            {
-                if (items[i].Command.Contains(cue_id))
-                {
-                    var item = items[i];
-                    items.RemoveAt(i);
-                    item.Title = name;
-                    items.Insert(i, item);
-                    Console.WriteLine("CUE OBJECT FOUND IN MENU TRYING TO UPDATE");
-                    return;
-                }
-            }
-            
         }
 
         public void ChangeToHome()

@@ -49,6 +49,8 @@
         public const string DOLLAR = "\uF155";
         public const string MAIL = "\uE812";
 
+        public const string LEFT_DIR = "\uE813";
+        public const string LIST = "\uE814";
 
         public static string GetIconFromType(string type)
         {

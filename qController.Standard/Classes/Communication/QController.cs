@@ -14,10 +14,15 @@ namespace qController
         public QClient qClient;
         public QWorkspace qWorkspace;
         public string playbackPosition;
-        public Stopwatch sw;
+        private string ipAddress;
+        private int port;
+
 		public QController(string address, int port)
         {
-            qClient = new QClient(address, port);
+            this.port = port;
+            this.ipAddress = address;
+
+            qClient = new QClient(ipAddress, port);
             qUpdater = new QUpdater(this);
 
         }
@@ -25,8 +30,7 @@ namespace qController
         public void Connect(string workspace_id)
         {
             Console.WriteLine("QCONTROLLER CONNECT CALLED: " + workspace_id);
-            qWorkspace = new QWorkspace();
-            qWorkspace.workspace_id = workspace_id;
+            qWorkspace = new QWorkspace(workspace_id);
             qUpdater.Start();
             qClient.sendArgsUDP("/workspace/"+workspace_id+"/connect");
             qClient.sendArgsUDP("/workspace/"+workspace_id+"/updates", 1);
@@ -46,6 +50,16 @@ namespace qController
         public void ConnectWithPass(string pass)
         {
             qClient.sendArgsUDP("/workspace/" + qWorkspace.workspace_id + "/connect", pass);
+        }
+
+        public void Resume()
+        {
+            //qClient = new QClient(ipAddress, port);
+            //qUpdater = new QUpdater(this);
+            if(qWorkspace != null)
+            {
+                Console.WriteLine("RESUMING " + qWorkspace.workspace_id);
+            }
         }
 
         public void Kill(){

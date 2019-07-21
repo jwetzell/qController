@@ -13,6 +13,12 @@ namespace qController
         public string address { get; set; }
         public bool IsPopulated { get; set; }
 
+        //ONLY FOR PASSING A WORKSPACE LOAD ERROR
+        public QWorkspace(string id)
+        {
+            workspace_id = id;
+        }
+
         public QCue GetCue(string cue_id)
         {
             foreach (var cueList in data)
@@ -23,6 +29,18 @@ namespace qController
                     {
                         return cue;
                     }
+                }
+            }
+            return null;
+        }
+
+        public QCueList GetCueList(string id)
+        {
+            foreach (var cueList in data)
+            {
+                if(cueList.uniqueID == id)
+                {
+                    return cueList;
                 }
             }
             return null;

@@ -30,7 +30,7 @@ namespace qController
         public bool isLoaded { get; set; }
         public string notes { get; set; }
         public List<List<double>> levels { get; set; }
-
+        
         //info loaded from /children
         public List<QCue> cues { get; set; }
 
@@ -38,6 +38,14 @@ namespace qController
         public string getIconString()
         {
             return QIcon.GetIconFromType(type);
+        }
+
+        public string IconText
+        {
+            get
+            {
+                return QIcon.GetIconFromType(type);
+            }
         }
     }
 }
