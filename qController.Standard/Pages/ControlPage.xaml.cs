@@ -40,12 +40,43 @@ namespace qController
                 Console.WriteLine("ControlPage: MULTIPLE WORKSPACES ON SELECTED COMPUTER");
                 PromptForWorkspace(args.WorkspaceInfo);
             }
-            else
+            else if (args.WorkspaceInfo.Count == 1)
             {
                 Console.WriteLine("ControlPage: ONLY ONE WORKSPACE ON SELECTED COMPUTER");
-                qController.Connect(args.WorkspaceInfo[0].uniqueID);
-                Device.BeginInvokeOnMainThread(() => {
-                    FinishUI();
+                Console.WriteLine("HasPasscode : " + args.WorkspaceInfo[0].hasPasscode);
+                if (!args.WorkspaceInfo[0].hasPasscode)
+                {
+                    qController.Connect(args.WorkspaceInfo[0].uniqueID);
+                    Device.BeginInvokeOnMainThread(() => {
+                        FinishUI();
+                    });
+                }
+                else
+                {
+                    UserDialogs.Instance.Confirm(new ConfirmConfig
+                    {
+                        Message = "Woops....I haven't implemented password protected workspaces yet...",
+                        OkText = "Disconnect",
+                        OnAction = (resp) =>
+                        {
+                            if (resp)
+                                Back();
+                        }
+                    });
+                }
+                
+            }
+            else
+            {
+                UserDialogs.Instance.Confirm(new ConfirmConfig
+                {
+                    Message = "QLab doesn't have any workspaces open?",
+                    OkText = "Disconnect",
+                    OnAction = (resp) =>
+                    {
+                        if (resp)
+                            Back();
+                    }
                 });
             }
         }
@@ -57,13 +88,30 @@ namespace qController
             for (int i = 0; i < workspaces.Count; i++)
             {
                 QWorkspaceInfo workspace = workspaces[i];
-                config.Add(workspace.displayName, new Action(() => { 
+                config.Add(workspace.displayName, new Action(() => {
                     Console.WriteLine("ControlPage: Workspace Selected " + workspace.displayName);
-                    qController.Connect(workspace.uniqueID);
-                    Device.BeginInvokeOnMainThread(() =>
+                    if (!workspace.hasPasscode)
                     {
-                        FinishUI();
-                    });
+                        qController.Connect(workspace.uniqueID);
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            FinishUI();
+                        });
+                    }
+                    else
+                    {
+                        UserDialogs.Instance.Confirm(new ConfirmConfig
+                        {
+                            Message = "Woops....I haven't implemented password protected workspaces yet...",
+                            OkText = "Disconnect",
+                            OnAction = (resp) =>
+                            {
+                                if (resp)
+                                    Back();
+                            }
+                        });
+                    }
+                    
                 }));
             }
             UserDialogs.Instance.ActionSheet(config);
@@ -184,7 +232,6 @@ namespace qController
 
         void Back()
         {
-            qController.Disconnect();
             qController.Kill();
             App.rootPage.MenuItemSelected -= OnMenuItemSelected;
             Device.BeginInvokeOnMainThread(() =>
@@ -346,7 +393,6 @@ namespace qController
 
         protected override bool OnBackButtonPressed()
         {
-            qController.Disconnect();
             qController.Kill();
             App.rootPage.MenuItemSelected -= OnMenuItemSelected;
             Device.BeginInvokeOnMainThread(() =>
