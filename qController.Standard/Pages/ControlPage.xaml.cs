@@ -385,8 +385,8 @@ namespace qController
 
         private void OnCueListItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            QCue cue = (QCue)e.SelectedItem;
-            string selectCueOSC = "/workspace/" + qController.qWorkspace.workspace_id + "/select_id/" + cue.uniqueID;
+            OSCListItem cue = (OSCListItem)e.SelectedItem;
+            string selectCueOSC = "/workspace/" + qController.qWorkspace.workspace_id + cue.Command;
             qController.qClient.sendStringUDP(selectCueOSC);
             CloseCueList();
         }

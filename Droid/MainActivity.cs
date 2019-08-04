@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Android.Net;
 
 namespace qController.Droid
 {
@@ -25,6 +26,23 @@ namespace qController.Droid
             LoadApplication(new App());
             Acr.UserDialogs.UserDialogs.Init(this);
 
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
+            {
+                ConnectivityManager connMgr = (ConnectivityManager)Application.Context.GetSystemService(Context.ConnectivityService);
+                connMgr.BindProcessToNetwork(null);
+                Console.WriteLine(connMgr.GetAllNetworks().Length);
+                Network[] networks = connMgr.GetAllNetworks();
+                for (int i = 0; i < networks.Length; i++)
+                {
+                    Network network = networks[i];
+                    NetworkInfo networkInfo = connMgr.GetNetworkInfo(network);
+                    if (networkInfo.Type == ConnectivityType.Wifi && networkInfo.IsAvailable && networkInfo.IsConnected)
+                    {
+                        Console.WriteLine("FIRST WIFI NETWORK FOUND......BINDING");
+                        connMgr.BindProcessToNetwork(network);
+                    }
+                }
+            }
         }
     }
 }
