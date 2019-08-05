@@ -29,8 +29,6 @@ namespace qController.Droid
             if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
             {
                 ConnectivityManager connMgr = (ConnectivityManager)Application.Context.GetSystemService(Context.ConnectivityService);
-                connMgr.BindProcessToNetwork(null);
-                Console.WriteLine(connMgr.GetAllNetworks().Length);
                 Network[] networks = connMgr.GetAllNetworks();
                 for (int i = 0; i < networks.Length; i++)
                 {
