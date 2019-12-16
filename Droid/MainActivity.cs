@@ -3,15 +3,13 @@
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
 using Android.Net;
 
 namespace qController.Droid
 {
-    [Activity(Label = "qController", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "qController", Icon = "@drawable/icon", Theme = "@style/MyTheme", ScreenOrientation = ScreenOrientation.Portrait, MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle bundle)
@@ -36,7 +34,7 @@ namespace qController.Droid
                     NetworkInfo networkInfo = connMgr.GetNetworkInfo(network);
                     if (networkInfo.Type == ConnectivityType.Wifi && networkInfo.IsAvailable && networkInfo.IsConnected)
                     {
-                        Console.WriteLine("FIRST WIFI NETWORK FOUND......BINDING");
+                        Console.WriteLine("ANDROID MAIN ACTIVITY - First Wi-Fi found......binding");
                         connMgr.BindProcessToNetwork(network);
                     }
                 }

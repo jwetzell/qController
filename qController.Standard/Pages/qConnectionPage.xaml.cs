@@ -122,7 +122,7 @@ namespace qController
         async void Scan(){
             bool workspacesFound = false;
             App.showToast("Scanning for Instances...");
-            Console.WriteLine("Begin Scanning");
+            Console.WriteLine("QCONNECTIONPAGE - Begin Scanning");
 
             IReadOnlyList<IZeroconfHost> results = await ZeroconfResolver.ResolveAsync("_qlab._udp.local.",TimeSpan.FromSeconds(3));
             if(results != null){
@@ -132,7 +132,7 @@ namespace qController
                     {
                         QInstance instance = new QInstance(result.DisplayName, result.IPAddress);
                         if(QStorage.AddInstance(instance)){
-                            Console.WriteLine(result.DisplayName + " @ " + result.IPAddress + " added");
+                            Console.WriteLine($"QCONNECTIONPAGE - {result.DisplayName} @ {result.IPAddress} added");
                             workspacesFound = true;
                         }
                     }

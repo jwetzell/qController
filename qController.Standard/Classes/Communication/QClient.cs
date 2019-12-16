@@ -12,7 +12,6 @@ namespace qController
         UDPSender udpSender;
         public QParser qParser;
         public QReceiver qReceiver;
-
         string Address;
         int Port;
 
@@ -23,7 +22,7 @@ namespace qController
             qParser = new QParser();
             qReceiver = new QReceiver(Port + 1);
             tcpSender = new TCPSender(Address, Port);
-            udpSender = new UDPSender(Address, Port);
+            //udpSender = new UDPSender(Address, Port);
 
             tcpSender.MessageReceived += OnMessageReceived;
             qReceiver.UpdateMessageReceived += OnMessageReceived;
@@ -33,7 +32,7 @@ namespace qController
         //one method for messages received whether from TCP or UDP (SAME MSG FORMAT)
         private void OnMessageReceived(object source, MessageEventArgs args)
         {
-            Console.WriteLine("QCLIENT MESSAGE RECEIVED: "+args.Message.Address);
+            Console.WriteLine("QCLIENT - Message Received: " + args.Message.Address);
             //try to find a better filtering process
             if (!args.Message.Address.Contains("update"))
                 qParser.ParseMessage(args.Message);
@@ -56,7 +55,7 @@ namespace qController
             }
             catch (Exception ex)
             {
-                Console.WriteLine("SEND EXCEPTION: " + ex.Message);
+                Console.WriteLine("QCLIENT - Send Exception: " + ex.Message);
             }
         }
 
@@ -68,7 +67,7 @@ namespace qController
             }
             catch (Exception ex)
             {
-                Console.WriteLine("SEND ARGS EXCEPTION: " + ex.Message);
+                Console.WriteLine("QCLIENT - Send w/Args Exception: " + ex.Message);
             }
         }
         public void sendStringUDP(string address)
@@ -91,7 +90,7 @@ namespace qController
             }
             catch (Exception ex)
             {
-                Console.WriteLine("SEND AND RECIEVE EXCEPTION: " + ex.Message);
+                Console.WriteLine("QCLIENT - Send and Receive Exception: " + ex.Message);
             }
         }
 
@@ -103,14 +102,14 @@ namespace qController
             }
             catch (Exception ex)
             {
-                Console.WriteLine("SEND AND RECEIVE ARGS EXCEPTION: " + ex.Message);
+                Console.WriteLine("QCLIENT - Send and Receive w/Args Exception: " + ex.Message);
             }
         }
 
 
         public void ProcessUpdate(OscMessage msg)
         {
-            Console.WriteLine("PROCESS UPDATE : " + msg.Address);
+            Console.WriteLine("QCLIENT - Process Update: " + msg.Address);
             if (msg.Address.Contains("workspace"))
             { 
                 UpdateWorkspace("not yet implemented");
@@ -133,7 +132,7 @@ namespace qController
 
         public void UpdateWorkspace(string ws_id)
         {
-            Console.WriteLine("Workspace needs to be updated: " + ws_id);
+            Console.WriteLine("QCLIENT - Workspace needs to be updated: " + ws_id);
         }
 
         public void Close()

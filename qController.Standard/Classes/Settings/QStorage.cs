@@ -13,7 +13,7 @@ namespace qController
 
             if (qInstances == null)
             {
-                Console.WriteLine("No qInstance exists creating one");
+                Console.WriteLine("QSTORAGE - No qInstance exists creating one");
                 qInstances = new ObservableCollection<QInstance>();
                 updateStorage();
             }

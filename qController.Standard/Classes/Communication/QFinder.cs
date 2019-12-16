@@ -14,12 +14,9 @@ namespace qController
 
 		public async void SearchForWorkspaces()
 		{
-            
+            Console.WriteLine("QFINDER - Scanning Started");
             IReadOnlyList<IZeroconfHost> results = await ZeroconfResolver.ResolveAsync("_qlab._udp.local.");
-            foreach (var result in results){
-                Console.WriteLine(result.IPAddress);
-            }
-            Console.WriteLine("Done");
+            Console.WriteLine("QFINDER - Scanning Done");
 		}
     }
 }

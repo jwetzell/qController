@@ -98,7 +98,7 @@ namespace qController
             void Delete(object sender, EventArgs e)
             {
 
-                Console.WriteLine("Delete " + nameLabel.Text + "," + addressLabel.Text + " Pressed");
+                Console.WriteLine("QINSTANCECELL - Delete " + nameLabel.Text + "," + addressLabel.Text + " Pressed");
                 QStorage.RemoveInstance(nameLabel.Text,addressLabel.Text);
 
             }
@@ -106,7 +106,7 @@ namespace qController
             void Connect(object sender, EventArgs e)
             {
                 App.NavigationPage.Navigation.PushAsync(new ControlPage(nameLabel.Text,addressLabel.Text));
-                Console.WriteLine("Connect To " + nameLabel.Text + " Pressed");
+                Console.WriteLine("QINSTANCECELL - Connect To " + nameLabel.Text + " Pressed");
             }
         }
     }

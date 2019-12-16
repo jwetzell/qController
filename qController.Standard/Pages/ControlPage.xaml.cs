@@ -20,6 +20,7 @@ namespace qController
             qController = new QController(address, 53000);
             qController.qClient.qParser.WorkspaceInfoReceived += WorkspaceInfoReceived;
             qController.qClient.qParser.WorkspaceUpdated += WorkspaceUpdated;
+            qController.qClient.qParser.WorkspaceDisconnect += WorkspaceDisconnected;
             qController.qClient.qParser.PlaybackPositionUpdated += PlaybackPositionUpdated;
             qController.qClient.qParser.CueInfoUpdated += OnCueUpdateReceived;
             qController.qClient.qParser.ChildrenUpdated += OnChildrenUpdated;
@@ -37,13 +38,12 @@ namespace qController
         {
             if(args.WorkspaceInfo.Count > 1)
             {
-                Console.WriteLine("ControlPage: MULTIPLE WORKSPACES ON SELECTED COMPUTER");
+                Console.WriteLine("CONTROLPAGE - MULTIPLE WORKSPACES ON SELECTED COMPUTER");
                 PromptForWorkspace(args.WorkspaceInfo);
             }
             else if (args.WorkspaceInfo.Count == 1)
             {
-                Console.WriteLine("ControlPage: ONLY ONE WORKSPACE ON SELECTED COMPUTER");
-                Console.WriteLine("HasPasscode : " + args.WorkspaceInfo[0].hasPasscode);
+                Console.WriteLine("CONTROLPAGE - ONLY ONE WORKSPACE ON SELECTED COMPUTER");
                 if (!args.WorkspaceInfo[0].hasPasscode)
                 {
                     qController.Connect(args.WorkspaceInfo[0].uniqueID);
@@ -89,7 +89,7 @@ namespace qController
             {
                 QWorkspaceInfo workspace = workspaces[i];
                 config.Add(workspace.displayName, new Action(() => {
-                    Console.WriteLine("ControlPage: Workspace Selected " + workspace.displayName);
+                    Console.WriteLine("CONTROLPAGE - Workspace Selected " + workspace.displayName);
                     if (!workspace.hasPasscode)
                     {
                         qController.Connect(workspace.uniqueID);
@@ -241,6 +241,11 @@ namespace qController
             });
         }
 
+        public void WorkspaceDisconnected(object sender, EventArgs e)
+        {
+            Back();
+        }
+
         public void WorkspaceUpdated(object sender, WorkspaceEventArgs e)
         {
             if(e.UpdatedWorkspace.data.Count > 0)
@@ -264,10 +269,10 @@ namespace qController
                             noSelect.number = "!";
                             qCell.UpdateSelectedCue(noSelect);
                         });
-                        Console.WriteLine("ControlPage: Update Selected Cue Called because of Inital Workspace Load");
+                        Console.WriteLine("CONTROLPAGE - Update Selected Cue Called because of Inital Workspace Load");
                         qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
                     }
-                    Console.WriteLine("ControlPage: Workspace Updated " + qController.qWorkspace.workspace_id);
+                    Console.WriteLine("CONTROLPAGE - Workspace Updated " + qController.qWorkspace.workspace_id);
                 }
             }
         }
@@ -275,7 +280,7 @@ namespace qController
         public void PlaybackPositionUpdated(object sender, PlaybackPositionArgs e)
         {
             qController.playbackPosition = e.PlaybackPosition;
-            Console.WriteLine("ControlPage: Playback Position Updated " + qController.playbackPosition);
+            Console.WriteLine("CONTROLPAGE - Playback Position Updated " + qController.playbackPosition);
             QCue cue = qController.qWorkspace.GetCue(qController.playbackPosition);
             if(cue != null)
             {
@@ -308,7 +313,7 @@ namespace qController
                     {
                         Device.BeginInvokeOnMainThread(() =>
                         {
-                            Console.WriteLine("ControlPage: Refreshing Currently Displayed Cue");
+                            Console.WriteLine("CONTROLPAGE - Refreshing Currently Displayed Cue");
                             if (args.Cue.levels != null)
                                 showLevelsButton.IsVisible = true;
                             else

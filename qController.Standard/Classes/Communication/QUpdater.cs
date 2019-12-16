@@ -24,7 +24,7 @@ namespace qController
 
         private void OnWorkspaceLoadError(object source, WorkspaceEventArgs args)
         {
-            Console.WriteLine("QUpdater: Loading cuelists has failed for some reason retrying");
+            Console.WriteLine("QUPDATER - Loading cuelists has failed for some reason retrying");
             qController.qClient.sendArgsUDP("/workspace/" + args.UpdatedWorkspace.workspace_id + "/connect");
             qController.qClient.sendArgsUDP("/workspace/" + args.UpdatedWorkspace.workspace_id + "/updates", 1);
             qController.qClient.sendAndReceiveString("/workspace/" + args.UpdatedWorkspace.workspace_id + "/cueLists");
@@ -63,7 +63,7 @@ namespace qController
             qController.qWorkspace.CheckPopulated();
             if (qController.qWorkspace.IsPopulated)
             {
-                Console.WriteLine("Workspace group cues are already populated");
+                Console.WriteLine("QUPDATER - Workspace group cues are already populated");
                 App.showToast("Workspace cues have been loaded....");
                 //get selected cue
                 qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
@@ -74,12 +74,13 @@ namespace qController
         public void OnPlaybackPositionUpdated(object source, PlaybackPositionArgs args)
         {
             qController.playbackPosition = args.PlaybackPosition;
-            Console.WriteLine("ControlPage: Update Specific Cue Called because of Playback Position Updated");
+            Console.WriteLine("QUPDATER - Update Specific Cue Called because of Playback Position Updated");
             qController.qClient.UpdateSpecificCue(qController.qWorkspace.workspace_id,args.PlaybackPosition);
         }
 
         public void SendThump()
         {
+            
             qController.qClient.sendStringUDP("/workspace/" + qController.qWorkspace.workspace_id + "/thump");
         }
 

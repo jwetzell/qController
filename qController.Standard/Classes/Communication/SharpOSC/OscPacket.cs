@@ -27,8 +27,9 @@ namespace SharpOSC
 		private static OscMessage parseMessage(byte[] msg)
 		{
 			int index = 0;
-            //Console.WriteLine("Raw OSC DATA: " + System.Text.Encoding.ASCII.GetString(msg));
-            string address = null;
+            //Console.WriteLine("Raw ASCII DATA: " + System.Text.Encoding.ASCII.GetString(msg));
+            //Console.WriteLine("Raw UTF-8 DATA: " + System.Text.Encoding.UTF8.GetString(msg));
+			string address = null;
 			char[] types = new char[0];
 			List<object> arguments = new List<object>();
 			List<object> mainArray = arguments; // used as a reference when we are parsing arrays to get the main array back
@@ -178,7 +179,7 @@ namespace SharpOSC
 
 			int index = 0;
 
-			var bundleTag = Encoding.ASCII.GetString(bundle.SubArray(0, 8));
+			var bundleTag = Encoding.UTF8.GetString(bundle.SubArray(0, 8));
 			index += 8;
 
 			timetag = getULong(bundle, index);
@@ -221,7 +222,7 @@ namespace SharpOSC
 					if (i == 0)
 						return "";
 
-					address = Encoding.ASCII.GetString(msg.SubArray(index, i - 1));
+					address = Encoding.UTF8.GetString(msg.SubArray(index, i - 1));
 					break;
 				}
 			}
@@ -241,7 +242,7 @@ namespace SharpOSC
 			{
 				if (msg[i - 1] == 0)
 				{
-					types = Encoding.ASCII.GetChars(msg.SubArray(index, i - index));
+					types = Encoding.UTF8.GetChars(msg.SubArray(index, i - index));
 					break;
 				}
 			}
@@ -249,7 +250,7 @@ namespace SharpOSC
             if (types == null)
             {
                 byte[] term = { 0 };
-                types = Encoding.ASCII.GetChars(term);
+                types = Encoding.UTF8.GetChars(term);
             }
 
 			if (i >= msg.Length && types == null)
@@ -283,14 +284,14 @@ namespace SharpOSC
 			{
 				if (msg[i - 1] == 0)
 				{
-					output = Encoding.ASCII.GetString(msg.SubArray(index, i - index));
+					output = Encoding.UTF8.GetString(msg.SubArray(index, i - index));
 					break;
 				}
 			}
             if (output == null)
             {
                 byte[] term = { 0 };
-                output = Encoding.ASCII.GetString(term);
+                output = Encoding.UTF8.GetString(term);
             }
             if (i >= msg.Length && output == null)
 				throw new Exception("No null terminator after type string");
@@ -395,7 +396,7 @@ namespace SharpOSC
 
 			byte[] msg = new byte[len];
 
-			var bytes = Encoding.ASCII.GetBytes(value);
+			var bytes = Encoding.UTF8.GetBytes(value);
 			bytes.CopyTo(msg, 0);
 
 			return msg;

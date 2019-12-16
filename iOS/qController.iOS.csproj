@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Xamarin.Forms.4.1.0.618606\build\Xamarin.Forms.props" Condition="Exists('..\packages\Xamarin.Forms.4.1.0.618606\build\Xamarin.Forms.props')" />
   <PropertyGroup>
@@ -185,18 +185,18 @@
     </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Folder Include="Assets.xcassets\add.imageset\" />
+    <Folder Include="Assets.xcassets\back.imageset\" />
     <Folder Include="Assets.xcassets\connect.imageset\" />
     <Folder Include="Assets.xcassets\delete.imageset\" />
-    <Folder Include="Assets.xcassets\add.imageset\" />
-    <Folder Include="Assets.xcassets\scan.imageset\" />
-    <Folder Include="Assets.xcassets\back.imageset\" />
     <Folder Include="Assets.xcassets\hamburger.imageset\" />
+    <Folder Include="Assets.xcassets\scan.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />

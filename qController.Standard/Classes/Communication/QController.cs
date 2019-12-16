@@ -29,7 +29,7 @@ namespace qController
 
         public void Connect(string workspace_id)
         {
-            Console.WriteLine("QCONTROLLER CONNECT CALLED: " + workspace_id);
+            Console.WriteLine("QCONTROLLER - Connect Called: " + workspace_id);
             qWorkspace = new QWorkspace(workspace_id);
             qUpdater.Start();
             qClient.sendArgsUDP("/workspace/"+workspace_id+"/connect");
@@ -58,7 +58,7 @@ namespace qController
             //qUpdater = new QUpdater(this);
             if(qWorkspace != null)
             {
-                Console.WriteLine("RESUMING " + qWorkspace.workspace_id);
+                Console.WriteLine("QCONTROLLER - Resuming: " + qWorkspace.workspace_id);
             }
         }
 

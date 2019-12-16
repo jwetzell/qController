@@ -1,4 +1,4 @@
-﻿//Class used for receiving workspace update messages
+﻿//Class used for receiving workspace update messages (UDP)
 using SharpOSC;
 using System.Threading;
 

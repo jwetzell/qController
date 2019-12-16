@@ -3,7 +3,6 @@ using SharpOSC;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-
 namespace qController
 {
     public class CueEventArgs : EventArgs
@@ -69,7 +68,7 @@ namespace qController
     {
         public QParser()
         {
-            
+           
         }
 
         public delegate void SelectedCueUpdatedHandler(object source, CueEventArgs args);
@@ -103,7 +102,7 @@ namespace qController
                 else if (msg.Address.Contains("playbackPosition"))
                     ParsePositionUpdateInfo(msg);
                 else if (msg.Address.Contains("thump"))
-                    Console.WriteLine("Heartbeat Received");
+                    Console.WriteLine("QPARSER - Heartbeat Received");
                 else if (msg.Address.Contains("disconnect"))
                     OnWorkspaceDisconnect();
                 else if (msg.Address.Contains("connect"))
@@ -114,7 +113,7 @@ namespace qController
                     ParseQInfo(msg);
                 else
                 {
-                    Console.WriteLine("QParser/Unknown message type: " + msg.Address);
+                    Console.WriteLine("QPARSER - Unkown message type: " + msg.Address);
                     foreach (var item in msg.Arguments)
                     {
                         Console.WriteLine(item);
@@ -171,9 +170,6 @@ namespace qController
                 {
                     try
                     {
-                        Console.WriteLine(msg.Arguments.Count);
-                        Console.WriteLine(msg.Arguments[0].ToString().Length);
-
                         QWorkspace workspace = JsonConvert.DeserializeObject<QWorkspace>(msg.Arguments[0].ToString());
                         OnWorkspaceUpdated(workspace);
                     }
@@ -181,7 +177,6 @@ namespace qController
                     {
                         OnWorkspaceLoadError(id);
                     }
-                    
                 }
                 else
                 {
