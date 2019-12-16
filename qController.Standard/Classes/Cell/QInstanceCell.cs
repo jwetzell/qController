@@ -76,27 +76,23 @@ namespace qController
                 nameLabel.FontAttributes = FontAttributes.Bold;
                 nameLabel.FontSize = App.HeightUnit * 3;
                 nameLabel.Margin = new Thickness(0, 20, 0, 0);
-                nameLabel.BackgroundColor = Color.IndianRed;
 
                 addressLabel.HorizontalTextAlignment = TextAlignment.Center;
                 addressLabel.VerticalTextAlignment = TextAlignment.Start;
                 addressLabel.FontSize = App.HeightUnit * 2.5;
                 addressLabel.Margin = new Thickness(0, 0, 0, 20);
-                addressLabel.BackgroundColor = Color.IndianRed;
 
                 connectLabel.HorizontalOptions = LayoutOptions.StartAndExpand;
                 connectLabel.VerticalOptions = LayoutOptions.CenterAndExpand;
                 connectLabel.Text = QIcon.WIFI;
                 connectLabel.FontSize = App.HeightUnit * 5;
                 connectLabel.TextColor = Color.LimeGreen;
-                connectLabel.BackgroundColor = Color.IndianRed;
 
                 deleteLabel.HorizontalOptions = LayoutOptions.CenterAndExpand;
                 deleteLabel.VerticalOptions = LayoutOptions.CenterAndExpand;
                 deleteLabel.Text = QIcon.TRASH_EMPTY;
                 deleteLabel.FontSize = App.HeightUnit * 5;
                 deleteLabel.TextColor = Color.Red;
-                deleteLabel.BackgroundColor = Color.IndianRed;
 
                 connectLabel.FontFamily = App.QFont;
                 deleteLabel.FontFamily = App.QFont;
