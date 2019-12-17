@@ -391,12 +391,11 @@ namespace SharpOSC
 
 		protected static byte[] setString(string value)
 		{
-			int len = value.Length + (4 - value.Length % 4);
-			if (len <= value.Length) len = len + 4;
+            var bytes = Encoding.UTF8.GetBytes(value);
+            int len = bytes.Length + (4 - bytes.Length % 4);
+			if (len <= bytes.Length) len = len + 4;
 
 			byte[] msg = new byte[len];
-
-			var bytes = Encoding.UTF8.GetBytes(value);
 			bytes.CopyTo(msg, 0);
 
 			return msg;
