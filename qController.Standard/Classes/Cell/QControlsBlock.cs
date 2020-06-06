@@ -8,12 +8,12 @@ namespace qController.Cell
     public class QControlsBlock : Frame
     {
         Grid mainG;
-        QController qController;
 
+        EventHandler callback;
 
-        public QControlsBlock(QController controller)
+        public QControlsBlock(EventHandler callback)
         {
-            qController = controller;
+            this.callback = callback;
 
             Margin = new Thickness(10);
             Padding = new Thickness(0);
@@ -68,7 +68,7 @@ namespace qController.Cell
             for (int i = 0; i < buttons.Count; i++)
             {
                 QButton b = buttons[i];
-                b.Clicked += sendOSC;
+                b.Clicked += callback;
                 mainG.Children.Add(b, column, row);
                 row++;
                 if (row == 3)
@@ -79,7 +79,7 @@ namespace qController.Cell
             }
 
             QButton goButton = new QButton(QCommands.GO);
-            goButton.Clicked += sendOSC;
+            goButton.Clicked += callback;
             mainG.Children.Add(goButton, 1, 0);
             Grid.SetRowSpan(goButton, 3);
             Content = mainG;
@@ -108,7 +108,7 @@ namespace qController.Cell
             for (int i = 0; i < commands.Count; i++)
             {
                 QButton b = new QButton(commands[i]);
-                b.Clicked += sendOSC;
+                b.Clicked += callback;
                 mainG.Children.Add(b, column, row);
                 row++;
                 if (row == 3)
@@ -119,20 +119,10 @@ namespace qController.Cell
             }
 
             QButton goButton = new QButton(QCommands.GO);
-            goButton.Clicked += sendOSC;
+            goButton.Clicked += callback;
             mainG.Children.Add(goButton, 1, 0);
             Grid.SetRowSpan(goButton, 3);
             Content = mainG;
-        }
-
-        void sendOSC(object sender, EventArgs e)
-        {
-            if (((QButton)sender).qCommand.type == "WORKSPACE")
-            {
-                string workspace_prefix = "/workspace/" + qController.qWorkspace.workspace_id;
-                string command = workspace_prefix + ((QButton)sender).qCommand.osc;
-                qController.qClient.sendTCP(command);
-            }
         }
     }
 }

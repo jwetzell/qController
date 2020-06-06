@@ -150,6 +150,16 @@ namespace qController
             sLayout.Children.Add(qCell);
         }
 
+        private void SendOSCFromButton(object sender, EventArgs args)
+        {
+            if (((QButton)sender).qCommand.type == "WORKSPACE")
+            {
+                string workspace_prefix = "/workspace/" + qController.qWorkspace.workspace_id;
+                string command = workspace_prefix + ((QButton)sender).qCommand.osc;
+                qController.qClient.sendTCP(command);
+            }
+        }
+
         private void OnSelectedCueEdited(object source, CueEditArgs args)
         {
             string address = "/workspace/" + qController.qWorkspace.workspace_id + "/cue_id/" + args.CueID + "/" + args.Property;
@@ -177,11 +187,9 @@ namespace qController
 
 
             showLevelsButton = new QLevelsButton();
-            showLevelsButton.button.Clicked += (s, e) =>
-            {
-                qLevelsCell.IsVisible = !qLevelsCell.IsVisible;
-            };
-            qControlsBlock = new QControlsBlock(qController);
+            showLevelsButton.button.Clicked += ToggeQLevelsCellVisiblity;
+
+            qControlsBlock = new QControlsBlock(SendOSCFromButton);
 
             AbsoluteLayout.SetLayoutFlags(qControlsBlock, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(qLevelsCell, AbsoluteLayoutFlags.All);
@@ -205,6 +213,11 @@ namespace qController
             sLayout.Children.Add(qControlsBlock);
             sLayout.Children.Add(qLevelsCell);
             sLayout.Children.Add(showLevelsButton);
+        }
+
+        private void ToggeQLevelsCellVisiblity(object sender, EventArgs e)
+        {
+            qLevelsCell.IsVisible = !qLevelsCell.IsVisible;
         }
 
         void ShowMenu(object sender, EventArgs e)
