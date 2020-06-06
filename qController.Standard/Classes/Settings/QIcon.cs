@@ -1,4 +1,5 @@
-﻿namespace qController
+﻿//Get appropriately letter or unicode character for Icon font
+namespace qController
 {
     public static class QIcon
     {
@@ -22,15 +23,23 @@
         public const string POWER = "\uE810";
         public const string QRCODE = "\uE811";
 
+
+        public const string MAIL = "\uE812";
+
+        public const string LEFT_DIR = "\uE813";
+        public const string LIST = "\uE814";
+
         public const string SPIN3 = "\uE832";
 
         public const string MENU = "\uF0C9";
 
-        public const string LIGHTBULB = "\uF0CB";
+        public const string LIGHTBULB = "\uF0EB";
 
         public const string MIC = "\uF130";
 
         public const string MINUS_SQUARED = "\uF146";
+
+        public const string DOLLAR = "\uF155";
 
         public const string RIGHT = "\uF178";
 
@@ -42,70 +51,65 @@
 
         public const string OBJECT_UNGROUP = "\uF248";
 
-        public const string HOURGLASS_O = "\uF251";
+        public const string HOURGLASS_O = "\uF250";
 
         public const string COMMENTING_O = "\uF27B";
 
-        public const string DOLLAR = "\uF155";
-        public const string MAIL = "\uE812";
-
-        public const string LEFT_DIR = "\uE813";
-        public const string LIST = "\uE814";
 
         public static string GetIconFromType(string type)
         {
             switch (type)
             {
                 case "Group":
-                    return OBJECT_UNGROUP;
+                    return "g";
                 case "Audio":
-                    return VOLUME_UP;
+                    return "a";
                 case "Mic":
-                    return MIC;
+                    return "m";
                 case "Video":
-                    return VIDEO;
+                    return "v";
                 case "Camera":
-                    return VIDEOCAM;
+                    return "c";
                 case "Text":
-                    return "T";
+                    return "t";
                 case "Light":
                     return LIGHTBULB;
                 case "Fade":
-                    return SLIDERS;
+                    return "f";
                 case "Network":
-                    return DOT_CIRCLED;
+                    return "o";
                 case "MIDI":
-                    return "";
+                    return "M";
                 case "MIDI File":
-                    return MUSIC;
+                    return "F";
                 case "Timecode":
-                    return CLOCK;
+                    return "T";
                 case "Start":
-                    return PLAY;
+                    return "s";
                 case "Stop":
-                    return STOP;
+                    return "S";
                 case "Pause":
-                    return PAUSE;
+                    return "p";
                 case "Load":
-                    return CHART_PIE;
+                    return "l";
                 case "Reset":
-                    return UNDO;
+                    return "r";
                 case "Devamp":
-                    return CW;
+                    return "d";
                 case "GoTo":
-                    return RIGHT;
+                    return "G";
                 case "Target":
-                    return TARGET;
+                    return "R";
                 case "Arm":
-                    return POWER;
+                    return "A";
                 case "Disarm":
-                    return "";
+                    return "D";
                 case "Wait":
-                    return HOURGLASS_O;
+                    return "W";
                 case "Memo":
-                    return COMMENTING_O;
+                    return "e";
                 case "Script":
-                    return QRCODE;
+                    return "C";
                 default:
                     return "";
             }

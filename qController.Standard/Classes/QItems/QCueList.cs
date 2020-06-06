@@ -18,7 +18,7 @@ namespace qController.QItems
         {
             get
             {
-                return QIcon.LIST;
+                return QIcon.GetIconFromType("Group");
             }
         }
     }
