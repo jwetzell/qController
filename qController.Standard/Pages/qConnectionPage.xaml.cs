@@ -5,7 +5,7 @@ using Zeroconf;
 using System.Collections.Generic;
 using Serilog;
 using qController.QItems;
-using qController.Communication;
+using qController.Dialogs;
 using qController.Cell;
 using Xamarin.Essentials;
 
@@ -37,17 +37,7 @@ namespace qController
             }
             else if(args.Command == "support")
             {
-                UserDialogs.Instance.Confirm(new ConfirmConfig
-                {
-                    Title = "Support the Project",
-                    Message = "This application will never be a paid app or contain any sort of ads, but if you choose to show your support you may do so by clicking the Donate button below. Thank you!",
-                    OkText = "Donate",
-                    OnAction = (response) =>
-                    {
-                        if (response)
-                            Launcher.OpenAsync(new Uri("https://linktr.ee/JoelWetzell"));
-                    }
-                });
+                UserDialogs.Instance.Confirm(new DonatePrompt());
             }
         }
 
@@ -91,37 +81,7 @@ namespace qController
         }
 
         void AddWorkspace(){
-            
-            UserDialogs.Instance.Prompt(new PromptConfig
-			{
-				Title = "Enter IP of QLab Computer",
-				Message = "Enter an IP Address to save",
-                OkText = "Next",
-				OnTextChanged = args =>
-				{
-                    //IPAddress ugh
-                    args.IsValid = IPHelper.IsValidAddress(args.Value);
-				},
-				OnAction = (qAddress) =>
-				{
-                    if (!qAddress.Ok)
-                        return;
-
-                    UserDialogs.Instance.Prompt(new PromptConfig
-                    {
-                        Title="Enter Name",
-                        Message = "Enter a Name for " + qAddress.Text,
-                        OkText="Save",
-                        OnAction = (qName) => {
-                            if (!qName.Ok)
-                                return;
-                            QStorage.AddInstance(qName.Text,qAddress.Text);
-                            App.showToast("Manual Workspace Added!");
-                        }
-
-                    });
-				}
-			});
+            UserDialogs.Instance.Prompt(new AddInstancePrompt());
         }
 
         async void Scan(){

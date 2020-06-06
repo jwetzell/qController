@@ -95,13 +95,7 @@ namespace qController
             }
             else
             {
-                NoWorkspacesConfig noWorkspacesConfig = new NoWorkspacesConfig();
-                noWorkspacesConfig.OnAction = (resp) =>
-                {
-                    if (resp)
-                        Back();
-                };
-
+                NoWorkspacesConfig noWorkspacesConfig = new NoWorkspacesConfig(NoWorkspaceDetected);
                 UserDialogs.Instance.Confirm(noWorkspacesConfig);
             }
         }
@@ -237,6 +231,11 @@ namespace qController
             });
         }
 
+        public void NoWorkspaceDetected(bool resp)
+        {
+            if (resp)
+                Back();
+        }
         public void WorkspaceDisconnected(object sender, EventArgs e)
         {
             Back();
