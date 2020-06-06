@@ -1,5 +1,6 @@
 ﻿//Currently unused would like to reimplement eventually
 //Currently being done in qConnectionPage.xaml.cs Scan() method
+//TODO: Implement this along with a way of getting active Instances and # of workspaces for an instance
 using Serilog;
 using System.Collections.Generic;
 using Zeroconf;

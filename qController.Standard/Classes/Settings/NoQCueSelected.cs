@@ -1,5 +1,6 @@
-﻿using System;
-namespace qController.QItems
+﻿using qController.QItems;
+
+namespace qController
 {
     public class NoQCueSelected : QCue
     {
