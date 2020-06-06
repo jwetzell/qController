@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using Serilog;
 
 namespace qController
 {
@@ -54,7 +55,7 @@ namespace qController
                 {
                     if(data[i].cues[j].uniqueID == cue.uniqueID)
                     {
-                        //Console.WriteLine("Cue found and updated in workspace: " + cue.uniqueID);
+                        //Log.Debug("Cue found and updated in workspace: " + cue.uniqueID);
                         data[i].cues[j] = cue;
                         return;
                     }
@@ -101,7 +102,7 @@ namespace qController
         {
             foreach (var cueList in data)
             {
-                Console.WriteLine(cueList.listName + "("+ cueList.cues.Count + " cues)");
+                Log.Debug(cueList.listName + "("+ cueList.cues.Count + " cues)");
             }
         }
     }

@@ -181,6 +181,12 @@
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors" />
+    <Reference Include="Serilog">
+      <HintPath>..\packages\Serilog.2.9.0\lib\netstandard2.0\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.Xamarin">
+      <HintPath>..\packages\Serilog.Sinks.Xamarin.0.2.0.64\lib\MonoAndroid403\Serilog.Sinks.Xamarin.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />

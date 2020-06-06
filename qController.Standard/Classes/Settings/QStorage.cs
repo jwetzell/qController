@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Serilog;
 using System.Collections.ObjectModel;
 using Acr.Settings;
 
@@ -13,7 +13,7 @@ namespace qController
 
             if (qInstances == null)
             {
-                Console.WriteLine("QSTORAGE - No qInstance exists creating one");
+                Log.Debug("QSTORAGE - No qInstance exists creating one");
                 qInstances = new ObservableCollection<QInstance>();
                 updateStorage();
             }
@@ -54,7 +54,7 @@ namespace qController
         public static bool Contains(string name, string address){
             foreach (var item in qInstances)
             {
-                //Console.WriteLine("Item name: " + item.name + " Found Name: " + name);
+                //Log.Debug("Item name: " + item.name + " Found Name: " + name);
                 if (item.address == address)
                 {
                     return true;

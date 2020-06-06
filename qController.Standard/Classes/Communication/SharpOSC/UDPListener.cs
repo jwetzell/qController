@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using Serilog;
 
 namespace SharpOSC
 {
@@ -96,10 +97,10 @@ namespace SharpOSC
 					}
 					catch (Exception e)
 					{
-                        Console.WriteLine(e.ToString());
+                        Log.Debug(e.ToString());
                         // If there is an error reading the packet, null is sent to the callback
                     }
-                    //Console.WriteLine("Raw UDP In: " + System.Text.Encoding.ASCII.GetString(bytes));
+                    //Log.Debug("Raw UDP In: " + System.Text.Encoding.ASCII.GetString(bytes));
                     OscPacketCallback(packet);
 				}
 				else
@@ -150,7 +151,7 @@ namespace SharpOSC
 				{
 					byte[] bytes = queue.Dequeue();
 					var packet = OscPacket.GetPacket(bytes);
-                    //Console.WriteLine("Raw UDP In: " + System.Text.Encoding.ASCII.GetString(bytes));
+                    //Log.Debug("Raw UDP In: " + System.Text.Encoding.ASCII.GetString(bytes));
                     return packet;
 				}
 				else

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 using System.Threading;
+using Serilog;
 
 namespace SharpOSC
 {
@@ -46,20 +47,40 @@ namespace SharpOSC
             _address = address;
         }
 
-        public void Send(byte[] message)
+        public void Connect()
         {
             client = new TcpClient(Address, Port);
+            Log.Debug($"TCPSender - connect called for <{Address}:{Port}>");
+            Thread receivingThread = new Thread(ReceiveLoop);
+            receivingThread.Start();
+        }
+
+        public void Send(byte[] message)
+        {
             byte[] slipData = SlipEncode(message);
             NetworkStream netStream = client.GetStream();
             netStream.Write(slipData.ToArray(), 0, slipData.ToArray().Length);
         }
 
-        public async void Receive()
+        public void Send(OscPacket packet)
+        {
+            byte[] data = packet.GetBytes();
+            Send(data);
+        }
+
+        public void ReceiveLoop()
+        {
+            while (client.Connected)
+            {
+                Receive();
+            }
+            Log.Debug("TCPSender - Receive Loop has exited for some reason");
+        }
+
+        public void Receive()
         {
             Random random = new Random();
             int num = random.Next(1000);
-
-            OscMessage response = new OscMessage("/null");
             NetworkStream netStream = client.GetStream();
             try
             {
@@ -67,49 +88,25 @@ namespace SharpOSC
                 List<byte> responseData = new List<byte>();
                 if (netStream.CanRead)
                 {
-                    byte[] buffer = new byte[1024];
+                    byte[] buffer = new byte[256];
 
                     int bytesRead = 0;
                     do
                     {
-                        bytesRead = await netStream.ReadAsync(buffer, 0, buffer.Length);
+                        bytesRead = netStream.Read(buffer, 0, buffer.Length);
                         responseData.AddRange(buffer);
-                        Thread.Sleep(1);
-                        //Console.WriteLine(  "Thread " + num + ":  Bytes read: " + bytesRead + " - " + Encoding.UTF8.GetString(buffer));
+                        Thread.Sleep(30);
+                        //Log.Debug("Thread " + num + ":  Bytes read: " + bytesRead + " - " + Encoding.UTF8.GetString(buffer));
                     } while (netStream.DataAvailable);
 
-                    //Console.WriteLine("Raw TCP In: " + System.Text.Encoding.UTF8.GetString(responseData.ToArray()));
-                    response = (OscMessage)OscPacket.GetPacket(responseData.Skip(1).ToArray());
+                    //Log.Debug("Raw TCP In: " + System.Text.Encoding.UTF8.GetString(responseData.ToArray()));
+                    OscMessage response = (OscMessage)OscPacket.GetPacket(responseData.Skip(1).ToArray());
+                    OnMessageReceived(response);
                 }
             } catch(Exception e)
             {
-                Console.WriteLine("TCPSENDER - Receive Exception: " + e.ToString());
+                //Log.Debug("TCPSENDER - Receive Exception: " + e.ToString());
             }
-            OnMessageReceived(response);
-        }
-
-        public void SendAndReceive(byte[] message)
-        {
-
-            client = new TcpClient(Address, Port);
-            byte[] slipData = SlipEncode(message);
-            NetworkStream netStream = client.GetStream();
-            netStream.Write(slipData.ToArray(), 0, slipData.ToArray().Length);
-            Receive();
-        }
-
-        public void SendAndReceive(OscPacket packet)
-        {
-            OscMessage msg = (OscMessage)packet;
-            //Console.WriteLine("TCPSENDER - TCP Message Sent: " + msg.Address);
-            byte[] data = packet.GetBytes();
-            SendAndReceive(data);
-        }
-
-        public void Send(OscPacket packet)
-        {
-            byte[] data = packet.GetBytes();
-            Send(data);
         }
 
         public byte[] SlipEncode(byte[] data)

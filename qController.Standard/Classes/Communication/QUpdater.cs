@@ -1,7 +1,9 @@
 ﻿//Class used for updating local "copy" of workspace info, cue-lists, cues, etc.
 using System;
 using System.Threading;
+using Serilog;
 using Xamarin.Forms;
+using Serilog;
 
 namespace qController
 {
@@ -10,7 +12,8 @@ namespace qController
 
         private bool active = true;
         private QController qController;
-        private Thread updateThread; 
+        private Thread updateThread;
+        
         public QUpdater(QController controller)
         {
             qController = controller;
@@ -19,19 +22,31 @@ namespace qController
             qController.qClient.qParser.WorkspaceUpdated += OnWorkspaceUpdated;
             qController.qClient.qParser.PlaybackPositionUpdated += OnPlaybackPositionUpdated;
             qController.qClient.qParser.WorkspaceLoadError += OnWorkspaceLoadError;
+            qController.qClient.qParser.ConnectionStatusChanged += OnConnectionStatusChanged;
 
+        }
+
+        private void OnConnectionStatusChanged(object source, ConnectEventArgs args)
+        {
+            Log.Debug("QUPDATER - Connection Status Changed: " + args.Status);
+            if (args.Status == "ok")
+            {
+                qController.qClient.sendTCP("/workspace/" + qController.qWorkspace.workspace_id + "/updates", 1);
+                qController.qClient.sendTCP("/workspace/" + qController.qWorkspace.workspace_id + "/cueLists");
+            }
         }
 
         private void OnWorkspaceLoadError(object source, WorkspaceEventArgs args)
         {
-            Console.WriteLine("QUPDATER - Loading cuelists has failed for some reason retrying");
-            qController.qClient.sendArgsUDP("/workspace/" + args.UpdatedWorkspace.workspace_id + "/connect");
-            qController.qClient.sendArgsUDP("/workspace/" + args.UpdatedWorkspace.workspace_id + "/updates", 1);
-            qController.qClient.sendAndReceiveString("/workspace/" + args.UpdatedWorkspace.workspace_id + "/cueLists");
+            Log.Debug("QUPDATER - Loading cuelists has failed for some reason retrying");
+            //qController.qClient.sendArgsUDP("/workspace/" + args.UpdatedWorkspace.workspace_id + "/connect");
+            //qController.qClient.sendArgsUDP("/workspace/" + args.UpdatedWorkspace.workspace_id + "/updates", 1);
+            //qController.qClient.sendTCP("/workspace/" + args.UpdatedWorkspace.workspace_id + "/cueLists");
 
         }
 
         public void Start(){
+            Log.Debug("QUPDATER - Start() method called");
             updateThread.Start();
         }
 
@@ -51,8 +66,8 @@ namespace qController
 
             if (args.Cue.type == "Group")
             {
-                //Console.WriteLine("QUpdater/Updated cue was group cue, sending children request");
-                qController.qClient.sendStringUDP("/workspace/"+qController.qWorkspace.workspace_id+"/cue_id/" + args.Cue.uniqueID + "/children");
+                //Log.Debug("QUpdater/Updated cue was group cue, sending children request");
+                qController.qClient.sendUDP("/workspace/"+qController.qWorkspace.workspace_id+"/cue_id/" + args.Cue.uniqueID + "/children");
             }
         }
 
@@ -63,7 +78,7 @@ namespace qController
             qController.qWorkspace.CheckPopulated();
             if (qController.qWorkspace.IsPopulated)
             {
-                Console.WriteLine("QUPDATER - Workspace group cues are already populated");
+                Log.Debug("QUPDATER - Workspace group cues are already populated");
                 App.showToast("Workspace cues have been loaded....");
                 //get selected cue
                 qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
@@ -74,14 +89,14 @@ namespace qController
         public void OnPlaybackPositionUpdated(object source, PlaybackPositionArgs args)
         {
             qController.playbackPosition = args.PlaybackPosition;
-            Console.WriteLine("QUPDATER - Update Specific Cue Called because of Playback Position Updated");
+            Log.Debug("QUPDATER - Update Specific Cue Called because of Playback Position Updated");
             qController.qClient.UpdateSpecificCue(qController.qWorkspace.workspace_id,args.PlaybackPosition);
         }
 
         public void SendThump()
         {
             
-            qController.qClient.sendStringUDP("/workspace/" + qController.qWorkspace.workspace_id + "/thump");
+            qController.qClient.sendUDP("/workspace/" + qController.qWorkspace.workspace_id + "/thump");
         }
 
         public void Kill(){

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using Serilog;
 
 namespace SharpOSC
 {
@@ -27,8 +27,8 @@ namespace SharpOSC
 		private static OscMessage parseMessage(byte[] msg)
 		{
 			int index = 0;
-            //Console.WriteLine("Raw ASCII DATA: " + System.Text.Encoding.ASCII.GetString(msg));
-            //Console.WriteLine("Raw UTF-8 DATA: " + System.Text.Encoding.UTF8.GetString(msg));
+            //Log.Debug("Raw ASCII DATA: " + System.Text.Encoding.ASCII.GetString(msg));
+            //Log.Debug("Raw UTF-8 DATA: " + System.Text.Encoding.UTF8.GetString(msg));
 			string address = null;
 			char[] types = new char[0];
 			List<object> arguments = new List<object>();

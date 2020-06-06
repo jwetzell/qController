@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
-using System.Collections;
+using Serilog;
 using Acr.UserDialogs;
 namespace qController
 {
@@ -13,6 +13,7 @@ namespace qController
         QCueListCell qCueListCell;
         ShadowButton showLevelsButton;
         QControlsBlock qControlsBlock;
+
         public ControlPage(string name, string address)
         {
             InitializeComponent();
@@ -22,6 +23,7 @@ namespace qController
             qController.qClient.qParser.WorkspaceUpdated += WorkspaceUpdated;
             qController.qClient.qParser.WorkspaceDisconnect += WorkspaceDisconnected;
             qController.qClient.qParser.PlaybackPositionUpdated += PlaybackPositionUpdated;
+            qController.qClient.qParser.ConnectionStatusChanged += OnConnectionStatusChanged;
             qController.qClient.qParser.CueInfoUpdated += OnCueUpdateReceived;
             qController.qClient.qParser.ChildrenUpdated += OnChildrenUpdated;
 
@@ -34,37 +36,43 @@ namespace qController
             qController.KickOff();
         }
 
+        private void OnConnectionStatusChanged(object source, ConnectEventArgs args)
+        {
+            Log.Debug($"CONTROLPAGE - Connection Status Changed: {args.WorkspaceId} : {args.Status}");
+            if (args.Status.Equals("ok"))
+            {
+                qController.qUpdater.Start();
+                Device.BeginInvokeOnMainThread(() => {
+                    FinishUI();
+                });
+            }
+            else if (args.Status.Equals("badpass"))
+            {
+                promptWorkspacePasscode(args.WorkspaceId);
+            }
+        }
+
         private void WorkspaceInfoReceived(object source, WorkspaceInfoArgs args)
         {
             if(args.WorkspaceInfo.Count > 1)
             {
-                Console.WriteLine("CONTROLPAGE - MULTIPLE WORKSPACES ON SELECTED COMPUTER");
+                Log.Debug("CONTROLPAGE - MULTIPLE WORKSPACES ON SELECTED COMPUTER");
                 PromptForWorkspace(args.WorkspaceInfo);
             }
             else if (args.WorkspaceInfo.Count == 1)
             {
-                Console.WriteLine("CONTROLPAGE - ONLY ONE WORKSPACE ON SELECTED COMPUTER");
+                Log.Debug("CONTROLPAGE - ONLY ONE WORKSPACE ON SELECTED COMPUTER");
                 if (!args.WorkspaceInfo[0].hasPasscode)
                 {
                     qController.Connect(args.WorkspaceInfo[0].uniqueID);
-                    Device.BeginInvokeOnMainThread(() => {
-                        FinishUI();
-                    });
+                    
                 }
                 else
                 {
-                    UserDialogs.Instance.Confirm(new ConfirmConfig
-                    {
-                        Message = "Woops....I haven't implemented password protected workspaces yet...",
-                        OkText = "Disconnect",
-                        OnAction = (resp) =>
-                        {
-                            if (resp)
-                                Back();
-                        }
-                    });
+                    promptWorkspacePasscode(args.WorkspaceInfo[0].uniqueID);
                 }
                 
+
             }
             else
             {
@@ -89,27 +97,14 @@ namespace qController
             {
                 QWorkspaceInfo workspace = workspaces[i];
                 config.Add(workspace.displayName, new Action(() => {
-                    Console.WriteLine("CONTROLPAGE - Workspace Selected " + workspace.displayName);
+                    Log.Debug("CONTROLPAGE - Workspace Selected " + workspace.displayName);
                     if (!workspace.hasPasscode)
                     {
                         qController.Connect(workspace.uniqueID);
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            FinishUI();
-                        });
                     }
                     else
                     {
-                        UserDialogs.Instance.Confirm(new ConfirmConfig
-                        {
-                            Message = "Woops....I haven't implemented password protected workspaces yet...",
-                            OkText = "Disconnect",
-                            OnAction = (resp) =>
-                            {
-                                if (resp)
-                                    Back();
-                            }
-                        });
+                        promptWorkspacePasscode(workspace.uniqueID);
                     }
                     
                 }));
@@ -158,7 +153,7 @@ namespace qController
         private void OnSelectedCueEdited(object source, CueEditArgs args)
         {
             string address = "/workspace/" + qController.qWorkspace.workspace_id + "/cue_id/" + args.CueID + "/" + args.Property;
-            qController.qClient.sendArgsUDP(address, args.NewValue);
+            qController.qClient.sendUDP(address, args.NewValue);
         }
 
         void FinishUI()
@@ -169,15 +164,15 @@ namespace qController
 
             qLevelsCell.mainSlider.ValueChanged += (sender, args) =>
             {
-                qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/0", (float)args.NewValue);
+                qController.qClient.sendUDP(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/0", (float)args.NewValue);
             };
             qLevelsCell.leftSlider.ValueChanged += (sender, args) =>
             {
-                qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/1", (float)args.NewValue);
+                qController.qClient.sendUDP(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/1", (float)args.NewValue);
             };
             qLevelsCell.rightSlider.ValueChanged += (sender, args) =>
             {
-                qController.qClient.sendArgs(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/2", (float)args.NewValue);
+                qController.qClient.sendUDP(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/2", (float)args.NewValue);
             };
 
             Button showLevelsInnerButton = new Button
@@ -269,10 +264,10 @@ namespace qController
                             noSelect.number = "!";
                             qCell.UpdateSelectedCue(noSelect);
                         });
-                        Console.WriteLine("CONTROLPAGE - Update Selected Cue Called because of Inital Workspace Load");
+                        Log.Debug("CONTROLPAGE - Update Selected Cue Called because of Inital Workspace Load");
                         qController.qClient.UpdateSelectedCue(qController.qWorkspace.workspace_id);
                     }
-                    Console.WriteLine("CONTROLPAGE - Workspace Updated " + qController.qWorkspace.workspace_id);
+                    Log.Debug("CONTROLPAGE - Workspace Updated " + qController.qWorkspace.workspace_id);
                 }
             }
         }
@@ -280,7 +275,7 @@ namespace qController
         public void PlaybackPositionUpdated(object sender, PlaybackPositionArgs e)
         {
             qController.playbackPosition = e.PlaybackPosition;
-            Console.WriteLine("CONTROLPAGE - Playback Position Updated " + qController.playbackPosition);
+            Log.Debug("CONTROLPAGE - Playback Position Updated " + qController.playbackPosition);
             QCue cue = qController.qWorkspace.GetCue(qController.playbackPosition);
             if(cue != null)
             {
@@ -313,7 +308,7 @@ namespace qController
                     {
                         Device.BeginInvokeOnMainThread(() =>
                         {
-                            Console.WriteLine("CONTROLPAGE - Refreshing Currently Displayed Cue");
+                            Log.Debug("CONTROLPAGE - Refreshing Currently Displayed Cue");
                             if (args.Cue.levels != null)
                                 showLevelsButton.IsVisible = true;
                             else
@@ -352,7 +347,7 @@ namespace qController
         {
             if (args.Command.Contains("/"))
             {
-                qController.qClient.sendStringUDP(args.Command);
+                qController.qClient.sendUDP(args.Command);
             }
             else if (args.Command == "disconnect")
             {
@@ -375,6 +370,30 @@ namespace qController
             }
         }
 
+        private void promptWorkspacePasscode(string workspace_id)
+        {
+            UserDialogs.Instance.Prompt(new PromptConfig
+            {
+                InputType = InputType.Number,
+                MaxLength = 4,
+                Title = "Enter Workspace Passcode",
+                OkText = "Connect",
+                IsCancellable = true,
+                OnAction = (resp) =>
+                {
+                    if (resp.Ok)
+                    {
+                        qController.Connect(workspace_id, resp.Value);
+                    }
+                    else
+                    {
+                        Back();
+                    }
+                }
+
+            });
+        }
+
         private void CloseCueList(object sender, EventArgs e)
         {
             CloseCueList();
@@ -392,7 +411,7 @@ namespace qController
         {
             OSCListItem cue = (OSCListItem)e.SelectedItem;
             string selectCueOSC = "/workspace/" + qController.qWorkspace.workspace_id + cue.Command;
-            qController.qClient.sendStringUDP(selectCueOSC);
+            qController.qClient.sendUDP(selectCueOSC);
             CloseCueList();
         }
 

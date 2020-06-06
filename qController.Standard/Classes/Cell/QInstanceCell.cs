@@ -1,5 +1,6 @@
 ﻿using System;
 using Xamarin.Forms;
+using Serilog;
 
 namespace qController
 {
@@ -102,7 +103,7 @@ namespace qController
             void Delete(object sender, EventArgs e)
             {
 
-                Console.WriteLine("QINSTANCECELL - Delete " + nameLabel.Text + "," + addressLabel.Text + " Pressed");
+                Log.Debug("QINSTANCECELL - Delete " + nameLabel.Text + "," + addressLabel.Text + " Pressed");
                 QStorage.RemoveInstance(nameLabel.Text,addressLabel.Text);
 
             }
@@ -110,7 +111,7 @@ namespace qController
             void Connect(object sender, EventArgs e)
             {
                 App.NavigationPage.Navigation.PushAsync(new ControlPage(nameLabel.Text,addressLabel.Text));
-                Console.WriteLine("QINSTANCECELL - Connect To " + nameLabel.Text + " Pressed");
+                Log.Debug("QINSTANCECELL - Connect To " + nameLabel.Text + " Pressed");
             }
         }
     }

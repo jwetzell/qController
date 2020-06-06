@@ -1,7 +1,6 @@
 ﻿using Acr.UserDialogs;
 using Xamarin.Forms;
 using Xamarin.Essentials;
-using System;
 namespace qController
 {
     public partial class App : Application
@@ -31,7 +30,6 @@ namespace qController
         public App()
         {
             InitializeComponent();
-
             /*MainPage = new NavigationPage(new QConnectionPage());
             iNav = MainPage.Navigation;*/
 

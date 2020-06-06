@@ -1,9 +1,9 @@
 ﻿//Class used for overall Workspace control (ONLY REPRESENTS ONE WORKSPACE)
 //Contains all necessary items to facilitate communication (sending, receiving) to a QLab workspace 
 //Also contains the local QWorkspace object which stores all the information that is used in displaying
-//STILL NEED TO WORK ON PASSWORD PROTECTED WORKSPACES
+//TODO: STILL NEED TO WORK ON PASSWORD PROTECTED WORKSPACES
 using System;
-using System.Diagnostics;
+using Serilog;
 
 namespace qController
 {
@@ -29,27 +29,28 @@ namespace qController
 
         public void Connect(string workspace_id)
         {
-            Console.WriteLine("QCONTROLLER - Connect Called: " + workspace_id);
+            Log.Debug($"QCONTROLLER - Connect Called: {workspace_id}");
             qWorkspace = new QWorkspace(workspace_id);
-            qUpdater.Start();
-            qClient.sendArgsUDP("/workspace/"+workspace_id+"/connect");
-            qClient.sendArgsUDP("/workspace/"+workspace_id+"/updates", 1);
-            qClient.sendAndReceiveString("/workspace/"+workspace_id+"/cueLists");
+            qClient.sendUDP("/workspace/"+workspace_id+"/connect");
+        }
+
+        public void Connect(string workspace_id, string passcode)
+        {
+            Log.Debug($"QCONTROLLER - Connect with Passcode Called: {workspace_id}:{passcode}");
+            qWorkspace = new QWorkspace(workspace_id);
+            qClient.sendUDP("/workspace/" + workspace_id + "/connect", passcode);
+            qClient.sendTCP("/workspace/" + workspace_id + "/connect", passcode);
+
         }
 
         public void KickOff()
         {
-            qClient.sendArgsUDP("/workspaces");
+            qClient.sendUDP("/workspaces");
         }
 
         public void Disconnect()
         {
-            qClient.sendStringUDP("/workspace/"+qWorkspace.workspace_id+"/disconnect");
-        }
-
-        public void ConnectWithPass(string pass)
-        {
-            qClient.sendArgsUDP("/workspace/" + qWorkspace.workspace_id + "/connect", pass);
+            qClient.sendUDP("/workspace/"+qWorkspace.workspace_id+"/disconnect");
         }
 
         public void Resume()
@@ -58,7 +59,7 @@ namespace qController
             //qUpdater = new QUpdater(this);
             if(qWorkspace != null)
             {
-                Console.WriteLine("QCONTROLLER - Resuming: " + qWorkspace.workspace_id);
+                Log.Debug($"QCONTROLLER - Resuming: {qWorkspace.workspace_id}");
             }
         }
 

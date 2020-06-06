@@ -3,6 +3,7 @@ using System;
 using Acr.UserDialogs;
 using Zeroconf;
 using System.Collections.Generic;
+using Serilog;
 
 namespace qController
 {
@@ -122,7 +123,7 @@ namespace qController
         async void Scan(){
             bool workspacesFound = false;
             App.showToast("Scanning for Instances...");
-            Console.WriteLine("QCONNECTIONPAGE - Begin Scanning");
+            Log.Debug("QCONNECTIONPAGE - Begin Scanning");
 
             IReadOnlyList<IZeroconfHost> results = await ZeroconfResolver.ResolveAsync("_qlab._udp.local.",TimeSpan.FromSeconds(3));
             if(results != null){
@@ -132,7 +133,7 @@ namespace qController
                     {
                         QInstance instance = new QInstance(result.DisplayName, result.IPAddress);
                         if(QStorage.AddInstance(instance)){
-                            Console.WriteLine($"QCONNECTIONPAGE - {result.DisplayName} @ {result.IPAddress} added");
+                            Log.Debug($"QCONNECTIONPAGE - {result.DisplayName} @ {result.IPAddress} added");
                             workspacesFound = true;
                         }
                     }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Foundation;
+﻿using Foundation;
 using UIKit;
+using Serilog;
 
 namespace qController.iOS
 {
@@ -13,6 +10,8 @@ namespace qController.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+
+            Log.Logger = new LoggerConfiguration().WriteTo.NSLog().MinimumLevel.Debug().CreateLogger();
 
             LoadApplication(new App());
 

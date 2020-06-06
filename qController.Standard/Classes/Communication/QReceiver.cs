@@ -1,6 +1,7 @@
 ﻿//Class used for receiving workspace update messages (UDP)
 using SharpOSC;
 using System.Threading;
+using Serilog;
 
 namespace qController
 {
@@ -31,7 +32,7 @@ namespace qController
                 if (messageReceived != null)
                     OnUpdateMessageReceived(messageReceived);
                 else
-                    Console.WriteLine("Message came back null");
+                    Log.Debug("Message came back null");
             };
 
             udpListener = new UDPListener(Port, callback);

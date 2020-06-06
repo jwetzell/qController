@@ -3,6 +3,8 @@ using SharpOSC;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Serilog;
+
 namespace qController
 {
     public class CueEventArgs : EventArgs
@@ -35,6 +37,12 @@ namespace qController
     public class ConnectEventArgs : EventArgs
     {
         public string Status
+        {
+            get;
+            set;
+        }
+
+        public string WorkspaceId
         {
             get;
             set;
@@ -102,7 +110,7 @@ namespace qController
                 else if (msg.Address.Contains("playbackPosition"))
                     ParsePositionUpdateInfo(msg);
                 else if (msg.Address.Contains("thump"))
-                    Console.WriteLine("QPARSER - Heartbeat Received");
+                    Log.Debug("QPARSER - Heartbeat Received");
                 else if (msg.Address.Contains("disconnect"))
                     OnWorkspaceDisconnect();
                 else if (msg.Address.Contains("connect"))
@@ -113,10 +121,10 @@ namespace qController
                     ParseQInfo(msg);
                 else
                 {
-                    Console.WriteLine("QPARSER - Unkown message type: " + msg.Address);
+                    Log.Debug("QPARSER - Unkown message type: " + msg.Address);
                     foreach (var item in msg.Arguments)
                     {
-                        Console.WriteLine(item);
+                        Log.Debug(item.ToString());
                     }
                 }
             }
@@ -127,7 +135,8 @@ namespace qController
             if (msg.Arguments.Count > 0)
             {
                 JToken connectStatus = OSC2JSON(msg);
-                OnConnectionStatusChanged(connectStatus.ToString());
+                ;
+                OnConnectionStatusChanged(connectStatus.ToString(), msg.Address.Split('/')[3]);
             }
         }
 
@@ -223,10 +232,10 @@ namespace qController
             if (PlaybackPositionUpdated != null)
                 PlaybackPositionUpdated(this, new PlaybackPositionArgs() { PlaybackPosition = id });
         }
-        protected virtual void OnConnectionStatusChanged(string status)
+        protected virtual void OnConnectionStatusChanged(string status, string workspace_id)
         {
             if (ConnectionStatusChanged != null)
-                ConnectionStatusChanged(this, new ConnectEventArgs() { Status = status });
+                ConnectionStatusChanged(this, new ConnectEventArgs() { Status = status, WorkspaceId = workspace_id });
         }
         protected virtual void OnChildrenUpdated(string id, List<QCue> cues)
         {
