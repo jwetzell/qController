@@ -45,23 +45,21 @@ namespace qController.Communication
         public void Connect(QWorkspace workspace)
         {
             if(workspace.passcode != null)
-            {
                 Connect(workspace.workspace_id, workspace.passcode);
-            }
             else
-            {
                 Connect(workspace.workspace_id);
-            }
 
         }
 
         public void KickOff()
         {
+            Log.Debug($"QCONTROLLER - Searching for workspaces on: {ipAddress}");
             qClient.sendTCP("/workspaces");
         }
 
         public void Disconnect()
         {
+            Log.Debug($"QCONTROLLER - Disconnecting from: {qWorkspace.workspace_id}");
             qClient.sendTCP("/workspace/"+qWorkspace.workspace_id+"/disconnect");
         }
 
@@ -76,6 +74,7 @@ namespace qController.Communication
         }
 
         public void Kill(){
+            Log.Debug("QCONTROLLER - Killing");
             if (qUpdater != null)
                 qUpdater.Kill();
             if (qClient != null)
