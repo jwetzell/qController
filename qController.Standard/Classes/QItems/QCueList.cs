@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace qController
+namespace qController.QItems
 {
     public class QCueList
     {

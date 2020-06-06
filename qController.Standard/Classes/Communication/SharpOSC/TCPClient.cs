@@ -17,7 +17,7 @@ namespace SharpOSC
         }
     }
 
-    public class TCPSender
+    public class TCPClient
     {
         public int Port
         {
@@ -41,7 +41,7 @@ namespace SharpOSC
         byte ESC_ESC = 0xDD;
 
 
-        public TCPSender(string address, int port)
+        public TCPClient(string address, int port)
         {
             _port = port;
             _address = address;
@@ -50,7 +50,7 @@ namespace SharpOSC
         public void Connect()
         {
             client = new TcpClient(Address, Port);
-            Log.Debug($"TCPSender - connect called for <{Address}:{Port}>");
+            Log.Debug($"TCPClient - connect called for <{Address}:{Port}>");
             Thread receivingThread = new Thread(ReceiveLoop);
             receivingThread.Start();
         }
@@ -74,7 +74,7 @@ namespace SharpOSC
             {
                 Receive();
             }
-            Log.Debug("TCPSender - Receive Loop has exited for some reason");
+            Log.Debug("TCPClient - Receive Loop has exited for some reason");
         }
 
         public void Receive()
@@ -88,19 +88,24 @@ namespace SharpOSC
                 List<byte> responseData = new List<byte>();
                 if (netStream.CanRead)
                 {
+                    //var watch = System.Diagnostics.Stopwatch.StartNew();
                     byte[] buffer = new byte[256];
 
                     int bytesRead = 0;
+                    int reads = 0;
                     do
                     {
                         bytesRead = netStream.Read(buffer, 0, buffer.Length);
                         responseData.AddRange(buffer);
-                        Thread.Sleep(30);
+                        reads += 1;
+                        Thread.Sleep(1);
                         //Log.Debug("Thread " + num + ":  Bytes read: " + bytesRead + " - " + Encoding.UTF8.GetString(buffer));
                     } while (netStream.DataAvailable);
 
                     //Log.Debug("Raw TCP In: " + System.Text.Encoding.UTF8.GetString(responseData.ToArray()));
                     OscMessage response = (OscMessage)OscPacket.GetPacket(responseData.Skip(1).ToArray());
+                    //watch.Stop();
+                    //Log.Debug($"TCPCLient - message receive took {watch.ElapsedMilliseconds}ms and {reads} reads");
                     OnMessageReceived(response);
                 }
             } catch(Exception e)

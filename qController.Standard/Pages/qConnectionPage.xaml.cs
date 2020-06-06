@@ -4,6 +4,10 @@ using Acr.UserDialogs;
 using Zeroconf;
 using System.Collections.Generic;
 using Serilog;
+using qController.QItems;
+using qController.Communication;
+using qController.Cell;
+using Xamarin.Essentials;
 
 namespace qController
 {
@@ -29,7 +33,7 @@ namespace qController
             }
             else if (args.Command == "feedback")
             {
-                Device.OpenUri(new Uri("mailto:jwetzell1996@gmail.com"));
+                Launcher.OpenAsync(new Uri("mailto:feedback@jwetzell.com?subject=qController%20feedback"));
             }
             else if(args.Command == "support")
             {
@@ -41,7 +45,7 @@ namespace qController
                     OnAction = (response) =>
                     {
                         if (response)
-                            Device.OpenUri(new Uri("https://linktr.ee/JoelWetzell"));
+                            Launcher.OpenAsync(new Uri("https://linktr.ee/JoelWetzell"));
                     }
                 });
             }

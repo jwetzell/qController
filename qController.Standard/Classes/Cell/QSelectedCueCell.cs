@@ -1,8 +1,9 @@
 ﻿using System;
 using Acr.UserDialogs;
+using qController.QItems;
 using Xamarin.Forms;
 
-namespace qController
+namespace qController.Cell
 {
     public class CueEditArgs : EventArgs
     {

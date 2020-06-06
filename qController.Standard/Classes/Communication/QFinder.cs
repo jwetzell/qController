@@ -4,7 +4,7 @@ using Serilog;
 using System.Collections.Generic;
 using Zeroconf;
 
-namespace qController
+namespace qController.Communication
 {
     public class QFinder
     {

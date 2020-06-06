@@ -1,5 +1,5 @@
 ﻿//General information about a QLab Workspace
-namespace qController
+namespace qController.QItems
 {
     public class QWorkspaceInfo
     {

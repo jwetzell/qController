@@ -5,14 +5,15 @@ using Serilog;
 using Xamarin.Forms;
 using Serilog;
 
-namespace qController
+namespace qController.Communication
 {
     public class QUpdater
     {
 
         private bool active = true;
+        private bool started = false;
         private QController qController;
-        private Thread updateThread;
+        private Thread updateThread;        
         
         public QUpdater(QController controller)
         {
@@ -47,7 +48,15 @@ namespace qController
 
         public void Start(){
             Log.Debug("QUPDATER - Start() method called");
-            updateThread.Start();
+            try
+            {
+                //updateThread.Start();
+                Log.Debug("QUPDATER - updateThread started");
+            }
+            catch (ThreadStateException tSe)
+            {
+                Log.Debug("QUPDATER - updateThread already started");
+            }
         }
 
         //Attempt at a "keep alive" message
@@ -67,7 +76,7 @@ namespace qController
             if (args.Cue.type == "Group")
             {
                 //Log.Debug("QUpdater/Updated cue was group cue, sending children request");
-                qController.qClient.sendUDP("/workspace/"+qController.qWorkspace.workspace_id+"/cue_id/" + args.Cue.uniqueID + "/children");
+                qController.qClient.sendTCP("/workspace/"+qController.qWorkspace.workspace_id+"/cue_id/" + args.Cue.uniqueID + "/children");
             }
         }
 
@@ -96,7 +105,7 @@ namespace qController
         public void SendThump()
         {
             
-            qController.qClient.sendUDP("/workspace/" + qController.qWorkspace.workspace_id + "/thump");
+            qController.qClient.sendTCP("/workspace/" + qController.qWorkspace.workspace_id + "/thump");
         }
 
         public void Kill(){

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using qController.Communication;
 
-namespace qController
+namespace qController.Cell
 {
     public class QControlsBlock : Frame
     {
@@ -130,7 +131,7 @@ namespace qController
             {
                 string workspace_prefix = "/workspace/" + qController.qWorkspace.workspace_id;
                 string command = workspace_prefix + ((QButton)sender).qCommand.osc;
-                qController.qClient.sendUDP(command);
+                qController.qClient.sendTCP(command);
             }
         }
     }

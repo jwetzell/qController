@@ -19,6 +19,7 @@ namespace SharpOSC
 			this.Value = value;
 		}
 
+		override
 		public string ToString()
 		{
 			return Value;

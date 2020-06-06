@@ -3,9 +3,10 @@ using SharpOSC;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using qController.QItems;
 using Serilog;
 
-namespace qController
+namespace qController.Communication
 {
     public class CueEventArgs : EventArgs
     {
@@ -184,6 +185,7 @@ namespace qController
                     }
                     catch (Exception ex)
                     {
+                        Log.Debug($"QPARSER - Workspace Load Error: {ex.ToString()}");
                         OnWorkspaceLoadError(id);
                     }
                 }

@@ -2,10 +2,10 @@
 //Contains all necessary items to facilitate communication (sending, receiving) to a QLab workspace 
 //Also contains the local QWorkspace object which stores all the information that is used in displaying
 //TODO: STILL NEED TO WORK ON PASSWORD PROTECTED WORKSPACES
-using System;
 using Serilog;
+using qController.QItems;
 
-namespace qController
+namespace qController.Communication
 {
     public class QController
     {
@@ -31,26 +31,38 @@ namespace qController
         {
             Log.Debug($"QCONTROLLER - Connect Called: {workspace_id}");
             qWorkspace = new QWorkspace(workspace_id);
-            qClient.sendUDP("/workspace/"+workspace_id+"/connect");
+            qClient.sendTCP("/workspace/"+workspace_id+"/connect");
         }
 
         public void Connect(string workspace_id, string passcode)
         {
             Log.Debug($"QCONTROLLER - Connect with Passcode Called: {workspace_id}:{passcode}");
             qWorkspace = new QWorkspace(workspace_id);
-            qClient.sendUDP("/workspace/" + workspace_id + "/connect", passcode);
             qClient.sendTCP("/workspace/" + workspace_id + "/connect", passcode);
+
+        }
+
+        public void Connect(QWorkspace workspace)
+        {
+            if(workspace.passcode != null)
+            {
+                Connect(workspace.workspace_id, workspace.passcode);
+            }
+            else
+            {
+                Connect(workspace.workspace_id);
+            }
 
         }
 
         public void KickOff()
         {
-            qClient.sendUDP("/workspaces");
+            qClient.sendTCP("/workspaces");
         }
 
         public void Disconnect()
         {
-            qClient.sendUDP("/workspace/"+qWorkspace.workspace_id+"/disconnect");
+            qClient.sendTCP("/workspace/"+qWorkspace.workspace_id+"/disconnect");
         }
 
         public void Resume()

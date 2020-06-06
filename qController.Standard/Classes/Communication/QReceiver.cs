@@ -3,9 +3,8 @@ using SharpOSC;
 using System.Threading;
 using Serilog;
 
-namespace qController
+namespace qController.Communication
 {
-
     public class QReceiver
     {
         public delegate void UpdateMessageReceivedHandler(object source, MessageEventArgs args);

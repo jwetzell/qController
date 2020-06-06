@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Xamarin.Forms;
 
-namespace qController
+namespace qController.Cell
 {
     public class QLevelsCell : Frame
     {

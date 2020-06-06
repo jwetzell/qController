@@ -16,5 +16,13 @@ namespace qController
             BorderColor = Color.Black;
             IsVisible = false;
         }
+
+        public ShadowButton()
+        {
+            HasShadow = true;
+            BorderColor = Color.Black;
+            IsVisible = false;
+            Padding = new Thickness(0);
+        }
     }
 }

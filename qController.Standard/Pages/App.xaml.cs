@@ -1,6 +1,8 @@
 ﻿using Acr.UserDialogs;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using qController.Communication;
+
 namespace qController
 {
     public partial class App : Application

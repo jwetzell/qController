@@ -1,15 +1,15 @@
 ﻿//Class used to facilitate communication with a QInstance
-//Listens for incoming messages via qReceiver (UDP) and tcpSender (TCP)
+//Listens for incoming messages via qReceiver (UDP) and tcpClient (TCP)
 //TODO: WEIRD MESSAGE PARSING RULES NEED FIXED
 using System;
 using SharpOSC;
 using Serilog;
 
-namespace qController
+namespace qController.Communication
 {
     public class QClient
     {
-        TCPSender tcpSender;
+        TCPClient tcpClient;
         UDPSender udpSender;
         public QParser qParser;
         public QReceiver qReceiver;
@@ -21,13 +21,13 @@ namespace qController
             Address = address;
             Port = port;
             qParser = new QParser();
-            qReceiver = new QReceiver(Port + 1);
-            tcpSender = new TCPSender(Address, Port);
-            tcpSender.Connect();
-            udpSender = new UDPSender(Address, Port);
+            //qReceiver = new QReceiver(Port + 1);
+            tcpClient = new TCPClient(Address, Port);
+            tcpClient.Connect();
+            //udpSender = new UDPSender(Address, Port);
 
-            tcpSender.MessageReceived += OnMessageReceived;
-            qReceiver.UpdateMessageReceived += OnMessageReceived;
+            tcpClient.MessageReceived += OnMessageReceived;
+            //qReceiver.UpdateMessageReceived += OnMessageReceived;
 
         }
 
@@ -51,26 +51,27 @@ namespace qController
                 ProcessUpdate(args.Message);
         }
 
-        public void sendUDP(string address)
-        {
-            //Log.Debug($"QCLIENT - UDP Sent with address: {address}");
-            udpSender = new UDPSender(Address,Port);
-            udpSender.Send(new OscMessage(address));
-            udpSender.Close();
-        }
-        public void sendUDP(string address, params object[] args)
-        {
-            //Log.Debug($"QCLIENT - UDP Sent with address: {address}");
-            udpSender = new UDPSender(Address, Port);
-            udpSender.Send(new OscMessage(address, args));
-            udpSender.Close();
-        }
+        //public void sendUDP(string address)
+        //{
+        //    //Log.Debug($"QCLIENT - UDP Sent with address: {address}");
+        //    udpSender = new UDPSender(Address,Port);
+        //    udpSender.Send(new OscMessage(address));
+        //    udpSender.Close();
+        //}
+        //public void sendUDP(string address, params object[] args)
+        //{
+        //    //Log.Debug($"QCLIENT - UDP Sent with address: {address}");
+        //    udpSender = new UDPSender(Address, Port);
+        //    udpSender.Send(new OscMessage(address, args));
+        //    udpSender.Close();
+        //}
+
         public void sendTCP(string address)
         {
             //Log.Debug($"QCLIENT - TCP Sent with address: {address}");
             try
             {
-                tcpSender.Send(new OscMessage(address));
+                tcpClient.Send(new OscMessage(address));
             }
             catch (Exception ex)
             {
@@ -83,7 +84,7 @@ namespace qController
             //Log.Debug($"QCLIENT - TCP Sent with address: {address}");
             try
             {
-                tcpSender.Send(new OscMessage(address, args));
+                tcpClient.Send(new OscMessage(address, args));
             }
             catch (Exception ex)
             {
@@ -122,8 +123,7 @@ namespace qController
 
         public void Close()
         {
-            udpSender.Close();
-            qReceiver.Close();
+            tcpClient.Close();
         }
     }
 }

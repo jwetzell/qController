@@ -1,8 +1,8 @@
 ﻿using Xamarin.Forms;
 
-namespace qController
+namespace qController.QItems
 {
-    public class QInstance : ViewCell
+    public class QInstance
     {
         public string name { get; set; }
         public string address { get; set; }

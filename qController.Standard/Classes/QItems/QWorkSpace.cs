@@ -1,10 +1,8 @@
 ﻿//Class pertains to the local copy of a workspace, with methods for fetching/updating information inside
-
-using System;
 using System.Collections.Generic;
 using Serilog;
 
-namespace qController
+namespace qController.QItems
 {
     public class QWorkspace
     {
@@ -14,10 +12,23 @@ namespace qController
         public string address { get; set; }
         public bool IsPopulated { get; set; }
 
+        public string passcode { get; set; }
+
         //ONLY FOR PASSING A WORKSPACE LOAD ERROR
         public QWorkspace(string id)
         {
             workspace_id = id;
+        }
+
+        public QWorkspace(string id, string passcode)
+        {
+            workspace_id = id;
+            this.passcode = passcode;
+        }
+
+        public QWorkspace()
+        {
+
         }
 
         public QCue GetCue(string cue_id)

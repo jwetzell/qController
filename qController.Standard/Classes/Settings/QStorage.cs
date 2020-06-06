@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using System.Collections.ObjectModel;
 using Acr.Settings;
+using qController.QItems;
 
 namespace qController
 {
