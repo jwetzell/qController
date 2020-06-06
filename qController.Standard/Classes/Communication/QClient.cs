@@ -51,35 +51,23 @@ namespace qController
                 ProcessUpdate(args.Message);
         }
 
-        public void sendString(string address)
-        {
-            try
-            {
-                tcpSender.Send(new OscMessage(address));
-            }
-            catch (Exception ex)
-            {
-                Log.Debug("QCLIENT - Send Exception: " + ex.Message);
-            }
-        }
-
         public void sendUDP(string address)
         {
-            Log.Debug($"QCLIENT - UDP Sent with address: {address}");
+            //Log.Debug($"QCLIENT - UDP Sent with address: {address}");
             udpSender = new UDPSender(Address,Port);
             udpSender.Send(new OscMessage(address));
             udpSender.Close();
         }
         public void sendUDP(string address, params object[] args)
         {
-            Log.Debug($"QCLIENT - UDP Sent with address: {address}");
+            //Log.Debug($"QCLIENT - UDP Sent with address: {address}");
             udpSender = new UDPSender(Address, Port);
             udpSender.Send(new OscMessage(address, args));
             udpSender.Close();
         }
         public void sendTCP(string address)
         {
-            Log.Debug($"QCLIENT - TCP Sent with address: {address}");
+            //Log.Debug($"QCLIENT - TCP Sent with address: {address}");
             try
             {
                 tcpSender.Send(new OscMessage(address));
@@ -92,7 +80,7 @@ namespace qController
 
         public void sendTCP(string address, params object[] args)
         {
-            Log.Debug($"QCLIENT - TCP Sent with address: {address}");
+            //Log.Debug($"QCLIENT - TCP Sent with address: {address}");
             try
             {
                 tcpSender.Send(new OscMessage(address, args));
