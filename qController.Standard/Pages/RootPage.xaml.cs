@@ -28,7 +28,7 @@ namespace qController
         {
             MenuPage = (MenuPage)Master;
 
-            MenuPage.listView.ItemSelected += OnItemSelected;
+            MenuPage.setItemSelected(OnItemSelected);
         }
 
         void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -36,7 +36,7 @@ namespace qController
             var item = e.SelectedItem as MenuPageItem;
             if (item != null)
             {
-                MenuPage.listView.SelectedItem = null;
+                MenuPage.clearSelectedItem();
                 IsPresented = false;
                 if (MenuItemSelected != null)
                     MenuItemSelected(this, new MenuEventArgs { Command = item.Command });

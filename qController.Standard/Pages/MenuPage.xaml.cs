@@ -1,68 +1,79 @@
 ﻿using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using qController.QItems;
+using System;
 
 namespace qController
 {
     public partial class MenuPage : ContentPage
     {
 
-        public ListView listView;
-        public ObservableCollection<MenuPageItem> items;
-        int subLevel = 0;
+        public ObservableCollection<MenuPageItem> items { get; } = new ObservableCollection<MenuPageItem>();
         public MenuPage()
         {
             Title = "Menu";
             InitializeComponent();
-            items = new ObservableCollection<MenuPageItem>();
 
             ChangeToHome();
-            
-            listView = new ListView
+
+            listView.ItemsSource = items;
+            listView.RowHeight = (int)(App.HeightUnit * 6);
+            listView.ItemTemplate = new DataTemplate(() =>
             {
-                ItemsSource = items,
-                RowHeight = (int)(App.HeightUnit * 6),
-                ItemTemplate = new DataTemplate(() =>
-                {
-                    var grid = new Grid { Padding = new Thickness(5, 10) };
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(30) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
-
-
-                    var icon = new Label();
-
-                    icon.FontFamily = App.QFont;
-                    icon.SetBinding(Label.TextProperty, "Icon");
-                    icon.HorizontalTextAlignment = TextAlignment.Center;
-                    icon.VerticalTextAlignment = TextAlignment.Center;
-                    icon.FontSize = App.HeightUnit * 3;
-                    var label = new Label { VerticalOptions = LayoutOptions.FillAndExpand };
-                    label.SetBinding(Label.TextProperty, "Title");
-                    if (label.Text == "Disconnect")
+                var grid = new Grid {
+                    Padding = new Thickness(5, 10),
+                    ColumnDefinitions =
                     {
-                        label.TextColor = Color.DarkRed;
+                        new ColumnDefinition{Width = new GridLength(30)},
+                        new ColumnDefinition { Width = GridLength.Star }
                     }
-                    switch (Device.RuntimePlatform)
-                    {
-                        case Device.iOS:
-                            label.FontSize = App.HeightUnit * 3;
-                            break;
-                        case Device.Android:
-                            label.FontSize = App.HeightUnit * 2.2;
-                            break;
-                    }                    
-                    grid.Children.Add(icon);
-                    grid.Children.Add(label, 1, 0);
-                    return new ViewCell {View = grid};
-                  
-                })
-            };
-            Content = new StackLayout
-            {
-                Children = { listView }
-            };
+                };
+
+
+                var icon = new Label {
+                    FontFamily = App.QFont,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    FontSize = App.HeightUnit * 3
+                };
+
+                icon.SetBinding(Label.TextProperty, "Icon");
+
+                var label = new Label {
+                    VerticalOptions = LayoutOptions.FillAndExpand
+                };
+                label.SetBinding(Label.TextProperty, "Title");
+
+                if (label.Text == "Disconnect")
+                    label.TextColor = Color.DarkRed;
+
+                switch (Device.RuntimePlatform)
+                {
+                    case Device.iOS:
+                        label.FontSize = App.HeightUnit * 3;
+                        break;
+                    case Device.Android:
+                        label.FontSize = App.HeightUnit * 2.2;
+                        break;
+                }
+
+
+                grid.Children.Add(icon);
+                grid.Children.Add(label, 1, 0);
+                return new ViewCell { View = grid };
+            });
 
         }
+
+        public void setItemSelected(EventHandler<SelectedItemChangedEventArgs> ItemSelected){
+            listView.ItemSelected += ItemSelected;
+        }
+
+        public void clearSelectedItem()
+        {
+            listView.SelectedItem = null;
+        }
+
         public void ChangeToControl()
         {
             items.Clear();

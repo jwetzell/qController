@@ -111,7 +111,6 @@ namespace qController
             App.rootPage.MenuPage.ChangeToControl();
             NavigationPage.SetHasNavigationBar(this, false);
 
-            BackgroundColor = Color.FromHex("4A4A4A");
             qCell = new QSelectedCueCell();
 
             qCell.SelectedCueEdited += OnSelectedCueEdited;

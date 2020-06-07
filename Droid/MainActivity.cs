@@ -20,7 +20,6 @@ namespace qController.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
-
             Log.Logger = new LoggerConfiguration().WriteTo.AndroidLog().CreateLogger();
 
             LoadApplication(new App());

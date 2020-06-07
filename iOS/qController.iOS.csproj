@@ -141,6 +141,9 @@
       <HintPath>..\packages\Serilog.Sinks.Xamarin.0.2.0.64\lib\Xamarin.iOS10\Serilog.Sinks.Xamarin.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing.Common.dll" />
+    <Reference Include="MaterialComponents">
+      <HintPath>..\packages\Xamarin.iOS.MaterialComponents.92.0.0\lib\Xamarin.iOS\MaterialComponents.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">

@@ -12,6 +12,7 @@ namespace qController
 
         public QButton(QCommand command)
         {
+            
             qCommand = command;
             Text = qCommand.text;
             TextColor = Color.Black;
