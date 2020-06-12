@@ -40,6 +40,11 @@ namespace qController
 
             InitGUI();
 
+            if (!qController.qClient.connected)
+            {
+                App.showToast("Error connecting...make sure QLab is running");
+                Back();
+            }
             qController.KickOff();
         }
 
@@ -220,7 +225,8 @@ namespace qController
 
         void Back()
         {
-            qController.Kill();
+            if(qController.qClient.connected)
+                qController.Kill();
             App.rootPage.MenuItemSelected -= OnMenuItemSelected;
             Device.BeginInvokeOnMainThread(() =>
             {

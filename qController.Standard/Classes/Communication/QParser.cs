@@ -8,70 +8,7 @@ using Serilog;
 
 namespace qController.Communication
 {
-    public class CueEventArgs : EventArgs
-    {
-        public QCue Cue
-        {
-            get;
-            set;
-        }
-    }
-
-    public class WorkspaceEventArgs : EventArgs
-    {
-        public QWorkspace UpdatedWorkspace
-        {
-            get;
-            set;
-        }
-    }
-
-    public class PlaybackPositionArgs : EventArgs
-    {
-        public string PlaybackPosition
-        {
-            get;
-            set;
-        }
-    }
-
-    public class ConnectEventArgs : EventArgs
-    {
-        public string Status
-        {
-            get;
-            set;
-        }
-
-        public string WorkspaceId
-        {
-            get;
-            set;
-        }
-    }
-
-    public class WorkspaceInfoArgs : EventArgs
-    {
-        public List<QWorkspaceInfo> WorkspaceInfo
-        {
-            get;
-            set;
-        }
-    }
-
-    public class ChildrenEventArgs : EventArgs
-    {
-        public string cue_id
-        {
-            get;
-            set;
-        }
-        public List<QCue> children
-        {
-            get;
-            set;
-        }
-    }
+    
 
     public class QParser
     {
@@ -80,15 +17,7 @@ namespace qController.Communication
            
         }
 
-        public delegate void SelectedCueUpdatedHandler(object source, CueEventArgs args);
-        public delegate void WorkspaceUpdatedHandler(object source, WorkspaceEventArgs args);
-        public delegate void CueInfoUpdatedHandler(object source, CueEventArgs args);
-        public delegate void PlaybackPositionUpdatedHandler(object source, PlaybackPositionArgs args);
-        public delegate void ConnectionStatusHandler(object source, ConnectEventArgs args);
-        public delegate void ChildrenUpdateHandler(object source, ChildrenEventArgs args);
-        public delegate void WorkspaceDisconnectHandler(object source, EventArgs args);
-        public delegate void WorkspaceInfoHandler(object source, WorkspaceInfoArgs args);
-        public delegate void WorkspaceLoadErrorHandler(object source, WorkspaceEventArgs args);
+        
         public event WorkspaceLoadErrorHandler WorkspaceLoadError;
         public event WorkspaceInfoHandler WorkspaceInfoReceived;
         public event WorkspaceDisconnectHandler WorkspaceDisconnect;
@@ -214,50 +143,41 @@ namespace qController.Communication
 
         protected virtual void OnWorkspaceUpdated(QWorkspace workspace)
         {
-            if (WorkspaceUpdated != null)
-                WorkspaceUpdated(this, new WorkspaceEventArgs() { UpdatedWorkspace = workspace });
+            WorkspaceUpdated?.Invoke(this, new WorkspaceEventArgs() { UpdatedWorkspace = workspace });
         }
         protected virtual void OnSelectedCueUpdated(QCue cue)
         {
-            if (SelectedCueUpdated != null)
-                SelectedCueUpdated(this, new CueEventArgs() { Cue = cue });
+            SelectedCueUpdated?.Invoke(this, new CueEventArgs() { Cue = cue });
         }
 
         protected virtual void OnCueInfoUpdated(QCue cue)
-        { 
-            if (CueInfoUpdated != null)
-                CueInfoUpdated(this, new CueEventArgs() { Cue = cue });
+        {
+            CueInfoUpdated?.Invoke(this, new CueEventArgs() { Cue = cue });
         }
 
         protected virtual void OnPlaybackPositionUpdated(string id)
         {
-            if (PlaybackPositionUpdated != null)
-                PlaybackPositionUpdated(this, new PlaybackPositionArgs() { PlaybackPosition = id });
+            PlaybackPositionUpdated?.Invoke(this, new PlaybackPositionArgs() { PlaybackPosition = id });
         }
         protected virtual void OnConnectionStatusChanged(string status, string workspace_id)
         {
-            if (ConnectionStatusChanged != null)
-                ConnectionStatusChanged(this, new ConnectEventArgs() { Status = status, WorkspaceId = workspace_id });
+            ConnectionStatusChanged?.Invoke(this, new ConnectEventArgs() { Status = status, WorkspaceId = workspace_id });
         }
         protected virtual void OnChildrenUpdated(string id, List<QCue> cues)
         {
-            if (ChildrenUpdated != null)
-                ChildrenUpdated(this, new ChildrenEventArgs() { cue_id = id, children = cues });
+            ChildrenUpdated?.Invoke(this, new ChildrenEventArgs() { cue_id = id, children = cues });
         }
         protected virtual void OnWorkspaceDisconnect()
         {
-            if (WorkspaceDisconnect != null)
-                WorkspaceDisconnect(this, new EventArgs());
+            WorkspaceDisconnect?.Invoke(this, new EventArgs());
         }
         protected virtual void OnWorkspaceInfoReceived(List<QWorkspaceInfo> workspaces)
         {
-            if (WorkspaceInfoReceived != null)
-                WorkspaceInfoReceived(this, new WorkspaceInfoArgs() { WorkspaceInfo = workspaces });
+            WorkspaceInfoReceived?.Invoke(this, new WorkspaceInfoArgs() { WorkspaceInfo = workspaces });
         }
         protected virtual void OnWorkspaceLoadError(string id)
         {
-            if (WorkspaceLoadError != null)
-                WorkspaceLoadError(this, new WorkspaceEventArgs { UpdatedWorkspace = new QWorkspace(id) });
+            WorkspaceLoadError?.Invoke(this, new WorkspaceEventArgs { UpdatedWorkspace = new QWorkspace(id) });
         }
 
     }

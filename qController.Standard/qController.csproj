@@ -83,11 +83,9 @@
     <EmbeddedResource Include="App.xaml" />
   </ItemGroup>-->
   <ItemGroup>
-    <Folder Include="Classes\" />
     <Folder Include="Pages\" />
     <Folder Include="Classes\QItems\" />
     <Folder Include="Classes\Cell\" />
-    <Folder Include="Classes\Communication\" />
     <Folder Include="Classes\Settings\" />
     <Folder Include="Classes\Dialogs\" />
     <Folder Include="Classes\Buttons\" />

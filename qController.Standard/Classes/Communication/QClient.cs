@@ -13,6 +13,7 @@ namespace qController.Communication
         public QParser qParser;
         string Address;
         int Port;
+        public bool connected;
 
         public QClient(string address, int port)
         {
@@ -20,8 +21,7 @@ namespace qController.Communication
             Port = port;
             qParser = new QParser();
             tcpClient = new TCPClient(Address, Port);
-            tcpClient.Connect();
-
+            connected = tcpClient.Connect();
             tcpClient.MessageReceived += OnMessageReceived;
 
         }
