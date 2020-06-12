@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>qController</string>
+	<string>qControl</string>
 	<key>CFBundleName</key>
 	<string>qControl</string>
 	<key>CFBundleIdentifier</key>
@@ -36,7 +36,7 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.2</string>
+	<string>2.2.0</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
