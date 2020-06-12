@@ -21,7 +21,6 @@ namespace qController.Communication
         {
             this.port = port;
             this.ipAddress = address;
-
             qClient = new QClient(ipAddress, port);
             qUpdater = new QUpdater(this);
 
@@ -75,8 +74,6 @@ namespace qController.Communication
 
         public void Kill(){
             Log.Debug("QCONTROLLER - Killing");
-            if (qUpdater != null)
-                qUpdater.Kill();
             if (qClient != null)
                 qClient.Close();
         }

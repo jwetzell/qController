@@ -61,7 +61,6 @@ namespace qController
             Log.Debug($"CONTROLPAGE - Connection Status Changed: {args.WorkspaceId} : {args.Status}");
             if (args.Status.Equals("ok"))
             {
-                qController.qUpdater.Start();
                 Device.BeginInvokeOnMainThread(() => {
                     FinishUI();
                 });
