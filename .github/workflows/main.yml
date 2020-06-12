@@ -21,3 +21,13 @@ jobs:
       run: |
         cd ..
         ls
+        
+  Android:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Android
+      run: |
+        nuget restore
+        cd Droid
+        msbuild qController.Droid.csproj /verbosity:normal /t:Rebuild /p:Configuration=Debug  
