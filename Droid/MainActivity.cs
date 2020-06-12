@@ -8,7 +8,7 @@ using Android.Net;
 using Serilog;
 namespace qController.Droid
 {
-    [Activity(Label = "qController", Icon = "@drawable/icon", Theme = "@style/MyTheme", ScreenOrientation = ScreenOrientation.Portrait, MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "qControl", Icon = "@drawable/icon", Theme = "@style/MyTheme", ScreenOrientation = ScreenOrientation.Portrait, MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
