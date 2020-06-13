@@ -52,13 +52,13 @@
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer: Joel Wetzell (5E8CU66YWB)</CodesignKey>
+    <CodesignKey>iPhone Distribution: Joel Wetzell (JHA7H7P56J)</CodesignKey>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchLink>None</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
-    <CodesignProvision>VS: com.jwetzell.qController Development</CodesignProvision>
+    <CodesignProvision>qController</CodesignProvision>
     <MtouchExtraArgs>-v -v -v -v</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">

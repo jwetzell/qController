@@ -45,7 +45,10 @@ namespace qController
                 App.showToast("Error connecting...make sure QLab is running");
                 Back();
             }
-            qController.KickOff();
+            else
+            {
+                qController.KickOff();
+            }
         }
 
         private void OnWorkspaceSelected(object source, WorkspacePromptArgs args)

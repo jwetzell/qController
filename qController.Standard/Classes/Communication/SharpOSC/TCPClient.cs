@@ -48,19 +48,16 @@ namespace SharpOSC
 
         public bool Connect()
         {
-            try
+            client = new TcpClient();
+
+            if (!client.ConnectAsync(Address, Port).Wait(TimeSpan.FromSeconds(1)))
             {
-                client = new TcpClient(Address, Port);
-                Thread receivingThread = new Thread(ReceiveLoop);
-                receivingThread.Start();
-                //Console.WriteLine($"TCPClient - connected to <{Address}:{Port}>");
-                return true;
-            } 
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
                 return false;
             }
+
+            Thread receivingThread = new Thread(ReceiveLoop);
+            receivingThread.Start();
+            return true;
             
         }
 
@@ -161,8 +158,12 @@ namespace SharpOSC
 
         public void Close()
         {
-            client.GetStream().Close();
-            client.Close();
+            if (client.Connected)
+            {
+                client.GetStream().Close();
+                client.Close();
+            }
+            
         }
 
         protected virtual void OnMessageReceived(OscMessage msg)
