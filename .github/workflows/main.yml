@@ -6,7 +6,7 @@ on: [push, pull_request]
 jobs:
         
   Android:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Android
@@ -14,12 +14,4 @@ jobs:
         nuget restore
         cd Droid
         msbuild qController.Droid.csproj /verbosity:normal /t:Rebuild /p:Configuration=Debug  
-  iOS:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: iOS
-      run: |
-        nuget restore
-        cd iOS
-        msbuild qController.iOS.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug        
+
