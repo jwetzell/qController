@@ -24,7 +24,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
-    - name: iOS
+      name: Checkout Code
     - name: Restore NuGet Packages
       run: nuget restore
     - name: Build Application
