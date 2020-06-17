@@ -9,9 +9,15 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Android
+      name: Checkout Code
+    - name: Setup MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1 
+    - name: Setup NuGet.exe for use with actions
+      uses: NuGet/setup-nuget@v1.0.2  
+    - name: Restore NuGet Packages
+      run: nuget restore
+    - name: Build Android Application      
       run: |
-        nuget restore
         cd Droid
         msbuild qController.Droid.csproj /verbosity:normal /t:Rebuild /p:Configuration=Debug  
 
