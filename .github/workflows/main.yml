@@ -16,8 +16,19 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.2  
     - name: Restore NuGet Packages
       run: nuget restore
-    - name: Build Android Application      
+    - name: Build  Application      
       run: |
         cd Droid
         msbuild qController.Droid.csproj /verbosity:normal /t:Rebuild /p:Configuration=Debug  
+  iOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: iOS
+    - name: Restore NuGet Packages
+      run: nuget restore
+    - name: Build Application
+      run: |
+        cd iOS
+        msbuild qController.iOS.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug  
 
