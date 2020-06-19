@@ -1,8 +1,14 @@
-
 name: Build Android and iOS
 
-on: [push, pull_request]
-
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the master branch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 jobs:
         
   Android:
@@ -31,4 +37,3 @@ jobs:
       run: |
         cd iOS
         msbuild qController.iOS.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug  
-
