@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="qController.WorkspacePage">
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ScrollView x:Name="cueListScrollView" 
+                    Grid.Row="1">
+            <Grid x:Name="cueListsGrid"
+          RowSpacing="0"
+          ColumnSpacing="0"
+          BackgroundColor="#808080">
+                <Grid.RowDefinitions></Grid.RowDefinitions>
+
+            </Grid>
+        </ScrollView>
+
+        <Grid x:Name="selectedCueGrid"
+              Grid.Row="0"
+              RowSpacing="0"
+              BackgroundColor="#D8D8D8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Frame Grid.RowSpan="3" Grid.ColumnSpan="5" BorderColor="Black" BackgroundColor="Transparent"/>
+            <ActivityIndicator x:Name="workspaceLoadingIndicator" Grid.Row="1" HeightRequest="20"/>
+
+            <Label Grid.Row ="0"
+                   Grid.Column="0"
+                   Text="{Binding number}"
+                   d:Text="100"
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="CenterAndExpand"
+                   FontSize="Medium"/>
+
+            <Label Grid.Row ="1"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="5"
+                   Text="{Binding name}"
+                   d:Text="Cue 1"
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="CenterAndExpand"
+                   FontSize="Large"/>
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using qController.Communication;
+using qController.Pages;
 
 namespace qController
 {
@@ -54,7 +55,7 @@ namespace qController
 
             var menuPage = new MenuPage();
             rootPage = new RootPage();
-            NavigationPage = new NavigationPage(new QConnectionPage());
+            NavigationPage = new NavigationPage(new QBrowserPage());
             rootPage.Master = menuPage;
             rootPage.Detail = NavigationPage;
             MainPage = rootPage;
