@@ -109,7 +109,7 @@ namespace qController.Communication
                 {
                     try
                     {
-                        QWorkspace workspace = JsonConvert.DeserializeObject<QWorkspace>(msg.Arguments[0].ToString());
+                        QOldWorkspace workspace = JsonConvert.DeserializeObject<QOldWorkspace>(msg.Arguments[0].ToString());
                         OnWorkspaceUpdated(workspace);
                     }
                     catch (Exception ex)
@@ -141,7 +141,7 @@ namespace qController.Communication
             return json.GetValue("data");
         }
 
-        protected virtual void OnWorkspaceUpdated(QWorkspace workspace)
+        protected virtual void OnWorkspaceUpdated(QOldWorkspace workspace)
         {
             WorkspaceUpdated?.Invoke(this, new WorkspaceEventArgs() { UpdatedWorkspace = workspace });
         }
@@ -177,7 +177,7 @@ namespace qController.Communication
         }
         protected virtual void OnWorkspaceLoadError(string id)
         {
-            WorkspaceLoadError?.Invoke(this, new WorkspaceEventArgs { UpdatedWorkspace = new QWorkspace(id) });
+            WorkspaceLoadError?.Invoke(this, new WorkspaceEventArgs { UpdatedWorkspace = new QOldWorkspace(id) });
         }
 
     }

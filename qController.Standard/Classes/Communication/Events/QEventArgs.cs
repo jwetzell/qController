@@ -16,7 +16,7 @@ namespace qController.Communication
 
     public class WorkspaceEventArgs : EventArgs
     {
-        public QWorkspace UpdatedWorkspace
+        public QOldWorkspace UpdatedWorkspace
         {
             get;
             set;

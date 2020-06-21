@@ -1,5 +1,4 @@
 ﻿using QSharp;
-using System.Collections.Generic;
 using Xamarin.Forms;
 using Serilog;
 using System.Collections.ObjectModel;
@@ -8,21 +7,23 @@ using Acr.UserDialogs;
 using qController.Dialogs;
 using Xamarin.Essentials;
 using System;
+using qController.ViewModels;
 
 namespace qController.Pages
 {
     public partial class QBrowserPage : ContentPage
     {
-        public ObservableCollection<ServerGroup> servers = new ObservableCollection<ServerGroup>();
         public QBrowserPage()
         {
             InitializeComponent();
             App.rootPage.MenuItemSelected += OnMenuItemSelected;
 
-            serverListView.ItemsSource = servers;
-            QBrowser browser = new QBrowser();
-            browser.ServerUpdatedWorkspaces += Browser_ServerUpdatedWorkspaces;
-            serverListView.ItemSelected += ServerListView_ItemSelected;
+            serverListView.BindingContext = new QBrowserViewModel(new QBrowser());
+
+            
+            serverListView.ItemSelected += QWorkspaceSelected;
+
+
 
             storageListView.ItemsSource = QStorage.qInstances;
             storageListView.ItemTemplate = new DataTemplate(typeof(QInstanceCell));
@@ -36,25 +37,17 @@ namespace qController.Pages
 
         }
 
-        async void ServerListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        async void QWorkspaceSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem == null)
                 return;
-            QWorkspace selectedWorkspace = e.SelectedItem as QWorkspace;
+            QWorkspace selectedWorkspace = (e.SelectedItem as QWorkspaceViewModel).workspace;
             Log.Debug($"[demo] workspace: {selectedWorkspace.nameWithoutPathExtension} has been selected");
             ((ListView)sender).SelectedItem = null;
             await Navigation.PushAsync(new WorkspacePage(selectedWorkspace));
         }
 
-        private void Browser_ServerUpdatedWorkspaces(object source, QServerUpdatedArgs args)
-        {
-            ServerGroup serverGroup = new ServerGroup(args.server.name);
-            serverGroup.AddRange(args.server.workspaces);
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                servers.Add(serverGroup);
-            });
-        }
+
 
 
         void AddWorkspace()
@@ -79,12 +72,5 @@ namespace qController.Pages
         }
     }
 
-    public class ServerGroup : List<QWorkspace>
-    {
-        public string name { get; set; }
-        public ServerGroup(string name)
-        {
-            this.name = name;
-        }
-    }
+    
 }

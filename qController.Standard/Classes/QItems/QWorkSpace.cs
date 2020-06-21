@@ -4,7 +4,7 @@ using Serilog;
 
 namespace qController.QItems
 {
-    public class QWorkspace
+    public class QOldWorkspace
     {
         public string status { get; set; }
         public List<QCueList> data { get; set; }
@@ -15,18 +15,18 @@ namespace qController.QItems
         public string passcode { get; set; }
 
         //ONLY FOR PASSING A WORKSPACE LOAD ERROR
-        public QWorkspace(string id)
+        public QOldWorkspace(string id)
         {
             workspace_id = id;
         }
 
-        public QWorkspace(string id, string passcode)
+        public QOldWorkspace(string id, string passcode)
         {
             workspace_id = id;
             this.passcode = passcode;
         }
 
-        public QWorkspace()
+        public QOldWorkspace()
         {
 
         }

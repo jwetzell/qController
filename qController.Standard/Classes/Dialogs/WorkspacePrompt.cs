@@ -8,7 +8,7 @@ namespace qController.Dialogs
 {
     public class WorkspacePromptArgs : EventArgs
     {
-        public QWorkspace SelectedWorkspace
+        public QOldWorkspace SelectedWorkspace
         {
             get;
             set;
@@ -38,7 +38,7 @@ namespace qController.Dialogs
                     
                     if (!workspace.hasPasscode)
                     {
-                        OnWorkspaceSelected(new QWorkspace(workspace.uniqueID));
+                        OnWorkspaceSelected(new QOldWorkspace(workspace.uniqueID));
                     }
                     else
                     {
@@ -64,7 +64,7 @@ namespace qController.Dialogs
                 {
                     if (resp.Ok)
                     {
-                        OnWorkspaceSelected(new QWorkspace(workspace_id,resp.Value));
+                        OnWorkspaceSelected(new QOldWorkspace(workspace_id,resp.Value));
                     }
                     else
                     {
@@ -75,7 +75,7 @@ namespace qController.Dialogs
             });
         }
 
-        protected virtual void OnWorkspaceSelected(QWorkspace workspace)
+        protected virtual void OnWorkspaceSelected(QOldWorkspace workspace)
         {
             if (WorkspaceSelected != null)
                 WorkspaceSelected(this, new WorkspacePromptArgs() { SelectedWorkspace = workspace  });

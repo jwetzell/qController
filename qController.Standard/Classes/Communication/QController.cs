@@ -12,7 +12,7 @@ namespace qController.Communication
 
         public QUpdater qUpdater;
         public QClient qClient;
-        public QWorkspace qWorkspace;
+        public QOldWorkspace qWorkspace;
         public string playbackPosition;
         private string ipAddress;
         private int port;
@@ -29,19 +29,19 @@ namespace qController.Communication
         public void Connect(string workspace_id)
         {
             Log.Debug($"QCONTROLLER - Connect Called: {workspace_id}");
-            qWorkspace = new QWorkspace(workspace_id);
+            qWorkspace = new QOldWorkspace(workspace_id);
             qClient.sendTCP("/workspace/"+workspace_id+"/connect");
         }
 
         public void Connect(string workspace_id, string passcode)
         {
             Log.Debug($"QCONTROLLER - Connect with Passcode Called: {workspace_id}:{passcode}");
-            qWorkspace = new QWorkspace(workspace_id);
+            qWorkspace = new QOldWorkspace(workspace_id);
             qClient.sendTCP("/workspace/" + workspace_id + "/connect", passcode);
 
         }
 
-        public void Connect(QWorkspace workspace)
+        public void Connect(QOldWorkspace workspace)
         {
             if(workspace.passcode != null)
                 Connect(workspace.workspace_id, workspace.passcode);

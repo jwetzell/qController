@@ -85,7 +85,7 @@ namespace qController
             });
             
         }
-        public void ChangeToWorkspace(QWorkspace workspace)
+        public void ChangeToWorkspace(QOldWorkspace workspace)
         {
             for(int i = 0; i < workspace.data.Count; i++)
             {

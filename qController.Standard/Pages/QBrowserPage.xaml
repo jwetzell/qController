@@ -16,19 +16,33 @@
                 
             </ListView>
             
-            <ListView x:Name="serverListView" GroupDisplayBinding="{Binding name}" IsGroupingEnabled="True">
+            <ListView x:Name="serverListView" 
+                      GroupDisplayBinding="{Binding name}" 
+                      IsGroupingEnabled="True"
+                      d:IsGroupingEnabled="False"
+                      ItemsSource="{Binding ServersGrouped}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid BackgroundColor="Blue">
+                            <Grid Margin="20,0,0,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Label Text="{Binding name}"
+                                <Label Grid.Column="0" Text="{Binding Name}"
+                                       HorizontalOptions="FillAndExpand"
+                                       VerticalOptions="FillAndExpand"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="Start"/>
+
+                                <Label Grid.Column="1" Text="&#xf1184;"
+                                       FontFamily="{StaticResource MaterialFontFamily}"
+                                       FontSize="Large"
+                                       IsVisible="{Binding HasPasscode}"
                                        HorizontalOptions="FillAndExpand"
                                        VerticalOptions="FillAndExpand"
                                        VerticalTextAlignment="Center"
