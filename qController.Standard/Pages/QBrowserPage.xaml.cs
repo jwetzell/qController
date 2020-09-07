@@ -1,7 +1,6 @@
-﻿using QSharp;
+﻿using QControlKit;
 using Xamarin.Forms;
 using Serilog;
-using System.Collections.ObjectModel;
 using qController.Cell;
 using Acr.UserDialogs;
 using qController.Dialogs;
@@ -44,7 +43,30 @@ namespace qController.Pages
             QWorkspace selectedWorkspace = (e.SelectedItem as QWorkspaceViewModel).workspace;
             Log.Debug($"[demo] workspace: {selectedWorkspace.nameWithoutPathExtension} has been selected");
             ((ListView)sender).SelectedItem = null;
-            await Navigation.PushAsync(new WorkspacePage(selectedWorkspace));
+
+            if (selectedWorkspace.hasPasscode)
+            {
+                UserDialogs.Instance.Prompt(new PromptConfig
+                {
+                    InputType = InputType.Number,
+                    MaxLength = 4,
+                    Title = "Workspace Requires Passcode",
+                    OkText = "Connect",
+                    IsCancellable = true,
+                    OnAction = async (resp) =>
+                    {
+                        if (resp.Ok)
+                        {
+                            await Navigation.PushAsync(new WorkspacePage(selectedWorkspace, resp.Value));
+                        }
+                    }
+
+                });
+            }
+            else
+            {
+                await Navigation.PushAsync(new WorkspacePage(selectedWorkspace));
+            }
         }
 
 

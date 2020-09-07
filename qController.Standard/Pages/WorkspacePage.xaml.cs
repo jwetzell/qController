@@ -1,11 +1,11 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using QSharp;
+using QControlKit;
 using qController.ViewModels;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Acr.UserDialogs;
 
 namespace qController
 {
@@ -13,13 +13,27 @@ namespace qController
     {
         private QWorkspace connectedWorkspace;
         private Dictionary<string, Grid> cueGridDict = new Dictionary<string, Grid>();
+
         public WorkspacePage(QWorkspace workspace)
         {
             InitializeComponent();
 
             connectedWorkspace = workspace;
             connectedWorkspace.WorkspaceUpdated += Workspace_WorkspaceUpdated;
-            connectedWorkspace.connectWithPasscode("1234");
+            
+            connectedWorkspace.defaultSendUpdatesOSC = true;
+            connectedWorkspace.CueListChangedPlaybackPosition += ConnectedWorkspace_CueListChangedPlaybackPosition;
+        }
+
+        public WorkspacePage(QWorkspace workspace, string passcode)
+        {
+            InitializeComponent();
+
+            connectedWorkspace = workspace;
+            connectedWorkspace.WorkspaceUpdated += Workspace_WorkspaceUpdated;
+            connectedWorkspace.connectWithPasscode(passcode);
+            
+
             connectedWorkspace.defaultSendUpdatesOSC = true;
             connectedWorkspace.CueListChangedPlaybackPosition += ConnectedWorkspace_CueListChangedPlaybackPosition;
         }

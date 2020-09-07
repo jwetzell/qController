@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using QSharp;
+using QControlKit;
 namespace qController.ViewModels
 {
     public class QWorkspaceViewModel

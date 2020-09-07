@@ -1,5 +1,4 @@
-﻿using qController.Pages;
-using QSharp;
+﻿using QControlKit;
 using System.Collections.ObjectModel;
 
 namespace qController.ViewModels
@@ -16,6 +15,22 @@ namespace qController.ViewModels
             set
             {
                 server.name = value;
+            }
+        }
+
+        public string host
+        {
+            get
+            {
+                return server.host;
+            }
+        }
+
+        public string GroupName
+        {
+            get
+            {
+                return $"{name} ({host})";
             }
         }
 

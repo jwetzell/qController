@@ -33,7 +33,7 @@ namespace qController.Dialogs
             {
                 QWorkspaceInfo workspace = workspaces[i];
                 actionSheetConfig.Add(workspace.displayName, new Action(() => {
-                    Log.Debug("CONTROLPAGE - Workspace Selected " + workspace.displayName);
+                    Log.Debug("WorkspacePrompt - Workspace Selected " + workspace.displayName);
 
                     
                     if (!workspace.hasPasscode)
