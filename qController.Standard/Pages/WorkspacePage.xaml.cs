@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using QControlKit;
-using qController.ViewModels;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Acr.UserDialogs;
-using System.Windows.Input;
+
+using qController.ViewModels;
+
+using QControlKit;
+using QControlKit.Events;
+using QControlKit.Constants;
 
 namespace qController
 {

@@ -1,8 +1,10 @@
-﻿using QControlKit;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;
+
+using QControlKit;
+using QControlKit.Events;
 
 namespace qController.ViewModels
 {

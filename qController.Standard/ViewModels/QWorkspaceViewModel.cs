@@ -1,8 +1,5 @@
-﻿using qController.QItems;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using QControlKit;
+﻿using QControlKit;
+
 namespace qController.ViewModels
 {
     public class QWorkspaceViewModel

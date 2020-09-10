@@ -1,8 +1,11 @@
-﻿using QControlKit;
-using Serilog;
+﻿using Serilog;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;
+
+using QControlKit;
+using QControlKit.Constants;
+using QControlKit.Events;
 
 namespace qController.ViewModels
 {
