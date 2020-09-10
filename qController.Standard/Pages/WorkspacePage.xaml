@@ -7,20 +7,13 @@
              x:Class="qController.WorkspacePage">
     <Grid RowSpacing="0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ScrollView x:Name="cueListScrollView" 
-                    Grid.Row="1">
-            <Grid x:Name="cueListsGrid"
-          RowSpacing="0"
-          ColumnSpacing="0"
-          BackgroundColor="#808080">
-                <Grid.RowDefinitions></Grid.RowDefinitions>
+        
 
-            </Grid>
-        </ScrollView>
+        
 
         <Grid x:Name="selectedCueGrid"
               Grid.Row="0"
@@ -60,5 +53,16 @@
                    HorizontalOptions="CenterAndExpand"
                    FontSize="Large"/>
         </Grid>
+
+        <ScrollView x:Name="cueListScrollView" 
+                    Grid.Row="1">
+            <Grid x:Name="cueListsGrid"
+          RowSpacing="0"
+          ColumnSpacing="0"
+          BackgroundColor="#808080">
+                <Grid.RowDefinitions></Grid.RowDefinitions>
+
+            </Grid>
+        </ScrollView>
     </Grid>
 </ContentPage>

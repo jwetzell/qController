@@ -6,6 +6,7 @@ using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Acr.UserDialogs;
+using System.Windows.Input;
 
 namespace qController
 {
@@ -13,29 +14,44 @@ namespace qController
     {
         private QWorkspace connectedWorkspace;
         private Dictionary<string, Grid> cueGridDict = new Dictionary<string, Grid>();
-
-        public WorkspacePage(QWorkspace workspace)
+        public WorkspacePage(QWorkspace workspace, string passcode = null)
         {
             InitializeComponent();
 
             connectedWorkspace = workspace;
             connectedWorkspace.WorkspaceUpdated += Workspace_WorkspaceUpdated;
-            
+            connectedWorkspace.WorkspaceConnectionError += ConnectedWorkspace_WorkspaceConnectionError;
             connectedWorkspace.defaultSendUpdatesOSC = true;
             connectedWorkspace.CueListChangedPlaybackPosition += ConnectedWorkspace_CueListChangedPlaybackPosition;
+
+            connectedWorkspace.connect(passcode);
         }
 
-        public WorkspacePage(QWorkspace workspace, string passcode)
+        private void ConnectedWorkspace_WorkspaceConnectionError(object source, QWorkspaceConnectionErrorArgs connectionErrorArgs)
         {
-            InitializeComponent();
-
-            connectedWorkspace = workspace;
-            connectedWorkspace.WorkspaceUpdated += Workspace_WorkspaceUpdated;
-            connectedWorkspace.connectWithPasscode(passcode);
-            
-
-            connectedWorkspace.defaultSendUpdatesOSC = true;
-            connectedWorkspace.CueListChangedPlaybackPosition += ConnectedWorkspace_CueListChangedPlaybackPosition;
+            System.Console.WriteLine("WorkspaceConnectionError Called");
+            if (connectionErrorArgs.status.Equals("badpass"))
+            {
+                UserDialogs.Instance.Prompt(new PromptConfig
+                {
+                    InputType = InputType.Number,
+                    MaxLength = 4,
+                    Title = "Incorrect Passcode!",
+                    OkText = "Connect",
+                    IsCancellable = true,
+                    OnTextChanged = args =>
+                    {
+                        args.IsValid = args.Value != null && !args.Value.Equals("") && args.Value.Length == 4;
+                    },
+                    OnAction = (resp) =>
+                    {
+                        if (resp.Ok)
+                        {
+                            connectedWorkspace.connect(resp.Value);
+                        }   
+                    }
+                });
+            }
         }
 
         void ConnectedWorkspace_CueListChangedPlaybackPosition(object source, QCueListChangedPlaybackPositionArgs args)
@@ -84,6 +100,7 @@ namespace qController
             //unsubscribe from events
             connectedWorkspace.WorkspaceUpdated -= Workspace_WorkspaceUpdated;
             connectedWorkspace.CueListChangedPlaybackPosition -= ConnectedWorkspace_CueListChangedPlaybackPosition;
+            connectedWorkspace.WorkspaceConnectionError -= ConnectedWorkspace_WorkspaceConnectionError;
             //disconnect
             connectedWorkspace.disconnect();
 
@@ -95,6 +112,20 @@ namespace qController
             QCueViewModel qCueViewModel = new QCueViewModel(cue, true);
             cueGrid.RowDefinitions = new RowDefinitionCollection();
             cueGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40) });
+
+
+            //Group List "Frame" added early so other children or "on top"
+            if (cue.cues.Count > 0)
+            {
+                var cueFrame = new Frame
+                {
+                    BackgroundColor = Color.Transparent,
+                    BorderColor = Color.Black
+                };
+                cueGrid.Children.Add(cueFrame);
+                Grid.SetRowSpan(cueFrame, cue.cues.Count + 1);
+            }
+
             var cueLabel = new Label
             {
                 BindingContext = qCueViewModel,
@@ -102,6 +133,17 @@ namespace qController
                 VerticalTextAlignment = TextAlignment.Center,
             };
             cueLabel.SetBinding(Label.TextProperty, "name", BindingMode.OneWay);
+
+            //System.Console.WriteLine($"Cue has continue mode: {cue.}" );
+            //Section for selecting a cue by tapping the name Label
+            var selectCueGesture = new TapGestureRecognizer();
+            selectCueGesture.Tapped += (sender, e) =>
+            {
+                connectedWorkspace.firstCueList.playbackPositionID = cue.uid;
+            };
+            cueLabel.GestureRecognizers.Add(selectCueGesture);
+
+
             var cueBackground = new Frame
             {
                 BindingContext = qCueViewModel,
@@ -110,6 +152,7 @@ namespace qController
                 CornerRadius = 0,
                 BorderColor = Color.Black
             };
+
             cueBackground.SetBinding(BackgroundColorProperty, "color", BindingMode.OneWay);
 
             var cueSelectedIndicator = new Frame
@@ -118,13 +161,13 @@ namespace qController
                 BackgroundColor = Color.Blue,
                 HasShadow = false
             };
+
             cueSelectedIndicator.SetBinding(IsVisibleProperty, "IsSelected");
 
             cueGrid.Children.Add(cueSelectedIndicator, 0, 0);
             cueGrid.Children.Add(cueBackground, 0, 0);
             cueGrid.Children.Add(cueLabel, 0, 0);
 
-            int rows = 1;
             if (cue.cues.Count > 0)
             {
                 foreach (var aCue in cue.cues)
@@ -134,17 +177,9 @@ namespace qController
                     cueGridDict.Add(aCue.uid, aCueGrid);
                     aCueGrid.Margin = new Thickness(10, 0, 0, 0);
                     cueGrid.Children.Add(aCueGrid, 0, aCue.sortIndex + 1);
-                    rows++;
                 }
 
-                var cueFrame = new Frame
-                {
-                    BackgroundColor = Color.Transparent,
-                    BorderColor = Color.Black
-                };
-
-                cueGrid.Children.Add(cueFrame);
-                Grid.SetRowSpan(cueFrame, rows);
+                
 
             }
             return cueGrid;

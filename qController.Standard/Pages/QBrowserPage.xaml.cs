@@ -18,11 +18,7 @@ namespace qController.Pages
             App.rootPage.MenuItemSelected += OnMenuItemSelected;
 
             serverListView.BindingContext = new QBrowserViewModel(new QBrowser());
-
-            
             serverListView.ItemSelected += QWorkspaceSelected;
-
-
 
             storageListView.ItemsSource = QStorage.qInstances;
             storageListView.ItemTemplate = new DataTemplate(typeof(QInstanceCell));
@@ -53,10 +49,15 @@ namespace qController.Pages
                     Title = "Workspace Requires Passcode",
                     OkText = "Connect",
                     IsCancellable = true,
+                    OnTextChanged = args =>
+                    {
+                        args.IsValid = args.Value != null && !args.Value.Equals("") && args.Value.Length == 4;
+                    },
                     OnAction = async (resp) =>
                     {
                         if (resp.Ok)
                         {
+                            Console.WriteLine($"Passcode is null: {resp.Value == null}");
                             await Navigation.PushAsync(new WorkspacePage(selectedWorkspace, resp.Value));
                         }
                     }

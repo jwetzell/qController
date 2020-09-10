@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Xamarin.Forms;
 
 namespace qController.ViewModels
 {
@@ -22,8 +23,11 @@ namespace qController.ViewModels
 
         private void OnServerFound(object source, QServerFoundArgs args)
         {
-            ServersGrouped.Add(new QServerViewModel(args.server));
-
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                System.Console.WriteLine($"[QBrowserViewModel] adding server: {args.server.description}");
+                ServersGrouped.Add(new QServerViewModel(args.server));
+            });
         }
 
         void OnPropertyChanged([CallerMemberName] string name = "")

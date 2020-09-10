@@ -1,11 +1,15 @@
 ﻿using QControlKit;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Xamarin.Forms;
 
 namespace qController.ViewModels
 {
-    public class QServerViewModel : ObservableCollection<QWorkspaceViewModel>
+    public class QServerViewModel : ObservableCollection<QWorkspaceViewModel>, INotifyPropertyChanged
     {
         QServer server;
+        public new event PropertyChangedEventHandler PropertyChanged;
         public string name
         {
             get
@@ -26,6 +30,22 @@ namespace qController.ViewModels
             }
         }
 
+        public string version
+        {
+            get
+            {
+                if (server.version == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return $"v{server.version}";
+
+                }
+            }
+        }
+
         public string GroupName
         {
             get
@@ -40,19 +60,35 @@ namespace qController.ViewModels
             name = this.server.name;
             foreach (var workspace in this.server.workspaces)
             {
-                this.Add(new QWorkspaceViewModel(workspace));
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    this.Add(new QWorkspaceViewModel(workspace));
+                });
             }
             this.server.ServerUpdated += OnServerUpdated;
         }
 
         private void OnServerUpdated(object source, QServerUpdatedArgs args)
         {
+            OnPropertyChanged("GroupName");
+            OnPropertyChanged("version");
+
             foreach (var workspace in this.server.workspaces)
             {
                 QWorkspaceViewModel workspaceViewModel = new QWorkspaceViewModel(workspace);
                 if (!Contains(workspaceViewModel))
-                    Add(workspaceViewModel);
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Add(workspaceViewModel);
+                    });
+                }
             }
+        }
+
+        void OnPropertyChanged([CallerMemberName] string name = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }   
 }
