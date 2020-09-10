@@ -27,10 +27,17 @@ namespace qController.ViewModels
         {
             foreach (var property in args.properties)
             {
-                Log.Debug($"[cueviewmodel] property <{property}> has been updated.");
                 if (property.Equals(QOSCKey.Name))
                 {
                     OnPropertyChanged("name");
+                }
+                else if (property.Equals(QOSCKey.Number))
+                {
+                    OnPropertyChanged("number");
+                }
+                else if (property.Equals(QOSCKey.Notes))
+                {
+                    OnPropertyChanged("notes");
                 }
                 else if (property.Equals(QOSCKey.ColorName))
                 {
@@ -53,12 +60,20 @@ namespace qController.ViewModels
         {
             get
             {
-                return cue.displayName;
+                return cue.listName;
             }
 
             set
             {
                 cue.name = value;
+            }
+        }
+
+        public string type
+        {
+            get
+            {
+                return QIcon.GetIconFromType(cue.type);
             }
         }
 
@@ -72,6 +87,19 @@ namespace qController.ViewModels
             set
             {
                 cue.number = value;
+            }
+        }
+
+        public string notes
+        {
+            get
+            {
+                return cue.notes;
+            }
+
+            set
+            {
+                cue.notes = value;
             }
         }
 

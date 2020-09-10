@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:qui="clr-namespace:qController.UI"
              mc:Ignorable="d"
              x:Class="qController.WorkspacePage">
     <Grid RowSpacing="0">
@@ -12,10 +13,11 @@
         </Grid.RowDefinitions>
 
         
+        <qui:QSelectedCueGrid x:Name="selectedCueGrid"
+                                 Grid.Row="0"/>
 
-        
 
-        <Grid x:Name="selectedCueGrid"
+        <!--<Grid x:Name="selectedCueGrid2"
               Grid.Row="0"
               RowSpacing="0"
               BackgroundColor="#D8D8D8">
@@ -34,7 +36,6 @@
             </Grid.ColumnDefinitions>
 
             <Frame Grid.RowSpan="3" Grid.ColumnSpan="5" BorderColor="Black" BackgroundColor="Transparent"/>
-            <ActivityIndicator x:Name="workspaceLoadingIndicator" Grid.Row="1" HeightRequest="20"/>
 
             <Label Grid.Row ="0"
                    Grid.Column="0"
@@ -52,7 +53,7 @@
                    VerticalOptions="CenterAndExpand"
                    HorizontalOptions="CenterAndExpand"
                    FontSize="Large"/>
-        </Grid>
+        </Grid>-->
 
         <ScrollView x:Name="cueListScrollView" 
                     Grid.Row="1">

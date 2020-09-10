@@ -61,8 +61,9 @@ namespace qController
         {
             Device.BeginInvokeOnMainThread(() =>
             {
-                selectedCueGrid.BindingContext = new QCueViewModel(connectedWorkspace.cueWithID(args.cueID), false);
-
+                QCue selectedCue = connectedWorkspace.cueWithID(args.cueID);
+                connectedWorkspace.fetchDefaultPropertiesForCue(selectedCue);
+                selectedCueGrid.BindingContext = new QCueViewModel(selectedCue, false);
                 if (cueGridDict.ContainsKey(args.cueID))
                 {
                     var cueGrid = cueGridDict[args.cueID]; //element to scroll to
