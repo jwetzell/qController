@@ -1,33 +1,17 @@
 ﻿//NEEDS migrated to QSelectedCueGrid
 using System;
 using Acr.UserDialogs;
-using qController.QItems;
 using Xamarin.Forms;
+
+using qController.QItems;
+using qController.Events;
 
 namespace qController.Cell
 {
-    public class CueEditArgs : EventArgs
-    {
-        public string CueID
-        {
-            get;
-            set;
-        }
-        public string Property
-        {
-            get;
-            set;
-        }
-        public string NewValue
-        {
-            get;
-            set;
-        }
-    }
+    
 
     public class QSelectedCueCell : Frame
     {
-        public delegate void SelectedCueEditedHandler(object source, CueEditArgs args);
         public event SelectedCueEditedHandler SelectedCueEdited;
 
         Label name;

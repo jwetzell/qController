@@ -77,6 +77,14 @@ namespace qController.ViewModels
             }
         }
 
+        public string uid
+        {
+            get
+            {
+                return cue.uid;
+            }
+        }
+
         public string number
         {
             get

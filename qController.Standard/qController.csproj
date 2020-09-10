@@ -92,6 +92,7 @@
     <Folder Include="Classes\Dialogs\" />
     <Folder Include="Classes\Buttons\" />
     <Folder Include="Classes\UI\" />
+    <Folder Include="Classes\Events\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Pages\RootPageMaster.xaml" />

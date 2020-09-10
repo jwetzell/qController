@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using Serilog;
 using Acr.UserDialogs;
+
 using qController.Dialogs;
 using qController.QItems;
 using qController.Cell;
 using qController.Communication;
+using qController.Events;
 
 namespace qController
 {
