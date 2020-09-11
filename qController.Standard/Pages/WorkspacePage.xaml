@@ -5,15 +5,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:qui="clr-namespace:qController.UI"
              mc:Ignorable="d"
-             x:Class="qController.WorkspacePage">
+             x:Class="qController.WorkspacePage"
+             BackgroundColor="#8F8A99">
     <Grid RowSpacing="0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="175"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
         
-        <qui:QSelectedCueGrid x:Name="selectedCueGrid"
+        <qui:QSelectedCueFrame x:Name="selectedCueFrame"
                                  Grid.Row="0"/>
 
 
@@ -58,10 +58,9 @@
         <ScrollView x:Name="cueListScrollView" 
                     Grid.Row="1">
             <Grid x:Name="cueListsGrid"
-          RowSpacing="0"
-          ColumnSpacing="0"
-          BackgroundColor="#808080">
-                <Grid.RowDefinitions></Grid.RowDefinitions>
+                  RowSpacing="0"
+                  ColumnSpacing="0"
+                  BackgroundColor="#808080">
 
             </Grid>
         </ScrollView>
