@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using Acr.UserDialogs;
 
 using qController.ViewModels;
+using qController.UI;
 
 using QControlKit;
 using QControlKit.Events;
@@ -63,7 +64,7 @@ namespace qController
             {
                 QCue selectedCue = connectedWorkspace.cueWithID(args.cueID);
                 connectedWorkspace.fetchDefaultPropertiesForCue(selectedCue);
-                selectedCueGrid.BindingContext = new QCueViewModel(selectedCue, false);
+                selectedCueFrame.BindingContext = new QCueViewModel(selectedCue, false);
                 if (cueGridDict.ContainsKey(args.cueID))
                 {
                     var cueGrid = cueGridDict[args.cueID]; //element to scroll to
@@ -83,7 +84,7 @@ namespace qController
                     List<Task> cueAddTasks = new List<Task>();
                     foreach (var aCue in cue.cues)
                     {
-                        Grid cueGrid = cueToGrid(aCue);
+                        QCueGrid cueGrid = cueToGrid(aCue);
                         cueGridDict.Add(aCue.uid, cueGrid);
                         MainThread.InvokeOnMainThreadAsync(() =>
                         {
@@ -110,67 +111,9 @@ namespace qController
 
         }
 
-        Grid cueToGrid(QCue cue)
+        QCueGrid cueToGrid(QCue cue)
         {
-            Grid cueGrid = new Grid { RowSpacing = 0 };
-            QCueViewModel qCueViewModel = new QCueViewModel(cue, true);
-            cueGrid.RowDefinitions = new RowDefinitionCollection();
-            cueGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40) });
-
-
-            //Group List "Frame" added early so other children or "on top"
-            if (cue.cues.Count > 0)
-            {
-                var cueFrame = new Frame
-                {
-                    BackgroundColor = Color.Transparent,
-                    BorderColor = Color.Black
-                };
-                cueGrid.Children.Add(cueFrame);
-                Grid.SetRowSpan(cueFrame, cue.cues.Count + 1);
-            }
-
-            var cueLabel = new Label
-            {
-                BindingContext = qCueViewModel,
-                HorizontalOptions = LayoutOptions.StartAndExpand,
-                VerticalTextAlignment = TextAlignment.Center,
-            };
-            cueLabel.SetBinding(Label.TextProperty, "name", BindingMode.OneWay);
-
-            //System.Console.WriteLine($"Cue has continue mode: {cue.}" );
-            //Section for selecting a cue by tapping the name Label
-            var selectCueGesture = new TapGestureRecognizer();
-            selectCueGesture.Tapped += (sender, e) =>
-            {
-                connectedWorkspace.firstCueList.playbackPositionID = cue.uid;
-            };
-            cueLabel.GestureRecognizers.Add(selectCueGesture);
-
-
-            var cueBackground = new Frame
-            {
-                BindingContext = qCueViewModel,
-                Opacity = 0.50,
-                HasShadow = false,
-                CornerRadius = 0,
-                BorderColor = Color.Black
-            };
-
-            cueBackground.SetBinding(BackgroundColorProperty, "color", BindingMode.OneWay);
-
-            var cueSelectedIndicator = new Frame
-            {
-                BindingContext = qCueViewModel,
-                BackgroundColor = Color.Blue,
-                HasShadow = false
-            };
-
-            cueSelectedIndicator.SetBinding(IsVisibleProperty, "IsSelected");
-
-            cueGrid.Children.Add(cueSelectedIndicator, 0, 0);
-            cueGrid.Children.Add(cueBackground, 0, 0);
-            cueGrid.Children.Add(cueLabel, 0, 0);
+            QCueGrid cueGrid = new QCueGrid(cue);
 
             if (cue.cues.Count > 0)
             {
@@ -182,9 +125,6 @@ namespace qController
                     aCueGrid.Margin = new Thickness(10, 0, 0, 0);
                     cueGrid.Children.Add(aCueGrid, 0, aCue.sortIndex + 1);
                 }
-
-                
-
             }
             return cueGrid;
         }

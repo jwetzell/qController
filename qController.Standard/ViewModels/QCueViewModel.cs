@@ -27,7 +27,7 @@ namespace qController.ViewModels
         {
             foreach (var property in args.properties)
             {
-                if (property.Equals(QOSCKey.Name))
+                if (property.Equals(QOSCKey.Name) || property.Equals(QOSCKey.ListName))
                 {
                     OnPropertyChanged("name");
                 }
