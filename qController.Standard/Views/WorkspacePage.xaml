@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:qui="clr-namespace:qController.UI"
+             ios:Page.UseSafeArea="true"
+             mc:Ignorable="d"
+             x:Class="qController.WorkspacePage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="175"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Ordering is based on the order last is on top seems pretty backwards to me-->
+        <ScrollView x:Name="cueListScrollView" 
+                    Grid.Row="2">
+            <Grid x:Name="cueListsGrid"
+                    RowSpacing="0"
+                    ColumnSpacing="0"
+                    BackgroundColor="#808080">
+
+            </Grid>
+        </ScrollView>
+
+        
+        <qui:QSelectedCueFrame x:Name="selectedCueFrame"
+                                    Grid.Row="1"/>
+
+        <qui:QNavBar x:Name="qNavBar"
+                     Grid.Row="0"/>
+    </Grid>
+</ContentPage>
