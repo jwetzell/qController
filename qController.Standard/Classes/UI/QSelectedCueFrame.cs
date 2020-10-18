@@ -10,16 +10,17 @@ namespace qController.UI
         {
             //Colored border size
             Padding = 8;
-
+            HeightRequest = 175;
             CornerRadius = 0;
             this.SetBinding(Frame.BackgroundColorProperty, "color", BindingMode.OneWay);
             this.SetBinding(Frame.BorderColorProperty, "color", BindingMode.OneWay);
 
             Frame frameInt = new Frame
             {
-                Padding = 0,
-                BackgroundColor = Color.FromHex("#D8D8D8")
+                Padding = 0
             };
+
+            frameInt.SetDynamicResource(Frame.BackgroundColorProperty, "SelectedCueCellBackgroundColor");
 
 
             Grid selectedCueGrid = new Grid
@@ -54,6 +55,7 @@ namespace qController.UI
                 Padding = new Thickness(15,5,0,0),
                 FontSize = App.HeightUnit * 3
             };
+            number.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
             number.SetBinding(Label.TextProperty, "number", BindingMode.OneWay);
             selectedCueGrid.Children.Add(number,0,0);
             Grid.SetColumnSpan(number, 2);
@@ -69,6 +71,7 @@ namespace qController.UI
                 FontSize = App.HeightUnit * 4,
                 FontFamily = App.QFont
             };
+            type.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
             type.SetBinding(Label.TextProperty, "type", BindingMode.OneWay);
             selectedCueGrid.Children.Add(type, 4, 0);
 
@@ -82,6 +85,7 @@ namespace qController.UI
                 BackgroundColor = Color.Transparent,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
             };
+            name.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
             name.SetBinding(Label.TextProperty, "name", BindingMode.TwoWay);
             selectedCueGrid.Children.Add(name, 0, 1);
             Grid.SetColumnSpan(name, 5);
@@ -94,6 +98,7 @@ namespace qController.UI
                 BackgroundColor = Color.Transparent,
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Editor))
             };
+            notes.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
             notes.SetBinding(Editor.TextProperty, "notes", BindingMode.TwoWay);
 
             selectedCueGrid.Children.Add(notes, 0, 2);

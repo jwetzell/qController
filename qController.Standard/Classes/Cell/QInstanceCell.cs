@@ -63,9 +63,9 @@ namespace qController.Cell
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Padding = 0,
                 Margin = new Thickness(10,10,10,10),
-                CornerRadius=20,
-                BackgroundColor = Color.FromHex("D8D8D8")
+                CornerRadius=20
             };
+            f.SetDynamicResource(Frame.BackgroundColorProperty, "WorkspaceCellBackgroundColor");
             View = f;
             
            
@@ -77,11 +77,13 @@ namespace qController.Cell
                 nameLabel.FontAttributes = FontAttributes.Bold;
                 nameLabel.FontSize = App.HeightUnit * 3;
                 nameLabel.Margin = new Thickness(0, 20, 0, 0);
+                nameLabel.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
 
                 addressLabel.HorizontalTextAlignment = TextAlignment.Center;
                 addressLabel.VerticalTextAlignment = TextAlignment.Start;
                 addressLabel.FontSize = App.HeightUnit * 2.5;
                 addressLabel.Margin = new Thickness(0, 0, 0, 20);
+                addressLabel.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
 
                 connectLabel.HorizontalOptions = LayoutOptions.StartAndExpand;
                 connectLabel.VerticalOptions = LayoutOptions.CenterAndExpand;

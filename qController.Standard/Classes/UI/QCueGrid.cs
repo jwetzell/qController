@@ -33,6 +33,7 @@ namespace qController.UI
                 Padding = new Thickness(10,0,0,0)
             };
             cueLabel.SetBinding(Label.TextProperty, "name", BindingMode.OneWay);
+            cueLabel.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
 
             //Section for selecting a cue by tapping the name Label
             var selectCueGesture = new TapGestureRecognizer();
