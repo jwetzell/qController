@@ -4,7 +4,7 @@ namespace qController.UI
 {
     public class QNavBar : Grid
     {
-        public Button menuButton;
+        public Label menuButton;
         public Label instanceName;
 
         public QNavBar()
@@ -23,15 +23,17 @@ namespace qController.UI
                 new ColumnDefinition {Width = new GridLength(4,GridUnitType.Star)},
             };
 
-            menuButton = new Button
+            menuButton = new Label
             {
                 FontFamily = App.QFont,
                 HorizontalOptions = LayoutOptions.StartAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalTextAlignment = TextAlignment.Start,
+                VerticalTextAlignment = TextAlignment.Center,
                 Padding = 0,
                 Margin = new Thickness(10,0,0,0),
                 Text = QIcon.MENU,
-                CornerRadius = 0,
+                BackgroundColor = Color.Transparent,
                 //BackgroundColor = Color.Red
             };
 
@@ -53,7 +55,9 @@ namespace qController.UI
             instanceName.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
 
 
-            menuButton.Clicked += App.ShowMenu;
+            var menuButtonGesture = new TapGestureRecognizer();
+            menuButtonGesture.Tapped += App.ShowMenu;
+            menuButton.GestureRecognizers.Add(menuButtonGesture);
 
             switch (Device.RuntimePlatform)
             {
