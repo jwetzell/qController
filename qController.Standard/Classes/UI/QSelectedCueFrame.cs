@@ -86,20 +86,20 @@ namespace qController.UI
                 FontSize = App.HeightUnit * 2.75
             };
             name.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
-            name.SetBinding(Label.TextProperty, "name", BindingMode.TwoWay);
+            name.SetBinding(Label.TextProperty, "name", BindingMode.OneWay);
             selectedCueGrid.Children.Add(name, 0, 1);
             Grid.SetColumnSpan(name, 5);
 
-            Editor notes = new Editor
+            Label notes = new Label
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 Margin = 5,
                 BackgroundColor = Color.Transparent,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Editor))
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
             };
             notes.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
-            notes.SetBinding(Editor.TextProperty, "notes", BindingMode.TwoWay);
+            notes.SetBinding(Label.TextProperty, "notes", BindingMode.OneWay);
 
             selectedCueGrid.Children.Add(notes, 0, 2);
             Grid.SetColumnSpan(notes, 5);
@@ -121,7 +121,7 @@ namespace qController.UI
                     {
                         if (!qName.Ok)
                             return;
-                        name.Text = qName.Text;
+                        ((QCueViewModel)this.BindingContext).name = qName.Text;
                     }
                 });
             };
@@ -150,6 +150,29 @@ namespace qController.UI
             };
 
             number.GestureRecognizers.Add(numberDoubleTap);
+
+
+            var notesDoubleTap = new TapGestureRecognizer();
+            notesDoubleTap.NumberOfTapsRequired = 2;
+
+            notesDoubleTap.Tapped += (s, e) =>
+            {
+                UserDialogs.Instance.Prompt(new PromptConfig
+                {
+                    Title = "Update Notes",
+                    Message = "Change notes to update",
+                    OkText = "Update",
+                    Text = notes.Text,
+                    OnAction = (qNotes) =>
+                    {
+                        if (!qNotes.Ok)
+                            return;
+                        ((QCueViewModel)BindingContext).notes = qNotes.Text;
+                    }
+                });
+            };
+
+            notes.GestureRecognizers.Add(notesDoubleTap);
 
 
             //BACKGROUND COLORS FOR TESTING ONLY 
