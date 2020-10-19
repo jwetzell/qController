@@ -13,6 +13,7 @@ namespace qController.ViewModels
     {
         QCue cue;
         bool isSelected = false;
+        bool isCollapsed = false;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public QCueViewModel(QCue cue, bool checkPlayback)
@@ -54,6 +55,14 @@ namespace qController.ViewModels
         private void Workspace_CueListChangedPlaybackPosition(object source, QCueListChangedPlaybackPositionArgs args)
         {
             IsSelected = args.cueID == cue.uid;
+        }
+
+        public Thickness nestPadding
+        {
+            get
+            {
+                return new Thickness((cue.nestLevel - 1) * 10,0,0,0);
+            }
         }
 
         public string name
@@ -132,6 +141,19 @@ namespace qController.ViewModels
             set
             {
                 isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsCollapsed
+        {
+            get
+            {
+                return isCollapsed;
+            }
+            set
+            {
+                isCollapsed = value;
                 OnPropertyChanged();
             }
         }

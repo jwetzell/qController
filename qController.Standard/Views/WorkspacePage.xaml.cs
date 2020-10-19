@@ -137,8 +137,9 @@ namespace qController
                     cueGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                     var aCueGrid = cueToGrid(aCue);
                     cueGridDict.Add(aCue.uid, aCueGrid);
-                    aCueGrid.Margin = new Thickness(10, 0, 0, 0);
+                    aCueGrid.Margin = new Thickness(0, 0, 0, 0);
                     cueGrid.Children.Add(aCueGrid, 0, aCue.sortIndex + 1);
+                    Grid.SetColumnSpan(aCueGrid,cueGrid.ColumnDefinitions.Count);
                 }
             }
             return cueGrid;
