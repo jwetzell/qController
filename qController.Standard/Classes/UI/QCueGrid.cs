@@ -37,6 +37,7 @@ namespace qController.UI
                 BindingContext = qCueViewModel,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalTextAlignment = TextAlignment.Center,
+                Margin = new Thickness(10, 0, 0, 0),
                 //BackgroundColor = Color.Blue,
             };
             cueLabel.SetBinding(Label.TextProperty, "name", BindingMode.OneWay);
@@ -47,14 +48,25 @@ namespace qController.UI
             {
                 FontFamily = App.QFont,
                 BindingContext = qCueViewModel,
-                HorizontalOptions = LayoutOptions.StartAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
                 HorizontalTextAlignment = TextAlignment.Start,
+                VerticalOptions = LayoutOptions.FillAndExpand,
                 VerticalTextAlignment = TextAlignment.Center,
                 Padding = 0,
                 Margin = new Thickness(10,0,0,0),
-                FontSize = App.HeightUnit * 3,
                 //BackgroundColor = Color.Red
             };
+
+            switch (Device.RuntimePlatform)
+            {
+                case Device.Android:
+                    cueTypeLabel.FontSize = App.HeightUnit * 4;
+                    break;
+                default:
+                    cueTypeLabel.FontSize = App.HeightUnit * 3;
+                    break;
+            }
+
             cueTypeLabel.SetBinding(Label.TextProperty, "type", BindingMode.OneWay);
             cueTypeLabel.SetDynamicResource(Label.TextColorProperty, "IconTextColor");
 
@@ -78,6 +90,18 @@ namespace qController.UI
                         for (var i = 1; i < RowDefinitions.Count; i++)
                         {
                             RowDefinitions[i].Height = qCueViewModel.IsCollapsed ? 0 : GridLength.Auto;
+                            
+                        }
+
+                        if (Device.RuntimePlatform.Equals(Device.Android))
+                        {
+                            foreach (var child in Children)
+                            {
+                                if (Grid.GetRow(child) > 0)
+                                {
+                                    child.IsVisible = !qCueViewModel.IsCollapsed;
+                                }
+                            }
                         }
                     }
                 };
