@@ -117,7 +117,7 @@ namespace qController
 
         private void SetLightResources()
         {
-            Resources["NavigationBarColor"] = Color.FromHex("#71AEFF");
+            Resources["NavigationBarColor"] = Color.FromHex("#3089ff");
             Resources["PageBackgroundColor"] = Color.LightGray;
 
 

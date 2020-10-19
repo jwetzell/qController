@@ -17,11 +17,10 @@ namespace qController
             ChangeToHome();
 
             listView.ItemsSource = items;
-            listView.RowHeight = (int)(App.HeightUnit * 6);
             listView.ItemTemplate = new DataTemplate(() =>
             {
                 var grid = new Grid {
-                    Padding = new Thickness(5, 10),
+                    Padding = 0,
                     ColumnDefinitions =
                     {
                         new ColumnDefinition{Width = new GridLength(30)},
@@ -29,38 +28,36 @@ namespace qController
                     }
                 };
 
-
                 var icon = new Label {
                     FontFamily = App.QFont,
                     HorizontalTextAlignment = TextAlignment.Center,
                     VerticalTextAlignment = TextAlignment.Center,
-                    FontSize = App.HeightUnit * 3
+                    FontSize = App.HeightUnit * 2.75
                 };
-
 
                 icon.SetBinding(Label.TextProperty, "Icon");
                 icon.SetDynamicResource(Label.TextColorProperty, "IconTextColor");
 
                 var label = new Label {
-                    VerticalOptions = LayoutOptions.FillAndExpand
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    FontSize = App.HeightUnit * 2.75
+                
                 };
                 label.SetBinding(Label.TextProperty, "Title");
                 label.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
 
-                if (label.Text == "Disconnect")
-                    label.TextColor = Color.DarkRed;
-
-
-                switch (Device.RuntimePlatform)
-                {
-                    case Device.iOS:
-                        label.FontSize = App.HeightUnit * 3;
-                        break;
-                    case Device.Android:
-                        label.FontSize = App.HeightUnit * 2.2;
-                        break;
-                }
-
+                //switch (Device.RuntimePlatform)
+                //{
+                //    case Device.iOS:
+                //        listView.RowHeight = (int)(App.HeightUnit * 5);
+                //        label.FontSize = App.HeightUnit * 2.75;
+                //        break;
+                //    case Device.Android:
+                //        listView.RowHeight = (int)(App.HeightUnit * 5);
+                //        label.FontSize = App.HeightUnit * 2.75;
+                //        break;
+                //}
 
                 grid.Children.Add(icon);
                 grid.Children.Add(label, 1, 0);

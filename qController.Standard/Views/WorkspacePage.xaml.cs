@@ -109,6 +109,12 @@ namespace qController
                         }).Wait();
                     }
                     connectedWorkspace.valueForKey(cue, QOSCKey.PlaybackPositionId); //fetch playback position for cueList once all cue loading is done.
+
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        selectedCueFrame.IsVisible = true;
+                        cueListScrollView.IsVisible = true;
+                    });
                     break; //only load first cue list with cues.
                 }
             }

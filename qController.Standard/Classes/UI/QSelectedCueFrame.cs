@@ -83,7 +83,7 @@ namespace qController.UI
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center,
                 BackgroundColor = Color.Transparent,
-                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
+                FontSize = App.HeightUnit * 2.75
             };
             name.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
             name.SetBinding(Label.TextProperty, "name", BindingMode.TwoWay);

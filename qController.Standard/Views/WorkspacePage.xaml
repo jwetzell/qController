@@ -12,12 +12,13 @@
     <Grid RowSpacing="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="175"/>
+            <RowDefinition Height="200"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--Ordering is based on the order last is on top seems pretty backwards to me-->
-        <ScrollView x:Name="cueListScrollView" 
+        <ScrollView x:Name="cueListScrollView"
+                    IsVisible="False"
                     Grid.Row="2">
             <Grid x:Name="cueListsGrid"
                     RowSpacing="0"
@@ -29,7 +30,8 @@
 
         
         <qui:QSelectedCueFrame x:Name="selectedCueFrame"
-                                    Grid.Row="1"/>
+                               IsVisible="False"
+                               Grid.Row="1"/>
 
         <qui:QNavBar x:Name="qNavBar"
                      Grid.Row="0"/>
