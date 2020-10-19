@@ -15,7 +15,7 @@ namespace qController.UI
             ColumnDefinitions = new ColumnDefinitionCollection
             {
                 new ColumnDefinition{Width = GridLength.Star},
-                new ColumnDefinition{Width = new GridLength(4,GridUnitType.Star)}
+                new ColumnDefinition{Width = new GridLength(5,GridUnitType.Star)}
             };
 
             //Group List "Frame" added early so other children or "on top"
