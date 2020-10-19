@@ -254,7 +254,7 @@
       <HintPath>..\packages\Zeroconf.3.4.2\lib\netstandard2.0\Zeroconf.dll</HintPath>
     </Reference>
     <Reference Include="QControlKit">
-      <HintPath>..\packages\QControlKit.0.0.4\lib\netstandard2.0\QControlKit.dll</HintPath>
+      <HintPath>..\packages\QControlKit.0.0.5\lib\netstandard2.0\QControlKit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -146,7 +146,7 @@
       <HintPath>..\packages\Xamarin.iOS.MaterialComponents.92.0.0\lib\Xamarin.iOS\MaterialComponents.dll</HintPath>
     </Reference>
     <Reference Include="QControlKit">
-      <HintPath>..\packages\QControlKit.0.0.4\lib\netstandard2.0\QControlKit.dll</HintPath>
+      <HintPath>..\packages\QControlKit.0.0.5\lib\netstandard2.0\QControlKit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
