@@ -6,7 +6,7 @@ using Xamarin.Forms;
 using qController.QItems;
 using qController.Events;
 
-namespace qController.Cell
+namespace qController.UI.Cells
 {
     
 

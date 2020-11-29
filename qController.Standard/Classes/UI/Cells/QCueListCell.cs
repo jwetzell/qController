@@ -2,7 +2,7 @@
 using Xamarin.Forms;
 using qController.QItems;
 
-namespace qController.Cell
+namespace qController.UI.Cells
 {
     public class QCueListCell : Frame
     {

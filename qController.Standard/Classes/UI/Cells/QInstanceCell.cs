@@ -2,7 +2,7 @@
 using Xamarin.Forms;
 using Serilog;
 
-namespace qController.Cell
+namespace qController.UI.Cells
 {
     public class QInstanceCell : ViewCell
     {

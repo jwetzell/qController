@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
-using qController.Communication;
+using qController.UI.Buttons;
 
-namespace qController.Cell
+namespace qController.UI.Cells
 {
     public class QControlsBlock : Frame
     {
