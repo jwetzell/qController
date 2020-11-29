@@ -94,7 +94,7 @@ namespace qController.Communication
         public void ParseQInfo(OscMessage msg)
         {
             JToken qInfo = OSC2JSON(msg);
-            List<QWorkspaceInfo> qWorkspaceInfo = JsonConvert.DeserializeObject<List<QWorkspaceInfo>>(qInfo.ToString());
+            List<QControlKit.QWorkspaceInfo> qWorkspaceInfo = JsonConvert.DeserializeObject<List<QControlKit.QWorkspaceInfo>>(qInfo.ToString());
             OnWorkspaceInfoReceived(qWorkspaceInfo);
         }
 
@@ -171,7 +171,7 @@ namespace qController.Communication
         {
             WorkspaceDisconnect?.Invoke(this, new EventArgs());
         }
-        protected virtual void OnWorkspaceInfoReceived(List<QWorkspaceInfo> workspaces)
+        protected virtual void OnWorkspaceInfoReceived(List<QControlKit.QWorkspaceInfo> workspaces)
         {
             WorkspaceInfoReceived?.Invoke(this, new WorkspaceInfoArgs() { WorkspaceInfo = workspaces });
         }

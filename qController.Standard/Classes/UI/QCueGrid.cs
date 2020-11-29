@@ -42,7 +42,7 @@ namespace qController.UI
             };
             cueLabel.SetBinding(Label.TextProperty, "name", BindingMode.OneWay);
             cueLabel.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
-            cueLabel.SetBinding(Label.PaddingProperty, "nestPadding", BindingMode.OneWay);
+            cueLabel.SetBinding(Label.MarginProperty, "nestPadding", BindingMode.OneWay);
 
             var cueTypeLabel = new Label
             {
@@ -70,13 +70,18 @@ namespace qController.UI
             cueTypeLabel.SetBinding(Label.TextProperty, "type", BindingMode.OneWay);
             cueTypeLabel.SetDynamicResource(Label.TextColorProperty, "IconTextColor");
 
-            //Section for selecting a cue by tapping the name Label
-            var selectCueGesture = new TapGestureRecognizer();
-            selectCueGesture.Tapped += (sender, e) =>
+            
+            if (!cue.IsCueList)
             {
-                cue.workspace.firstCueList.playbackPositionID = cue.uid;
-            };
-            cueLabel.GestureRecognizers.Add(selectCueGesture);
+                //Section for selecting a cue by tapping the name Label
+                var selectCueGesture = new TapGestureRecognizer();
+                selectCueGesture.Tapped += (sender, e) =>
+                {
+                    //TODO: need to make this work regardless of the cue list a cue is in
+                    cue.workspace.firstCueList.playbackPositionID = cue.uid;
+                };
+                cueLabel.GestureRecognizers.Add(selectCueGesture);
+            }
 
             //Add collapse gesture to the cue type icon if it is a group cue
             if (cue.IsGroup)

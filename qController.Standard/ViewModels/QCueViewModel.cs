@@ -44,6 +44,10 @@ namespace qController.ViewModels
                 {
                     OnPropertyChanged("color");
                 }
+                else if (property.Equals(QOSCKey.Children))
+                {
+                    Log.Debug("children property updated");
+                }
             }
         }
 

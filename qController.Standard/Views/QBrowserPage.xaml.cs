@@ -1,7 +1,7 @@
 ﻿using QControlKit;
 using Xamarin.Forms;
 using Serilog;
-using qController.Cell;
+using qController.UI.Cells;
 using Acr.UserDialogs;
 using qController.Dialogs;
 using Xamarin.Essentials;

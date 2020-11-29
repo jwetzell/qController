@@ -15,5 +15,21 @@ namespace qController.Communication
             IPAddress address;
             return IPAddress.TryParse(ipString, out address);
         }
+
+        public static bool IsReachable(string ipString)
+        {
+            /*try
+            {
+                IPAddress instanceIP = IPAddress.Parse(address);
+                Ping p = new System.Net.NetworkInformation.Ping();
+                PingReply reply = p.Send(instanceIP);
+                return reply.Status == IPStatus.Success ? true : false;
+            }
+            catch
+            {
+                return false;
+            }*/
+            return true;
+        }
     }
 }

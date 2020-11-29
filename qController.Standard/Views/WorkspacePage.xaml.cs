@@ -11,12 +11,14 @@ using qController.UI;
 using QControlKit;
 using QControlKit.Events;
 using QControlKit.Constants;
+using System;
 
 namespace qController
 {
     public partial class WorkspacePage : ContentPage
     {
         private QWorkspace connectedWorkspace;
+        private string passcode;
         private Dictionary<string, Grid> cueGridDict = new Dictionary<string, Grid>();
         public WorkspacePage(QWorkspace workspace, string passcode = null)
         {
@@ -24,7 +26,7 @@ namespace qController
 
 
             connectedWorkspace = workspace;
-
+            this.passcode = passcode;
             SetupTopBar();
 
             connectedWorkspace.WorkspaceUpdated += Workspace_WorkspaceUpdated;
@@ -32,10 +34,17 @@ namespace qController
             connectedWorkspace.defaultSendUpdatesOSC = true;
             connectedWorkspace.CueListChangedPlaybackPosition += ConnectedWorkspace_CueListChangedPlaybackPosition;
 
-            connectedWorkspace.connect(passcode);
-
 
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            connectedWorkspace.connect(passcode);
+        }
+
+
+
         private void SetupTopBar()
         {
             NavigationPage.SetHasNavigationBar(this, false);
@@ -79,12 +88,15 @@ namespace qController
             Device.BeginInvokeOnMainThread(() =>
             {
                 QCue selectedCue = connectedWorkspace.cueWithID(args.cueID);
-                connectedWorkspace.fetchDefaultPropertiesForCue(selectedCue);
-                selectedCueFrame.BindingContext = new QCueViewModel(selectedCue, false);
-                if (cueGridDict.ContainsKey(args.cueID))
+                if(selectedCue != null)
                 {
-                    var cueGrid = cueGridDict[args.cueID]; //element to scroll to
-                    cueListScrollView.ScrollToAsync(cueGrid, ScrollToPosition.Center, true);
+                    connectedWorkspace.fetchDefaultPropertiesForCue(selectedCue);
+                    selectedCueFrame.BindingContext = new QCueViewModel(selectedCue, false);
+                    if (cueGridDict.ContainsKey(args.cueID))
+                    {
+                        var cueGrid = cueGridDict[args.cueID]; //element to scroll to
+                        cueListScrollView.ScrollToAsync(cueGrid, ScrollToPosition.Center, true);
+                    }
                 }
             });
         }
@@ -92,31 +104,34 @@ namespace qController
         void Workspace_WorkspaceUpdated(object source, QWorkspaceUpdatedArgs args)
         {
             Log.Debug("[workspacepage] Workspace Updated");
-
-            foreach (var cue in connectedWorkspace.cueLists)
+            App.SetRecentWorkspace(connectedWorkspace);
+            if (connectedWorkspace.cueLists.Count > 0)
             {
-                if (cue.cues.Count > 0)
+                List<Task> cueAddTasks = new List<Task>();
+                foreach (var aCue in connectedWorkspace.cueLists)
                 {
-                    List<Task> cueAddTasks = new List<Task>();
-                    foreach (var aCue in cue.cues)
+                    if(aCue.cues.Count > 0)
                     {
                         QCueGrid cueGrid = cueToGrid(aCue);
+
                         cueGridDict.Add(aCue.uid, cueGrid);
+
                         MainThread.InvokeOnMainThreadAsync(() =>
                         {
                             cueListsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                             cueListsGrid.Children.Add(cueGrid, 0, aCue.sortIndex);
                         }).Wait();
                     }
-                    connectedWorkspace.valueForKey(cue, QOSCKey.PlaybackPositionId); //fetch playback position for cueList once all cue loading is done.
-
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        selectedCueFrame.IsVisible = true;
-                        cueListScrollView.IsVisible = true;
-                    });
-                    break; //only load first cue list with cues.
                 }
+
+                connectedWorkspace.valueForKey(connectedWorkspace.firstCueList, QOSCKey.PlaybackPositionId); //fetch playback position for cueList once all cue loading is done.
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    selectedCueFrame.IsVisible = true;
+                    cueListScrollView.IsVisible = true;
+                });
+                //break; //only load first cue list with cues.
             }
         }
 
@@ -171,6 +186,13 @@ namespace qController
             {
                 Back();
             }
+        }
+
+
+        protected async Task WaitAndExecute(int milisec, Action actionToExecute)
+        {
+            await Task.Delay(milisec);
+            actionToExecute();
         }
     }
 }

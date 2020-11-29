@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Serilog;
 using qController.QItems;
 using qController.Dialogs;
-using qController.Cell;
+using qController.UI.Cells;
 using Xamarin.Essentials;
 
 namespace qController

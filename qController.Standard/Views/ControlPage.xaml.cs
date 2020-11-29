@@ -6,7 +6,8 @@ using Acr.UserDialogs;
 
 using qController.Dialogs;
 using qController.QItems;
-using qController.Cell;
+using qController.UI.Cells;
+using qController.UI.Buttons;
 using qController.Communication;
 using qController.Events;
 
@@ -109,7 +110,7 @@ namespace qController
             }
         }
 
-        private void PromptForWorkspace(List<QWorkspaceInfo> workspaces)
+        private void PromptForWorkspace(List<QControlKit.QWorkspaceInfo> workspaces)
         {
 
             UserDialogs.Instance.ActionSheet(workspacePrompt.getActionSheetConfigForWorkspaces(workspaces));

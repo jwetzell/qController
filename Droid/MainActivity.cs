@@ -42,5 +42,20 @@ namespace qController.Droid
                 }
             }
         }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+
+            Xamarin.Essentials.Platform.OnResume(this);
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+
+            Xamarin.Essentials.Platform.OnNewIntent(intent);
+        }
+
     }
 }

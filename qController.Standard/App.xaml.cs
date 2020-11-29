@@ -4,6 +4,8 @@ using Xamarin.Essentials;
 using qController.Communication;
 using qController.Pages;
 using System;
+using QControlKit;
+using Serilog;
 
 namespace qController
 {
@@ -34,6 +36,8 @@ namespace qController
         public App()
         {
             InitializeComponent();
+
+            AppActions.OnAppAction += AppActions_OnAppAction;
             /*MainPage = new NavigationPage(new QConnectionPage());
             iNav = MainPage.Navigation;*/
 
@@ -65,7 +69,30 @@ namespace qController
             rootPage.Master = menuPage;
             rootPage.Detail = NavigationPage;
             MainPage = rootPage;
+            Log.Debug("Finished rootPage Setup in App Constructor");
             rootPage.Init();
+        }
+
+        private void AppActions_OnAppAction(object sender, AppActionEventArgs e)
+        {
+            // Don't handle events fired for old application instances
+            // and cleanup the old instance's event handler
+            if (Current != this && Current is App app)
+            {
+                AppActions.OnAppAction -= app.AppActions_OnAppAction;
+                return;
+            }
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                QRecentWorkspaceInfo packagedInfo = QStorage.recentWorkspaceInfo;
+                if (packagedInfo != null && e.AppAction.Id.Equals("recent_workspace"))
+                {
+                    await NavigationPage.PopToRootAsync();
+                    QWorkspace recentWorkspace = new QWorkspace(packagedInfo.workspaceInfo, new QServer(packagedInfo.serverInfo.host, packagedInfo.serverInfo.port));
+                    await NavigationPage.PushAsync(new WorkspacePage(recentWorkspace));
+                    Log.Debug("Pushed WorkspacePage from App Action");
+                }
+            });
         }
 
         private void Current_RequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
@@ -137,6 +164,28 @@ namespace qController
 
             Resources["SelectedCueCellBackgroundColor"] = Color.FromHex("#D8D8D8");
 
+        }
+
+        public static void SetRecentWorkspace(QWorkspace workspace)
+        {
+            try
+            {
+                QRecentWorkspaceInfo recentWorkspaceInfo = new QRecentWorkspaceInfo {
+                    workspaceInfo = workspace.getWorkspaceInfo(),
+                    serverInfo = workspace.GetServerInfo()
+                };
+
+                QStorage.UpdateRecentWorkspace(recentWorkspaceInfo);
+
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await AppActions.SetAsync(new AppAction("recent_workspace", workspace.name, workspace.version));
+                });
+            }
+            catch (Exception ex)
+            {
+                Log.Debug(ex.ToString());
+            }
         }
 
         public static void showToast(string message)

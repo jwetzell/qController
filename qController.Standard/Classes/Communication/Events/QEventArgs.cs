@@ -49,7 +49,7 @@ namespace qController.Communication
 
     public class WorkspaceInfoArgs : EventArgs
     {
-        public List<QWorkspaceInfo> WorkspaceInfo
+        public List<QControlKit.QWorkspaceInfo> WorkspaceInfo
         {
             get;
             set;
