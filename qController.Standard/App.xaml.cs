@@ -89,7 +89,7 @@ namespace qController
                 {
                     await NavigationPage.PopToRootAsync();
                     QWorkspace recentWorkspace = new QWorkspace(packagedInfo.workspaceInfo, new QServer(packagedInfo.serverInfo.host, packagedInfo.serverInfo.port));
-                    await NavigationPage.PushAsync(new WorkspacePage(recentWorkspace));
+                    await NavigationPage.PushAsync(new QWorkspacePage(recentWorkspace));
                     Log.Debug("Pushed WorkspacePage from App Action");
                 }
             });

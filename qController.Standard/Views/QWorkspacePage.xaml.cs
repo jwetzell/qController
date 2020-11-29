@@ -15,12 +15,12 @@ using System;
 
 namespace qController
 {
-    public partial class WorkspacePage : ContentPage
+    public partial class QWorkspacePage : ContentPage
     {
         private QWorkspace connectedWorkspace;
         private string passcode;
         private Dictionary<string, Grid> cueGridDict = new Dictionary<string, Grid>();
-        public WorkspacePage(QWorkspace workspace, string passcode = null)
+        public QWorkspacePage(QWorkspace workspace, string passcode = null)
         {
             InitializeComponent();
 

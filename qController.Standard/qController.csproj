@@ -94,6 +94,8 @@
     <Folder Include="Classes\UI\Buttons\" />
     <Folder Include="Classes\UI\Cells\" />
     <Folder Include="Classes\Helpers\" />
+    <Folder Include="Views\Old\" />
+    <Folder Include="Views\Root\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Pages\RootPageMaster.xaml" />
