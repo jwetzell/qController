@@ -12,13 +12,15 @@ namespace qController.Pages
 {
     public partial class QBrowserPage : ContentPage
     {
+        private QBrowserViewModel qBrowserViewModel;
         public QBrowserPage()
         {
             InitializeComponent();
 
             SetupTopBar();
-
-            serverListView.BindingContext = new QBrowserViewModel(new QBrowser());
+            qBrowserViewModel = new QBrowserViewModel(new QBrowser());
+            qBrowserViewModel.autoUpdate = true;
+            serverListView.BindingContext = qBrowserViewModel;
             serverListView.ItemSelected += QWorkspaceSelected;
 
             storageListView.ItemsSource = QStorage.qInstances;
@@ -43,6 +45,8 @@ namespace qController.Pages
         {
             if (e.SelectedItem == null)
                 return;
+
+            this.qBrowserViewModel.autoUpdate = false;
             QWorkspace selectedWorkspace = (e.SelectedItem as QWorkspaceViewModel).workspace;
             Log.Debug($"[demo] workspace: {selectedWorkspace.nameWithoutPathExtension} has been selected");
             ((ListView)sender).SelectedItem = null;
@@ -97,6 +101,12 @@ namespace qController.Pages
         private void AddInstance(object sender, EventArgs args)
         {
             AddWorkspace();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            this.qBrowserViewModel.autoUpdate = true;
         }
     }
 

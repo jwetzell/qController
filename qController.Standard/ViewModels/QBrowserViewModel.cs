@@ -13,9 +13,9 @@ namespace qController.ViewModels
     public class QBrowserViewModel : INotifyPropertyChanged
     {
         QBrowser browser;
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
-
+        public bool autoUpdate = false;
         public ObservableCollection<QServerViewModel> ServersGrouped { get; set; }
         public QBrowserViewModel(QBrowser browser)
         {
@@ -24,17 +24,18 @@ namespace qController.ViewModels
 
             this.browser.ServerFound += OnServerFound;
             this.browser.ServerLost += OnServerLost;
-
             Device.StartTimer(TimeSpan.FromSeconds(4), () =>
             {
                 Task.Run(async () =>
                 {
-                    this.browser.ProbeForQLabInstances();
-                    // do something with time...
+                    if(autoUpdate)
+                        this.browser.ProbeForQLabInstances();
                 });
                 return true;
             });
 
+            
+            
         }
 
         private void OnServerFound(object source, QServerFoundArgs args)
