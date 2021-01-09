@@ -6,12 +6,13 @@ using Xamarin.Forms;
 using QControlKit;
 using QControlKit.Constants;
 using QControlKit.Events;
+using System.Collections.Generic;
 
 namespace qController.ViewModels
 {
     public class QCueViewModel : INotifyPropertyChanged
     {
-        QCue cue;
+        public QCue cue;
         bool isSelected = false;
         bool isCollapsed = false;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -46,7 +47,11 @@ namespace qController.ViewModels
                 }
                 else if (property.Equals(QOSCKey.Children))
                 {
-                    Log.Debug("children property updated");
+                    //Log.Debug("children property updated");
+                    if (cue.IsGroup)
+                    {
+                        OnPropertyChanged("cues");
+                    }
                 }
             }
         }
@@ -133,6 +138,14 @@ namespace qController.ViewModels
             set
             {
                 cue.color = new QColor("none");
+            }
+        }
+
+        public List<QCue> cues
+        {
+            get
+            {
+                return cue.cues;
             }
         }
 

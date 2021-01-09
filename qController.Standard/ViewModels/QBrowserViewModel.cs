@@ -5,6 +5,8 @@ using Xamarin.Forms;
 
 using QControlKit;
 using QControlKit.Events;
+using System;
+using System.Threading.Tasks;
 
 namespace qController.ViewModels
 {
@@ -21,6 +23,18 @@ namespace qController.ViewModels
             ServersGrouped = new ObservableCollection<QServerViewModel>();
 
             this.browser.ServerFound += OnServerFound;
+            this.browser.ServerLost += OnServerLost;
+
+            Device.StartTimer(TimeSpan.FromSeconds(4), () =>
+            {
+                Task.Run(async () =>
+                {
+                    this.browser.ProbeForQLabInstances();
+                    // do something with time...
+                });
+                return true;
+            });
+
         }
 
         private void OnServerFound(object source, QServerFoundArgs args)
@@ -30,6 +44,30 @@ namespace qController.ViewModels
                 System.Console.WriteLine($"[QBrowserViewModel] adding server: {args.server.description}");
                 ServersGrouped.Add(new QServerViewModel(args.server));
             });
+        }
+
+
+        private void OnServerLost(object source, QServerLostArgs args)
+        {
+            QServerViewModel serverToRemove = null;
+
+            foreach(var serverGroup in ServersGrouped)
+            {
+                if (serverGroup.host.Equals(args.server.host))
+                {
+                    serverToRemove = serverGroup;
+                    break;
+                }
+            }
+
+            if(serverToRemove != null)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    System.Console.WriteLine($"[QBrowserViewModel] removing server: {args.server.description}");
+                    ServersGrouped.Remove(serverToRemove);
+                });
+            }
         }
 
         void OnPropertyChanged([CallerMemberName] string name = "")

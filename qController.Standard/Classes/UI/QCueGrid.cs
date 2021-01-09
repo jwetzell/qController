@@ -1,17 +1,24 @@
 ﻿using Xamarin.Forms;
 using qController.ViewModels;
 using QControlKit;
+using Serilog;
 
 namespace qController.UI
 {
     public class QCueGrid : Grid
     {
+        private QCueViewModel qCueViewModel;
         public QCueGrid(QCue cue)
         {
-            QCueViewModel qCueViewModel = new QCueViewModel(cue, true);
+            qCueViewModel = new QCueViewModel(cue, true);
 
             RowSpacing = 0;
-            RowDefinitions.Add(new RowDefinition { Height = new GridLength(40) });
+            RowDefinitions.Add(
+                new RowDefinition {
+                    Height = new GridLength(40),
+                    BindingContext = qCueViewModel
+                }
+            );
             ColumnDefinitions = new ColumnDefinitionCollection
             {
                 new ColumnDefinition{Width = GridLength.Star},
@@ -141,6 +148,24 @@ namespace qController.UI
 
             Children.Add(cueTypeLabel, 0, 0);
             Children.Add(cueLabel, 1, 0);
+
+            if (cue.cues.Count > 0)
+            {
+                foreach (var aCue in cue.cues)
+                {
+                    this.RowDefinitions.Add(
+                        new RowDefinition {
+                            Height = GridLength.Auto,
+                            BindingContext = new QCueViewModel(aCue, false)
+                        }
+                    );
+                    var aCueGrid = new QCueGrid(aCue);
+                    //cueGridDict.Add(aCue.uid, aCueGrid);
+                    aCueGrid.Margin = new Thickness(0, 0, 0, 0);
+                    Children.Add(aCueGrid, 0, aCue.sortIndex + 1);
+                    Grid.SetColumnSpan(aCueGrid, this.ColumnDefinitions.Count);
+                }
+            }
         }
     }
 }

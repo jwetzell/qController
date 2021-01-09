@@ -84,11 +84,7 @@ namespace qController.Pages
 
         private void OnMenuItemSelected(object source, MenuEventArgs args)
         {
-            if (args.Command == "add")
-            {
-                AddWorkspace();
-            }
-            else if (args.Command == "feedback")
+            if (args.Command == "feedback")
             {
                 Launcher.OpenAsync(new Uri("mailto:feedback@jwetzell.com?subject=qController%20feedback"));
             }
@@ -96,6 +92,11 @@ namespace qController.Pages
             {
                 UserDialogs.Instance.Confirm(new DonatePrompt());
             }
+        }
+
+        private void AddInstance(object sender, EventArgs args)
+        {
+            AddWorkspace();
         }
     }
 

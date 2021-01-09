@@ -36,6 +36,7 @@ namespace qController
         public App()
         {
             InitializeComponent();
+            Sharpnado.MaterialFrame.Initializer.Initialize(loggerEnable: false, debugLogEnable: false);
 
             AppActions.OnAppAction += AppActions_OnAppAction;
             /*MainPage = new NavigationPage(new QConnectionPage());

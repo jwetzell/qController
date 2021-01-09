@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:materialFrame="clr-namespace:Sharpnado.MaterialFrame;assembly=Sharpnado.MaterialFrame"
              xmlns:qui="clr-namespace:qController.UI"
              mc:Ignorable="d"
              x:Class="qController.Pages.QBrowserPage"
@@ -37,101 +38,116 @@
             <!--Beginning of new style of "server" view-->
             <Frame BackgroundColor="{DynamicResource PageBackgroundColor}"
                    CornerRadius="0"
-                   HasShadow="False"
                    Margin="0"
                    Padding="0"
                    Grid.Row="3">
-                <!--Need to try and remove the group spacing caused by ios:GroupHeaderStyle-->
-                <ListView x:Name="serverListView"
-                      ios:ListView.GroupHeaderStyle="Grouped"
-                      GroupDisplayBinding="{Binding name}"
-                      IsGroupingEnabled="True"
-                      d:IsGroupingEnabled="False"
-                      BackgroundColor="Transparent"
-                      SeparatorVisibility="None"
-                      ItemsSource="{Binding ServersGrouped}"
-                      Margin="0">
-                    <ListView.GroupHeaderTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Frame BackgroundColor="{DynamicResource ServerCellBackgroundColor}"
-                                       Margin="0,0,0,0"
-                                       Padding="10,0,10,0"
-                                       CornerRadius="0">
-                                    <Grid BackgroundColor="Transparent" VerticalOptions="FillAndExpand"
-                                          RowSpacing="0"
-                                          ColumnSpacing="0">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
+                <StackLayout Spacing="0" BackgroundColor="Transparent">
+                    <Label  Margin="0,10,0,10"
+                            Padding="0"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalTextAlignment="Center"
+                            FontSize="Header"
+                            Text="Discovered QLab Instances" />
+                    <!--Need to try and remove the group spacing caused by ios:GroupHeaderStyle-->
+                    <ListView x:Name="serverListView"
+                            ios:ListView.GroupHeaderStyle="Grouped"
+                            GroupDisplayBinding="{Binding name}"
+                            IsGroupingEnabled="True"
+                            d:IsGroupingEnabled="False"
+                            BackgroundColor="Transparent"
+                            SeparatorVisibility="None"
+                            ItemsSource="{Binding ServersGrouped}"
+                            Margin="0">
+                        <ListView.GroupHeaderTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Frame BackgroundColor="{DynamicResource ServerCellBackgroundColor}"
+                                            Margin="0,0,0,0"
+                                            Padding="10,0,10,0"
+                                            CornerRadius="0">
+                                        <Grid BackgroundColor="Transparent" VerticalOptions="FillAndExpand"
+                                                RowSpacing="0"
+                                                ColumnSpacing="0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
 
-                                        <Label Grid.Column="0"
-                                               Text="{Binding GroupName}"
-                                               HorizontalOptions="FillAndExpand"
-                                               VerticalOptions="FillAndExpand"
-                                               VerticalTextAlignment="Center"
-                                               HorizontalTextAlignment="Start"
-                                               StyleClass="PrimaryText"/>
-                                        <Label Grid.Column="1"
-                                               Text="{Binding version}"
-                                               HorizontalOptions="FillAndExpand"
-                                               VerticalOptions="FillAndExpand"
-                                               VerticalTextAlignment="Center"
-                                               HorizontalTextAlignment="End"
-                                               StyleClass="PrimaryText"/>
-                                    </Grid>
-                                </Frame>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.GroupHeaderTemplate>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Frame BackgroundColor="{DynamicResource WorkspaceCellBackgroundColor}"
-                                       BorderColor="Black"
-                                       Margin="5,0,5,0"
-                                       Padding="10,0,10,0"
-                                       CornerRadius="0"
-                                       HasShadow="False">
-                                    <Grid Margin="0"
-                                          BackgroundColor="Transparent"
-                                          RowSpacing="0"
-                                          ColumnSpacing="0">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-
-
-                                        <Label Grid.Column="0" Text="{Binding Name}"
+                                            <Label Grid.Column="0"
+                                                    Text="{Binding GroupName}"
                                                     HorizontalOptions="FillAndExpand"
                                                     VerticalOptions="FillAndExpand"
                                                     VerticalTextAlignment="Center"
                                                     HorizontalTextAlignment="Start"
                                                     StyleClass="PrimaryText"/>
-
-                                        <Label Grid.Column="1" Text="&#xf1184;"
-                                                    FontFamily="{StaticResource MaterialFontFamily}"
-                                                    FontSize="Large"
-                                                    IsVisible="{Binding HasPasscode}"
+                                            <Label Grid.Column="1"
+                                                    Text="{Binding version}"
                                                     HorizontalOptions="FillAndExpand"
                                                     VerticalOptions="FillAndExpand"
                                                     VerticalTextAlignment="Center"
                                                     HorizontalTextAlignment="End"
                                                     StyleClass="PrimaryText"/>
-                                    </Grid>
-                                </Frame>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                        </Grid>
+                                    </Frame>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.GroupHeaderTemplate>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Frame BackgroundColor="{DynamicResource WorkspaceCellBackgroundColor}"
+                                            BorderColor="Black"
+                                            Margin="5,0,5,0"
+                                            Padding="10,0,10,0"
+                                            CornerRadius="0"
+                                            HasShadow="False">
+                                        <Grid Margin="0"
+                                                BackgroundColor="Transparent"
+                                                RowSpacing="0"
+                                                ColumnSpacing="0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+
+                                            <Label Grid.Column="0" Text="{Binding Name}"
+                                                        HorizontalOptions="FillAndExpand"
+                                                        VerticalOptions="FillAndExpand"
+                                                        VerticalTextAlignment="Center"
+                                                        HorizontalTextAlignment="Start"
+                                                        StyleClass="PrimaryText"/>
+
+                                            <Label Grid.Column="1" Text="&#xf1184;"
+                                                        FontFamily="{StaticResource MaterialFontFamily}"
+                                                        FontSize="Large"
+                                                        IsVisible="{Binding HasPasscode}"
+                                                        HorizontalOptions="FillAndExpand"
+                                                        VerticalOptions="FillAndExpand"
+                                                        VerticalTextAlignment="Center"
+                                                        HorizontalTextAlignment="End"
+                                                        StyleClass="PrimaryText"/>
+                                        </Grid>
+                                    </Frame>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <Button Text="Manually Add..."
+                            VerticalOptions="Center"
+                            HorizontalOptions="FillAndExpand"
+                            Clicked="AddInstance"
+                            BackgroundColor="White"
+                            StyleClass="PrimaryButton"/>
+                </StackLayout>
             </Frame>
 
             <qui:QNavBar x:Name="qNavBar"

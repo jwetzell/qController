@@ -111,12 +111,6 @@ namespace qController
             });
             items.Add(new MenuPageItem
             {
-                Title = "Add Manually",
-                Icon = "\uE801",
-                Command = "add"
-            }); 
-            items.Add(new MenuPageItem
-            {
                 Title = "Send Feedback",
                 Icon = QIcon.MAIL,
                 Command = "feedback"

@@ -67,25 +67,48 @@ namespace qController.ViewModels
                     this.Add(new QWorkspaceViewModel(workspace));
                 });
             }
+            this.server.WorkspaceAdded += Server_WorkspaceAdded;
+            this.server.WorkspaceRemoved += Server_WorkspaceRemoved;
             this.server.ServerUpdated += OnServerUpdated;
         }
+
+        private void Server_WorkspaceRemoved(object source, QServerWorkspaceChangedArgs args)
+        {
+            QWorkspaceViewModel workspaceToRemove = null;
+
+            foreach(var workspaceViewModel in this)
+            {
+                if(workspaceViewModel.workspace.uniqueID == args.workspace.uniqueID)
+                {
+                    workspaceToRemove = workspaceViewModel;
+                    break;
+                }
+            }
+            if(workspaceToRemove != null)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Remove(workspaceToRemove);
+                });
+            }
+ 
+        }
+
+        private void Server_WorkspaceAdded(object source, QServerWorkspaceChangedArgs args)
+        {
+            QWorkspaceViewModel workspaceViewModel = new QWorkspaceViewModel(args.workspace);
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Add(workspaceViewModel);
+            });
+        }
+
+
 
         private void OnServerUpdated(object source, QServerUpdatedArgs args)
         {
             OnPropertyChanged("GroupName");
             OnPropertyChanged("version");
-
-            foreach (var workspace in this.server.workspaces)
-            {
-                QWorkspaceViewModel workspaceViewModel = new QWorkspaceViewModel(workspace);
-                if (!Contains(workspaceViewModel))
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        Add(workspaceViewModel);
-                    });
-                }
-            }
         }
 
         void OnPropertyChanged([CallerMemberName] string name = "")
