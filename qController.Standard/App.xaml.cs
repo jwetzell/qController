@@ -37,10 +37,8 @@ namespace qController
         {
             InitializeComponent();
             Sharpnado.MaterialFrame.Initializer.Initialize(loggerEnable: false, debugLogEnable: false);
-
-            AppActions.OnAppAction += AppActions_OnAppAction;
-            /*MainPage = new NavigationPage(new QConnectionPage());
-            iNav = MainPage.Navigation;*/
+            App.Current.RequestedThemeChanged += Current_RequestedThemeChanged;
+            SetAppResources();
 
             mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
 
@@ -48,6 +46,7 @@ namespace qController
             Width = mainDisplayInfo.Width / mainDisplayInfo.Density;
             HeightUnit = Height / 100.0;
             WidthUnit = Width / 100.0;
+
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
@@ -56,22 +55,16 @@ namespace qController
                 case Device.Android:
                     QFont = "qfont.ttf#qfont";
                     break;
-
             }
 
-
-            SetAppResources();
-
-            App.Current.RequestedThemeChanged += Current_RequestedThemeChanged;
-
-            var menuPage = new MenuPage();
             rootPage = new RootPage();
             NavigationPage = new NavigationPage(new QBrowserPage());
-            rootPage.Master = menuPage;
             rootPage.Detail = NavigationPage;
             MainPage = rootPage;
-            Log.Debug("Finished rootPage Setup in App Constructor");
             rootPage.Init();
+
+            AppActions.OnAppAction += AppActions_OnAppAction;
+
         }
 
         private void AppActions_OnAppAction(object sender, AppActionEventArgs e)
@@ -103,6 +96,7 @@ namespace qController
 
         private void SetAppResources()
         {
+
             switch (App.Current.RequestedTheme)
             {
                 case OSAppTheme.Light:

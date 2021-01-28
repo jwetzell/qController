@@ -2,22 +2,30 @@
 
 namespace qController.UI
 {
-    public class QNavBar : Grid
+    public class QNavBar : Frame
     {
         public Label menuButton;
         public Label instanceName;
 
         public QNavBar()
         {
-            RowSpacing = 0;
-            ColumnSpacing = 0;
+            this.SetDynamicResource(Grid.BackgroundColorProperty, "NavigationBarColor");
+            CornerRadius = 0;
+            HasShadow = false;
             Padding = 0;
             Margin = 0;
-            this.SetDynamicResource(Grid.BackgroundColorProperty, "NavigationBarColor");
-            RowDefinitions =  new RowDefinitionCollection {
-                new RowDefinition { Height = GridLength.Star }
+
+            Grid grid = new Grid();
+            grid.RowSpacing = 0;
+            grid.ColumnSpacing = 0;
+            grid.Margin = 0;
+            grid.Padding = 0;
+            
+
+            grid.RowDefinitions = new RowDefinitionCollection {
+                new RowDefinition { Height = 50 }
             };
-            ColumnDefinitions = new ColumnDefinitionCollection
+            grid.ColumnDefinitions = new ColumnDefinitionCollection
             {
                 new ColumnDefinition {Width = GridLength.Star},
                 new ColumnDefinition {Width = new GridLength(4,GridUnitType.Star)},
@@ -31,14 +39,13 @@ namespace qController.UI
                 HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.Center,
                 Padding = 0,
-                Margin = new Thickness(10,0,0,0),
+                Margin = new Thickness(10, 0, 0, 0),
                 Text = QIcon.MENU,
-                BackgroundColor = Color.Transparent,
-                //BackgroundColor = Color.Red
+                BackgroundColor = Color.Transparent
             };
 
             menuButton.SetDynamicResource(Label.TextColorProperty, "IconTextColor");
-            
+
 
             instanceName = new Label
             {
@@ -46,7 +53,7 @@ namespace qController.UI
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Center,
-                Margin = new Thickness(0,0,10,0),
+                Margin = new Thickness(0, 0, 10, 0),
                 Padding = 0,
                 FontSize = App.HeightUnit * 3,
                 //BackgroundColor = Color.Blue
@@ -71,8 +78,9 @@ namespace qController.UI
                     break;
             }
 
-            this.Children.Add(menuButton, 0, 0);
-            this.Children.Add(instanceName, 1, 0);
+            grid.Children.Add(menuButton, 0, 0);
+            grid.Children.Add(instanceName, 1, 0);
+            Content = grid;
         }
     }
 }

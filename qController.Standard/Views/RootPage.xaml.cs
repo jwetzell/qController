@@ -12,7 +12,7 @@ namespace qController
         }
     }
 
-    public partial class RootPage : MasterDetailPage
+    public partial class RootPage : FlyoutPage
     {
         public MenuPage MenuPage;
         public delegate void MenuItemSelectedHandler(object source, MenuEventArgs args);
@@ -21,12 +21,12 @@ namespace qController
         public RootPage()
         {
             InitializeComponent();
-
+            Flyout = new MenuPage();
         }
 
         public void Init()
         {
-            MenuPage = (MenuPage)Master;
+            MenuPage = (MenuPage)Flyout;
 
             MenuPage.setItemSelected(OnItemSelected);
         }

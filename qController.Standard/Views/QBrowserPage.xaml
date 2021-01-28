@@ -12,35 +12,28 @@
              BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
 
-        <Grid RowSpacing="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="10"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <StackLayout>
+            <qui:QNavBar/>
 
             <!--Ordering is based on the order last is on top seems pretty backwards to me-->
             <!--Old "Instance" listview -->
             <ListView x:Name="storageListView" 
                       HasUnevenRows="true" 
                       BackgroundColor="{DynamicResource PageBackgroundColor}" 
-                      SeparatorVisibility="None"
-                      Grid.Row="1">
+                      SeparatorVisibility="None">
                 
             </ListView>
 
             <!--Simple Divider-->
             <BoxView HeightRequest="10"
-                     BackgroundColor="DarkGray"
-                     Grid.Row="2"/>
+                     BackgroundColor="DarkGray"/>
 
             <!--Beginning of new style of "server" view-->
             <Frame BackgroundColor="{DynamicResource PageBackgroundColor}"
                    CornerRadius="0"
                    Margin="0"
                    Padding="0"
-                   Grid.Row="3">
+                   HasShadow="False">
                 <StackLayout Spacing="0" BackgroundColor="Transparent">
                     <Label  Margin="0,10,0,10"
                             Padding="0"
@@ -49,7 +42,7 @@
                             HorizontalTextAlignment="Center"
                             FontSize="Header"
                             Text="Discovered QLab Instances" />
-                    <!--Need to try and remove the group spacing caused by ios:GroupHeaderStyle-->
+                    Need to try and remove the group spacing caused by ios:GroupHeaderStyle
                     <ListView x:Name="serverListView"
                             ios:ListView.GroupHeaderStyle="Grouped"
                             GroupDisplayBinding="{Binding name}"
@@ -150,8 +143,6 @@
                 </StackLayout>
             </Frame>
 
-            <qui:QNavBar x:Name="qNavBar"
-                         Grid.Row="0"/>
-        </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
