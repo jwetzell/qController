@@ -20,7 +20,7 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
     - name: Setup NuGet.exe for use with actions
-      uses: NuGet/setup-nuget@v1.0.2  
+      uses: NuGet/setup-nuget@v1.0.5
     - name: Restore NuGet Packages
       run: nuget restore
     - name: Build  Application      
