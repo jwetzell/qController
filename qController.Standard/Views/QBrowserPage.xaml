@@ -42,7 +42,7 @@
                             HorizontalTextAlignment="Center"
                             FontSize="Header"
                             Text="Discovered QLab Instances" />
-                    Need to try and remove the group spacing caused by ios:GroupHeaderStyle
+                    <!--Need to try and remove the group spacing caused by ios:GroupHeaderStyle-->
                     <ListView x:Name="serverListView"
                             ios:ListView.GroupHeaderStyle="Grouped"
                             GroupDisplayBinding="{Binding name}"
