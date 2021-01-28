@@ -1,8 +1,6 @@
 ﻿using Foundation;
 using UIKit;
 using Serilog;
-using Sharpnado.MaterialFrame.iOS;
-
 namespace qController.iOS
 {
     [Register("AppDelegate")]
@@ -12,7 +10,6 @@ namespace qController.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             Log.Logger = new LoggerConfiguration().WriteTo.NSLog().MinimumLevel.Debug().CreateLogger();
-            iOSMaterialFrameRenderer.Init();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
