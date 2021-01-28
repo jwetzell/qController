@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 using System.Threading;
+using Serilog;
 
 namespace SharpOSC
 {
@@ -124,7 +125,7 @@ namespace SharpOSC
                 }
             } catch(Exception e)
             {
-                //Console.WriteLine("TCPSENDER - Receive Exception: " + e.ToString());
+                Log.Debug("TCPClient - Receive Exception: " + e.ToString());
             }
         }
 

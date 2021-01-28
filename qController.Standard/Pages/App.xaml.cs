@@ -52,13 +52,9 @@ namespace qController
 
             }
 
-            var menuPage = new MenuPage();
             rootPage = new RootPage();
-            NavigationPage = new NavigationPage(new QConnectionPage());
-            rootPage.Master = menuPage;
-            rootPage.Detail = NavigationPage;
+            rootPage.Detail = new NavigationPage(new QConnectionPage());
             MainPage = rootPage;
-            rootPage.Init();
         }
 
         public static void showToast(string message)

@@ -12,7 +12,7 @@ namespace qController
         }
     }
 
-    public partial class RootPage : MasterDetailPage
+    public partial class RootPage : FlyoutPage
     {
         public MenuPage MenuPage;
         public delegate void MenuItemSelectedHandler(object source, MenuEventArgs args);
@@ -21,14 +21,10 @@ namespace qController
         public RootPage()
         {
             InitializeComponent();
-
-        }
-
-        public void Init()
-        {
-            MenuPage = (MenuPage)Master;
-
+            MenuPage = new MenuPage();
             MenuPage.setItemSelected(OnItemSelected);
+
+            Flyout = MenuPage;
         }
 
         void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -38,8 +34,7 @@ namespace qController
             {
                 MenuPage.clearSelectedItem();
                 IsPresented = false;
-                if (MenuItemSelected != null)
-                    MenuItemSelected(this, new MenuEventArgs { Command = item.Command });
+                MenuItemSelected?.Invoke(this, new MenuEventArgs { Command = item.Command });
             }
         }
     }

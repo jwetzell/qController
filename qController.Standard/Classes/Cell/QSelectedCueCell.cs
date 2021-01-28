@@ -229,9 +229,7 @@ namespace qController.Cell
 
         protected virtual void OnSelectedCueEdited(string prop, string value)
         {
-            if (SelectedCueEdited != null)
-                SelectedCueEdited(this, new CueEditArgs() { CueID = activeCue.uniqueID, Property = prop, NewValue = value }) ;
-
+            SelectedCueEdited?.Invoke(this, new CueEditArgs() { CueID = activeCue.uniqueID, Property = prop, NewValue = value });
         }
     }
 }

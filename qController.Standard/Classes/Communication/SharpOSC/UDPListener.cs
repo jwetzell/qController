@@ -77,8 +77,9 @@ namespace SharpOSC
 				bytes = receivingUdpClient.EndReceive(result, ref RemoteIpEndPoint);
 			}
 			catch (ObjectDisposedException e)
-			{ 
+			{
 				// Ignore if disposed. This happens when closing the listener
+				Log.Debug(e.ToString());
 			}
 
 			// Process bytes
