@@ -2,7 +2,7 @@
 using Acr.UserDialogs;
 using Xamarin.Essentials;
 
-namespace qController.Dialogs
+namespace qController.UI.Dialogs
 {
     public class DonatePrompt : ConfirmConfig
     {

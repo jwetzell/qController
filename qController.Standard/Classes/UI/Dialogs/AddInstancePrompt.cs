@@ -1,7 +1,7 @@
 ﻿using Acr.UserDialogs;
 using qController.Communication;
 
-namespace qController.Dialogs
+namespace qController.UI.Dialogs
 {
     public class AddInstancePrompt : PromptConfig
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Acr.UserDialogs;
 
-namespace qController.Dialogs
+namespace qController.UI.Dialogs
 {
     public class NoWorkspacesConfig : ConfirmConfig
     {

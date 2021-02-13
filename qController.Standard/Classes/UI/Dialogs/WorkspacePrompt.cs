@@ -5,7 +5,7 @@ using qController.QItems;
 using Serilog;
 using QControlKit;
 
-namespace qController.Dialogs
+namespace qController.UI.Dialogs
 {
     public class WorkspacePromptArgs : EventArgs
     {
