@@ -2,19 +2,29 @@
 using qController.ViewModels;
 using QControlKit;
 using Serilog;
+using System.Linq;
 
 namespace qController.UI
 {
     public class QCueGrid : Grid
     {
         private QCueViewModel qCueViewModel;
+
         public QCueGrid(QCue cue)
         {
             qCueViewModel = new QCueViewModel(cue, true);
-
+            qCueViewModel.PropertyChanged += QCueViewModel_PropertyChanged;
             RowSpacing = 0;
+
+            BuildGrid(cue);
+            
+        }
+
+        private void BuildGrid(QCue cue)
+        {
             RowDefinitions.Add(
-                new RowDefinition {
+                new RowDefinition
+                {
                     Height = new GridLength(40),
                     BindingContext = qCueViewModel
                 }
@@ -34,9 +44,9 @@ namespace qController.UI
                     BorderColor = Color.Black,
                     Margin = qCueViewModel.nestPadding
                 };
-                Children.Add(cueFrame,1,0);
+                Children.Add(cueFrame, 1, 0);
                 Grid.SetRowSpan(cueFrame, cue.cues.Count + 1);
-                Grid.SetColumnSpan(cueFrame, ColumnDefinitions.Count-1);
+                Grid.SetColumnSpan(cueFrame, ColumnDefinitions.Count - 1);
             }
 
             var cueLabel = new Label
@@ -60,7 +70,7 @@ namespace qController.UI
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 VerticalTextAlignment = TextAlignment.Center,
                 Padding = 0,
-                Margin = new Thickness(10,0,0,0),
+                Margin = new Thickness(10, 0, 0, 0),
                 //BackgroundColor = Color.Red
             };
 
@@ -77,7 +87,7 @@ namespace qController.UI
             cueTypeLabel.SetBinding(Label.TextProperty, "type", BindingMode.OneWay);
             cueTypeLabel.SetDynamicResource(Label.TextColorProperty, "IconTextColor");
 
-            
+
             if (!cue.IsCueList)
             {
                 //Section for selecting a cue by tapping the name Label
@@ -102,7 +112,7 @@ namespace qController.UI
                         for (var i = 1; i < RowDefinitions.Count; i++)
                         {
                             RowDefinitions[i].Height = qCueViewModel.IsCollapsed ? 0 : GridLength.Auto;
-                            
+
                         }
 
                         if (Device.RuntimePlatform.Equals(Device.Android))
@@ -154,7 +164,8 @@ namespace qController.UI
                 foreach (var aCue in cue.cues)
                 {
                     this.RowDefinitions.Add(
-                        new RowDefinition {
+                        new RowDefinition
+                        {
                             Height = GridLength.Auto,
                             BindingContext = new QCueViewModel(aCue, false)
                         }
@@ -162,9 +173,39 @@ namespace qController.UI
                     var aCueGrid = new QCueGrid(aCue);
                     //cueGridDict.Add(aCue.uid, aCueGrid);
                     aCueGrid.Margin = new Thickness(0, 0, 0, 0);
+                    QCueGridListHelper.insert(aCue.uid, aCueGrid);
                     Children.Add(aCueGrid, 0, aCue.sortIndex + 1);
                     Grid.SetColumnSpan(aCueGrid, this.ColumnDefinitions.Count);
                 }
+            }
+        }
+
+        private void ReloadGrid()
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                //Nuke current grid
+                var children = this.Children.ToList();
+                foreach (var child in children)
+                {
+                    this.Children.Remove(child);
+                }
+
+                RowDefinitions = new RowDefinitionCollection();
+
+                //rebuild
+                BuildGrid(qCueViewModel.cue);
+
+                //TODO: check if this is working
+                qCueViewModel.cue.workspace.fetchPlaybackPositionForCue(qCueViewModel.cue);
+            });
+        }
+
+        private void QCueViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Equals("cues"))
+            {
+                ReloadGrid();
             }
         }
     }

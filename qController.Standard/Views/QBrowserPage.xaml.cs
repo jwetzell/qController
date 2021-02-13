@@ -3,7 +3,7 @@ using Xamarin.Forms;
 using Serilog;
 using qController.UI.Cells;
 using Acr.UserDialogs;
-using qController.Dialogs;
+using qController.UI.Dialogs;
 using Xamarin.Essentials;
 using System;
 using qController.ViewModels;
@@ -110,5 +110,5 @@ namespace qController.Pages
         }
     }
 
-    
+
 }

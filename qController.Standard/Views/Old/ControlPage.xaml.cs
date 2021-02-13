@@ -4,7 +4,7 @@ using Xamarin.Forms;
 using Serilog;
 using Acr.UserDialogs;
 
-using qController.Dialogs;
+using qController.UI.Dialogs;
 using qController.QItems;
 using qController.UI.Cells;
 using qController.UI.Buttons;

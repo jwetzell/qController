@@ -5,7 +5,7 @@ using Zeroconf;
 using System.Collections.Generic;
 using Serilog;
 using qController.QItems;
-using qController.Dialogs;
+using qController.UI.Dialogs;
 using qController.UI.Cells;
 using Xamarin.Essentials;
 
