@@ -46,7 +46,6 @@ namespace qController.ViewModels
                 }
                 else if (property.Equals(QOSCKey.Children))
                 {
-                    //Log.Debug("children property updated");
                     if (cue.IsGroup)
                     {
                         OnPropertyChanged("cues");

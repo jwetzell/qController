@@ -68,7 +68,6 @@ namespace qController.Pages
                     {
                         if (resp.Ok)
                         {
-                            Console.WriteLine($"Passcode is null: {resp.Value == null}");
                             await Navigation.PushAsync(new QWorkspacePage(selectedWorkspace, resp.Value));
                         }
                     }

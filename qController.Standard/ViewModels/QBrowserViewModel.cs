@@ -7,6 +7,7 @@ using QControlKit;
 using QControlKit.Events;
 using System;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace qController.ViewModels
 {
@@ -42,7 +43,7 @@ namespace qController.ViewModels
         {
             Device.BeginInvokeOnMainThread(() =>
             {
-                System.Console.WriteLine($"[QBrowserViewModel] adding server: {args.server.description}");
+                Log.Debug($"[QBrowserViewModel] adding server: {args.server.description}");
                 ServersGrouped.Add(new QServerViewModel(args.server));
             });
         }
@@ -65,7 +66,7 @@ namespace qController.ViewModels
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    System.Console.WriteLine($"[QBrowserViewModel] removing server: {args.server.description}");
+                    Log.Debug($"[QBrowserViewModel] removing server: {args.server.description}");
                     ServersGrouped.Remove(serverToRemove);
                 });
             }

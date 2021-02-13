@@ -60,8 +60,7 @@ namespace qController
 
         private void ConnectedWorkspace_WorkspaceConnectionError(object source, QWorkspaceConnectionErrorArgs connectionErrorArgs)
         {
-            System.Console.WriteLine("WorkspaceConnectionError Called");
-            if (connectionErrorArgs.status.Equals("badpass"))
+            if (connectionErrorArgs.status.Equals(QConnectionStatus.BadPass))
             {
                 UserDialogs.Instance.Prompt(new PromptConfig
                 {
@@ -106,10 +105,10 @@ namespace qController
                 }
                 else
                 {
-                    //Setup and "empty" cue for when no cue is selected
+                    //Setup an "empty" cue for when no cue is selected
                     QCue emptyCue = new QCue();
                     emptyCue.workspace = connectedWorkspace;
-                    emptyCue.type = "Memo";
+                    emptyCue.type = QCueType.Memo;
                     emptyCue.listName = "No Cue Selected";
                     
                     selectedCueFrame.BindingContext = new QCueViewModel(emptyCue, false);

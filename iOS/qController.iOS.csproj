@@ -146,7 +146,7 @@
       <HintPath>..\packages\Xamarin.iOS.MaterialComponents.92.0.0\lib\Xamarin.iOS\MaterialComponents.dll</HintPath>
     </Reference>
     <Reference Include="QControlKit">
-      <HintPath>..\packages\QControlKit.0.0.15\lib\netstandard2.0\QControlKit.dll</HintPath>
+      <HintPath>..\packages\QControlKit.0.0.17\lib\netstandard2.0\QControlKit.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="Xamarin.Forms.Platform.iOS">
