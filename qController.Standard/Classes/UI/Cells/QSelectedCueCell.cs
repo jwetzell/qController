@@ -89,7 +89,7 @@ namespace qController.UI.Cells
 
             type = new Label { 
                 Text = QIcon.SPIN3, 
-                FontFamily = App.QFont,
+                FontFamily = (OnPlatform<string>)Application.Current.Resources["QFontFamily"],
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.End,
                 FontSize = App.HeightUnit * 5

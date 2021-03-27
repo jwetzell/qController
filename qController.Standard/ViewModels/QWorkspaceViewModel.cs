@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using QControlKit;
-using Xamarin.Forms;
+﻿using QControlKit;
 
 namespace qController.ViewModels
 {

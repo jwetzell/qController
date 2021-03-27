@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using qController.Helpers;
 
 namespace qController.QItems
 {
@@ -18,7 +19,7 @@ namespace qController.QItems
         {
             get
             {
-                return QIcon.GetIconFromType("Group");
+                return IconConstants.FormatListBulleted;
             }
         }
     }

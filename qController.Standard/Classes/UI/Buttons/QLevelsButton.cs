@@ -10,7 +10,7 @@ namespace qController.UI.Buttons
             {
                 Text = QIcon.SLIDERS,
                 TextColor = Color.Black,
-                FontFamily = App.QFont,
+                FontFamily = (OnPlatform<string>)Application.Current.Resources["QFontFamily"],
                 FontSize = App.HeightUnit * 4,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,

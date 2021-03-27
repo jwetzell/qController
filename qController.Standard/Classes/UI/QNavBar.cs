@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using qController.Helpers;
+using Xamarin.Forms;
 
 namespace qController.UI
 {
@@ -33,14 +34,14 @@ namespace qController.UI
 
             menuButton = new Label
             {
-                FontFamily = App.QFont,
+                FontFamily = (OnPlatform<string>)Application.Current.Resources["MaterialFontFamily"],
                 HorizontalOptions = LayoutOptions.StartAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.Center,
                 Padding = 0,
                 Margin = new Thickness(10, 0, 0, 0),
-                Text = QIcon.MENU,
+                Text = IconConstants.Menu,
                 BackgroundColor = Color.Transparent
             };
 

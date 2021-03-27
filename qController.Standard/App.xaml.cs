@@ -14,7 +14,6 @@ namespace qController
         public static INavigation iNav;
         public static NavigationPage NavigationPage { get; private set; }
         public static RootPage rootPage;
-        public static string QFont;
         public static DisplayInfo mainDisplayInfo;
         public static double Height;
         public static double Width;
@@ -45,16 +44,6 @@ namespace qController
             Width = mainDisplayInfo.Width / mainDisplayInfo.Density;
             HeightUnit = Height / 100.0;
             WidthUnit = Width / 100.0;
-
-            switch (Device.RuntimePlatform)
-            {
-                case Device.iOS:
-                    QFont = "qfont";
-                    break;
-                case Device.Android:
-                    QFont = "qfont.ttf#qfont";
-                    break;
-            }
 
             rootPage = new RootPage();
             NavigationPage = new NavigationPage(new QBrowserPage());

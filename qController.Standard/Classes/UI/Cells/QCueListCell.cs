@@ -28,7 +28,7 @@ namespace qController.UI.Cells
 
                     var icon = new Label();
 
-                    icon.FontFamily = App.QFont;
+                    icon.FontFamily = (OnPlatform<string>)Application.Current.Resources["QFontFamily"];
                     icon.SetBinding(Label.TextProperty, "Icon");
                     icon.HorizontalTextAlignment = TextAlignment.Center;
                     icon.VerticalTextAlignment = TextAlignment.Center;

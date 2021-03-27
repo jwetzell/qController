@@ -63,7 +63,7 @@ namespace qController.UI
 
             var cueTypeLabel = new Label
             {
-                FontFamily = App.QFont,
+                FontFamily = (OnPlatform<string>)Application.Current.Resources["QFontFamily"],
                 BindingContext = qCueViewModel,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 HorizontalTextAlignment = TextAlignment.Start,

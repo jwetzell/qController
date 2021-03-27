@@ -1,6 +1,6 @@
 ﻿namespace qController.Helpers
 {
-	static class IconConstants
+	public static class IconConstants
 	{
 		public const string VectorSquare = "\U000f0001";
 		public const string AccessPointNetwork = "\U000f0002";

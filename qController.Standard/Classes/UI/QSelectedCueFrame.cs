@@ -1,5 +1,7 @@
 ﻿using Acr.UserDialogs;
+using qController.Helpers;
 using qController.ViewModels;
+using Serilog;
 using Xamarin.Forms;
 
 namespace qController.UI
@@ -69,7 +71,7 @@ namespace qController.UI
                 Margin = 0,
                 Padding = new Thickness(0,0,15,0),
                 FontSize = App.HeightUnit * 4,
-                FontFamily = App.QFont
+                FontFamily = (OnPlatform<string>)Application.Current.Resources["QFontFamily"]
             };
             type.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
             type.SetBinding(Label.TextProperty, "type", BindingMode.OneWay);

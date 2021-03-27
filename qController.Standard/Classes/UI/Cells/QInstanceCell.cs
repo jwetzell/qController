@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Serilog;
+using qController.Helpers;
 
 namespace qController.UI.Cells
 {
@@ -87,18 +88,18 @@ namespace qController.UI.Cells
 
                 connectLabel.HorizontalOptions = LayoutOptions.StartAndExpand;
                 connectLabel.VerticalOptions = LayoutOptions.CenterAndExpand;
-                connectLabel.Text = QIcon.WIFI;
+                connectLabel.Text = IconConstants.Wifi;
                 connectLabel.FontSize = App.HeightUnit * 5;
                 connectLabel.TextColor = Color.LimeGreen;
 
                 deleteLabel.HorizontalOptions = LayoutOptions.CenterAndExpand;
                 deleteLabel.VerticalOptions = LayoutOptions.CenterAndExpand;
-                deleteLabel.Text = QIcon.TRASH_EMPTY;
+                deleteLabel.Text = IconConstants.Delete;
                 deleteLabel.FontSize = App.HeightUnit * 5;
                 deleteLabel.TextColor = Color.Red;
 
-                connectLabel.FontFamily = App.QFont;
-                deleteLabel.FontFamily = App.QFont;
+                connectLabel.FontFamily = (OnPlatform<string>)Application.Current.Resources["MaterialFontFamily"];
+                deleteLabel.FontFamily = (OnPlatform<string>)Application.Current.Resources["MaterialFontFamily"];
             }
 
 

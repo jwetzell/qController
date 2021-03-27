@@ -4,21 +4,21 @@
              x:Class="qController.App">
 	<Application.Resources>
 		<!-- Application resource dictionary -->
-        <OnPlatform x:Key="qfont" x:TypeArguments="x:String">
-            <On Platform="Android" Value="qfont.ttf#qfont" />
-            <On Platform="iOS" Value="qfont" />
+        <OnPlatform x:Key="QFontFamily" x:TypeArguments="x:String">
+            <On Platform="Android">qfont.ttf#qfont</On>
+            <On Platform="iOS">qfont</On>
         </OnPlatform>
 
         <OnPlatform x:Key="MaterialFontFamily" x:TypeArguments="x:String">
-            <On Platform="iOS" Value="Material Design Icons" />
-            <On Platform="Android" Value="materialdesignicons-webfont.ttf#Material Design Icons" />
+            <On Platform="iOS">Material Design Icons</On>
+            <On Platform="Android">materialdesignicons-webfont.ttf#Material Design Icons</On>
         </OnPlatform>
 
         <Style TargetType="Label"
                Class="QFont"
                ApplyToDerivedTypes="true">
             <Setter Property="FontFamily"
-                    Value="{StaticResource qfont}" />
+                    Value="{StaticResource QFontFamily}" />
         </Style>
 
         <Style TargetType="Label"

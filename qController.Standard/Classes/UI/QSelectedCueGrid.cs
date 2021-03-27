@@ -55,7 +55,7 @@ namespace qController.UI
                 Margin = 0,
                 Padding = 0,
                 FontSize = App.HeightUnit * 4,
-                FontFamily = App.QFont
+                FontFamily = (OnPlatform<string>)Application.Current.Resources["QFontFamily"]
             };
             type.SetBinding(Label.TextProperty, "type", BindingMode.OneWay);
             Children.Add(type, 4, 0);

@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using qController.QItems;
 using System;
+using qController.Helpers;
 
 namespace qController
 {
@@ -21,17 +22,21 @@ namespace qController
             {
                 var grid = new Grid {
                     Padding = 0,
+                    ColumnSpacing = 0,
                     ColumnDefinitions =
                     {
-                        new ColumnDefinition{Width = new GridLength(30)},
+                        new ColumnDefinition{Width = GridLength.Auto},
                         new ColumnDefinition { Width = GridLength.Star }
                     }
                 };
 
                 var icon = new Label {
-                    FontFamily = App.QFont,
+                    FontFamily = (OnPlatform<string>)Application.Current.Resources["MaterialFontFamily"],
                     HorizontalTextAlignment = TextAlignment.Center,
                     VerticalTextAlignment = TextAlignment.Center,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    Margin = new Thickness(10,0,10,0),
                     FontSize = App.HeightUnit * 2.75
                 };
 
@@ -46,18 +51,6 @@ namespace qController
                 };
                 label.SetBinding(Label.TextProperty, "Title");
                 label.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
-
-                //switch (Device.RuntimePlatform)
-                //{
-                //    case Device.iOS:
-                //        listView.RowHeight = (int)(App.HeightUnit * 5);
-                //        label.FontSize = App.HeightUnit * 2.75;
-                //        break;
-                //    case Device.Android:
-                //        listView.RowHeight = (int)(App.HeightUnit * 5);
-                //        label.FontSize = App.HeightUnit * 2.75;
-                //        break;
-                //}
 
                 grid.Children.Add(icon);
                 grid.Children.Add(label, 1, 0);
@@ -81,11 +74,12 @@ namespace qController
             items.Add(new MenuPageItem
             {
                 Title = "Disconnect",
-                Icon = QIcon.CANCEL,
+                Icon = IconConstants.Close,
                 Command = "disconnect"
             });
             
         }
+
         public void ChangeToWorkspace(QOldWorkspace workspace)
         {
             for(int i = 0; i < workspace.data.Count; i++)
@@ -106,19 +100,19 @@ namespace qController
             items.Add(new MenuPageItem
             {
                 Title = "Scan Network",
-                Icon = "\uE800",
+                Icon = IconConstants.Magnify,
                 Command = "scan"
             });
             items.Add(new MenuPageItem
             {
                 Title = "Send Feedback",
-                Icon = QIcon.MAIL,
+                Icon = IconConstants.Email,
                 Command = "feedback"
             });
             items.Add(new MenuPageItem
             {
                 Title = "Support Project",
-                Icon = QIcon.DOLLAR,
+                Icon = IconConstants.CurrencyUsd,
                 Command = "support"
             });
         }
