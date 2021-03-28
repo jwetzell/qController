@@ -16,18 +16,19 @@
 
             <!--Ordering is based on the order last is on top seems pretty backwards to me-->
             <!--Old "Instance" listview -->
-            <ListView x:Name="storageListView" 
+            <!--<ListView x:Name="storageListView" 
                       HasUnevenRows="true" 
                       BackgroundColor="{DynamicResource PageBackgroundColor}" 
                       SeparatorVisibility="None">
                 
-            </ListView>
+            </ListView>-->
 
             <!--Simple Divider-->
-            <BoxView HeightRequest="10"
-                     BackgroundColor="DarkGray"/>
+            <!--<BoxView HeightRequest="10"
+                     BackgroundColor="DarkGray"/>-->
 
             <!--Beginning of new style of "server" view-->
+
             <Frame BackgroundColor="{DynamicResource PageBackgroundColor}"
                    CornerRadius="0"
                    Margin="0"

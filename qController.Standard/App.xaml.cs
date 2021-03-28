@@ -1,7 +1,6 @@
 ﻿using Acr.UserDialogs;
 using Xamarin.Forms;
 using Xamarin.Essentials;
-using qController.Communication;
 using qController.Pages;
 using System;
 using QControlKit;
@@ -19,7 +18,6 @@ namespace qController
         public static double Width;
         public static double HeightUnit;
         public static double WidthUnit;
-        public static QController qControllerToResume;
         public static bool MenuIsPresented
         {
             get

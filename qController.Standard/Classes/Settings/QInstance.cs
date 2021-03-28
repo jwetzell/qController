@@ -1,5 +1,4 @@
-﻿using Xamarin.Forms;
-
+﻿//Legacy but needed incase there are still instances stored in this way
 namespace qController.QItems
 {
     public class QInstance
@@ -17,7 +16,7 @@ namespace qController.QItems
         }
         public bool IsReachable()
         {
-            return qController.Communication.IPHelper.IsReachable(address);
+            return qController.Helpers.IPHelper.IsReachable(address);
         }
     }
 }

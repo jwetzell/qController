@@ -86,14 +86,12 @@
     <EmbeddedResource Include="App.xaml" />
   </ItemGroup>-->
   <ItemGroup>
-    <Folder Include="Classes\QItems\" />
     <Folder Include="Classes\Settings\" />
     <Folder Include="Classes\UI\" />
     <Folder Include="Classes\Events\" />
     <Folder Include="Classes\UI\Buttons\" />
     <Folder Include="Classes\UI\Cells\" />
     <Folder Include="Classes\Helpers\" />
-    <Folder Include="Views\Old\" />
     <Folder Include="Classes\UI\Dialogs\" />
   </ItemGroup>
   <ItemGroup>

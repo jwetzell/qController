@@ -1,7 +1,5 @@
 ﻿using Acr.UserDialogs;
-using qController.Helpers;
 using qController.ViewModels;
-using Serilog;
 using Xamarin.Forms;
 
 namespace qController.UI

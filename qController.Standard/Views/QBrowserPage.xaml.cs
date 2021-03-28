@@ -23,15 +23,17 @@ namespace qController.Pages
             serverListView.BindingContext = qBrowserViewModel;
             serverListView.ItemSelected += QWorkspaceSelected;
 
-            storageListView.ItemsSource = QStorage.qInstances;
-            storageListView.ItemTemplate = new DataTemplate(typeof(QInstanceCell));
-            storageListView.ItemTapped += (object sender, ItemTappedEventArgs e) =>
-            {
-                // don't do anything if we just de-selected the row
-                if (e.Item == null) return;
-                // do something with e.SelectedItem
-                ((ListView)sender).SelectedItem = null; // de-select the row
-            };
+
+            //Old way of displaying "QInstances"
+            //storageListView.ItemsSource = QStorage.qInstances;
+            //storageListView.ItemTemplate = new DataTemplate(typeof(QInstanceCell));
+            //storageListView.ItemTapped += (object sender, ItemTappedEventArgs e) =>
+            //{
+            //    // don't do anything if we just de-selected the row
+            //    if (e.Item == null) return;
+            //    // do something with e.SelectedItem
+            //    ((ListView)sender).SelectedItem = null; // de-select the row
+            //};
 
         }
 

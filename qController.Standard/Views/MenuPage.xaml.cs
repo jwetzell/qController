@@ -80,20 +80,6 @@ namespace qController
             
         }
 
-        public void ChangeToWorkspace(QOldWorkspace workspace)
-        {
-            for(int i = 0; i < workspace.data.Count; i++)
-            {
-                var cueList = workspace.data[i];
-                items.Add(new MenuPageItem
-                {
-                    Title = cueList.listName,
-                    Icon = cueList.IconText,
-                    Command = "cueList " + cueList.uniqueID
-                });
-            }
-        }
-
         public void ChangeToHome()
         {
             items.Clear();

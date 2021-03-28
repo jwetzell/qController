@@ -1,5 +1,5 @@
 ﻿using Acr.UserDialogs;
-using qController.Communication;
+using qController.Helpers;
 
 namespace qController.UI.Dialogs
 {

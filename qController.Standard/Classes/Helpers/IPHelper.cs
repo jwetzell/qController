@@ -2,7 +2,7 @@
 //IMPLEMENT A ISREACHABLE METHOD TO BE ABLE TO DISPLAY ONLINE QINSTANCES
 using System.Net;
 
-namespace qController.Communication
+namespace qController.Helpers
 {
     public class IPHelper
     {
