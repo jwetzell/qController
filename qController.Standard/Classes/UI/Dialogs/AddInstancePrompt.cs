@@ -23,17 +23,24 @@ namespace qController.UI.Dialogs
 
                 UserDialogs.Instance.Prompt(new PromptConfig
                 {
-                    Title = "Enter Name",
-                    Message = "Enter a Name for " + qAddress.Text,
+                    Title = "Enter Port",
+                    Message = "Enter OSC port for " + qAddress.Text,
                     OkText = "Save",
-                    OnAction = (qName) => {
-                        if (!qName.Ok)
+                    InputType = InputType.Number,
+                    OnTextChanged = args =>
+                    {
+                        args.IsValid = args.Value.Length > 0;
+                    },
+                    OnAction = (qPort) => {
+                        if (!qPort.Ok)
                             return;
-                        QStorage.AddInstance(qName.Text, qAddress.Text);
-                        App.showToast("Manual Workspace Added!");
+
+                        QStorage.AddServer(qAddress.Text, int.Parse(qPort.Text));
+                        App.showToast("Manual QLab Instance Added!");
                     }
 
                 });
+
             };
         }
     }

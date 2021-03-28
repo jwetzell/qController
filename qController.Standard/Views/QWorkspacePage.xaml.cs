@@ -200,5 +200,51 @@ namespace qController
             await Task.Delay(milisec);
             actionToExecute();
         }
+
+        void GoButtonClicked(System.Object sender, System.EventArgs e)
+        {
+            if(this.connectedWorkspace != null)
+            {
+                if (this.connectedWorkspace.connected)
+                {
+                    this.connectedWorkspace.go();
+                }
+            }
+        }
+
+        void PauseButtonClicked(System.Object sender, System.EventArgs e)
+        {
+            if (this.connectedWorkspace != null)
+            {
+                if (this.connectedWorkspace.connected)
+                {
+                    QCue selectedCue = ((QCueViewModel)this.selectedCueFrame.BindingContext).cue;
+                    selectedCue.pause();
+                }
+            }
+        }
+
+        void ResumeButtonClicked(System.Object sender, System.EventArgs e)
+        {
+            if (this.connectedWorkspace != null)
+            {
+                if (this.connectedWorkspace.connected)
+                {
+                    QCue selectedCue = ((QCueViewModel)this.selectedCueFrame.BindingContext).cue;
+                    selectedCue.resume();
+                }
+            }
+        }
+
+        void PanicButtonClicked(System.Object sender, System.EventArgs e)
+        {
+            if (this.connectedWorkspace != null)
+            {
+                if (this.connectedWorkspace.connected)
+                {
+                    this.connectedWorkspace.panicAll();
+                }
+            }
+        }
     }
 }

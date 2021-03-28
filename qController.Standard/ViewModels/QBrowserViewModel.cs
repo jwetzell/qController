@@ -29,8 +29,12 @@ namespace qController.ViewModels
             {
                 Task.Run(async () =>
                 {
-                    if(autoUpdate)
+                    if (autoUpdate)
+                    {
+                        //Log.Debug("[QBrowserViewModel] Auto update scan ran");
                         this.browser.ProbeForQLabInstances();
+
+                    }
                 });
                 return true;
             });
@@ -75,6 +79,15 @@ namespace qController.ViewModels
         void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public void InitiateScan()
+        {
+            if (!autoUpdate)
+            {
+                Log.Debug("[QBrowserViewModel] Manual Scan Initiated");
+                this.browser.ProbeForQLabInstances();
+            }
         }
     }
 }

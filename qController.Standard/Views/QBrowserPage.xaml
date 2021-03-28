@@ -134,12 +134,13 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <Button Text="Manually Add..."
+                    <!--TODO: Manually add "servers" -->
+                    <!--<Button Text="Manually Add..."
                             VerticalOptions="Center"
                             HorizontalOptions="FillAndExpand"
                             Clicked="AddInstance"
                             BackgroundColor="White"
-                            StyleClass="PrimaryButton"/>
+                            StyleClass="PrimaryButton"/>-->
                 </StackLayout>
             </Frame>
 

@@ -19,21 +19,8 @@ namespace qController.Pages
 
             SetupTopBar();
             qBrowserViewModel = new QBrowserViewModel(new QBrowser());
-            qBrowserViewModel.autoUpdate = true;
             serverListView.BindingContext = qBrowserViewModel;
             serverListView.ItemSelected += QWorkspaceSelected;
-
-
-            //Old way of displaying "QInstances"
-            //storageListView.ItemsSource = QStorage.qInstances;
-            //storageListView.ItemTemplate = new DataTemplate(typeof(QInstanceCell));
-            //storageListView.ItemTapped += (object sender, ItemTappedEventArgs e) =>
-            //{
-            //    // don't do anything if we just de-selected the row
-            //    if (e.Item == null) return;
-            //    // do something with e.SelectedItem
-            //    ((ListView)sender).SelectedItem = null; // de-select the row
-            //};
 
         }
 
@@ -96,6 +83,10 @@ namespace qController.Pages
             else if (args.Command == "support")
             {
                 UserDialogs.Instance.Confirm(new DonatePrompt());
+            }else if(args.Command == "scan")
+            {
+                qBrowserViewModel.InitiateScan();
+                App.showToast("Scan Initiated.........");
             }
         }
 

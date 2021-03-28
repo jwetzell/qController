@@ -15,7 +15,7 @@ namespace qController
         static QStorage(){
             
             qInstances = (ObservableCollection<QInstance>)CrossSettings.Current.GetValue(new ObservableCollection<QInstance>().GetType(), "qInstances", null);
-            qStoredServers = (ObservableCollection<QServerInfo>)CrossSettings.Current.GetValue(new ObservableCollection<QInstance>().GetType(), "qStoredServers", null);
+            qStoredServers = (ObservableCollection<QServerInfo>)CrossSettings.Current.GetValue(new ObservableCollection<QServerInfo>().GetType(), "qStoredServers", null);
             recentWorkspaceInfo = (QRecentWorkspaceInfo)CrossSettings.Current.GetValue(typeof (QRecentWorkspaceInfo),"recentWorkspaceInfo",null);
 
             if (qInstances == null)
@@ -36,15 +36,15 @@ namespace qController
 
             if (qInstances != null)
             {
-                Log.Debug("[QStorage] qInstances exists though so load in those instances as servers");
-                foreach (QInstance instance in qInstances)
+                if(qInstances.Count > 0)
                 {
-                    QServerInfo serverInfo = new QServerInfo();
-                    serverInfo.host = instance.address.ToString();
-                    //TODO: port?
-                    qStoredServers.Add(serverInfo);
+                    Log.Debug("[QStorage] qInstances exists though so load in those instances as servers");
+                    foreach (QInstance instance in qInstances)
+                    {
+                        //TODO: port?
+                        AddServer(instance.address.ToString(), 53000);
+                    }
                 }
-                UpdateStorage();
             }
         }
 
@@ -59,7 +59,7 @@ namespace qController
         }
 
         public static bool AddInstance(QInstance q){
-            if(!Contains(q.name, q.address)){
+            if(!Contains(q.address)){
                 qInstances.Add(q);
                 UpdateStorage();
                 return true;
@@ -82,12 +82,55 @@ namespace qController
             UpdateStorage();
         }
 
+
+        public static bool AddServer(string host, int port)
+        {
+            QServerInfo serverInfo = new QServerInfo();
+            serverInfo.host = host;
+            serverInfo.port = port;
+
+            return AddServer(serverInfo);
+        }
+
+        public static bool AddServer(QServerInfo q)
+        {
+            if (!Contains(q.host))
+            {
+                Log.Debug($"[QStorage] Adding {q.host}:{q.port}");
+                qStoredServers.Add(q);
+                UpdateStorage();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static void RemoveServer(string host)
+        {
+            foreach (var item in qStoredServers)
+            {
+                if (item.host == host)
+                {
+                    RemoveServer(item);
+                    return;
+                }
+            }
+        }
+
+        public static void RemoveServer(QServerInfo q)
+        {
+            qStoredServers.Remove(q);
+            UpdateStorage();
+        }
+
         private static void UpdateStorage(){
             CrossSettings.Current.SetValue("qInstances", qInstances);
             CrossSettings.Current.SetValue("qStoredServers", qStoredServers);
         }
 
-        public static bool Contains(string name, string address){
+        public static bool Contains(string address){
             foreach (var item in qInstances)
             {
                 //Log.Debug("Item name: " + item.name + " Found Name: " + name);
@@ -96,10 +139,22 @@ namespace qController
                     return true;
                 }
             }
+
+            foreach (var item in qStoredServers)
+            {
+                //Log.Debug("Item name: " + item.name + " Found Name: " + name);
+                if (item.host == address)
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
+
+
         public bool IsEmpty(){
-            return qInstances.Count == 0;
+            return qInstances.Count == 0 && qStoredServers.Count == 0;
         }
     }
 }
