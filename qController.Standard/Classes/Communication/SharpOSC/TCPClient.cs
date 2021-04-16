@@ -31,7 +31,7 @@ namespace SharpOSC
         }
         public delegate void MessageReceivedHandler(object source, MessageEventArgs args);
         public event MessageReceivedHandler MessageReceived;
-
+        private Thread receivingThread;
         string _address;
         TcpClient client;
 
@@ -49,17 +49,20 @@ namespace SharpOSC
 
         public bool Connect()
         {
-            client = new TcpClient();
-
-            if (!client.ConnectAsync(Address, Port).Wait(TimeSpan.FromSeconds(1)))
+            try
             {
+                client = new TcpClient(Address, Port);
+                receivingThread = new Thread(ReceiveLoop);
+                receivingThread.Start();
+                Log.Debug($"[tcpclient] connected to <{Address}:{Port}>");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
                 return false;
             }
 
-            Thread receivingThread = new Thread(ReceiveLoop);
-            receivingThread.Start();
-            return true;
-            
         }
 
         public void Send(byte[] message)
@@ -96,9 +99,9 @@ namespace SharpOSC
         {
             Random random = new Random();
             int num = random.Next(1000);
-            NetworkStream netStream = client.GetStream();
             try
             {
+                NetworkStream netStream = client.GetStream();
                 netStream.ReadTimeout = 250;
                 List<byte> responseData = new List<byte>();
                 if (netStream.CanRead)
@@ -125,7 +128,7 @@ namespace SharpOSC
                 }
             } catch(Exception e)
             {
-                Log.Debug("TCPClient - Receive Exception: " + e.ToString());
+                //Log.Debug("TCPClient - Receive Exception: " + e.ToString());
             }
         }
 
@@ -159,12 +162,15 @@ namespace SharpOSC
 
         public void Close()
         {
-            if (client.Connected)
+            if (client != null)
             {
-                client.GetStream().Close();
-                client.Close();
+                if (client.Connected)
+                {
+                    Log.Debug($"[tcpClient] closing connection to {Address}");
+                    client.GetStream().Close();
+                    client.Close();
+                }
             }
-            
         }
 
         protected virtual void OnMessageReceived(OscMessage msg)
