@@ -237,7 +237,7 @@ namespace qController
             Device.BeginInvokeOnMainThread(() =>
             {
                 App.rootPage.MenuPage.ChangeToHome();
-                App.NavigationPage.Navigation.PopAsync();
+                App.rootPage.Detail.Navigation.PopAsync();
             });
         }
 

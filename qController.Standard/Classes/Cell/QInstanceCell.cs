@@ -110,7 +110,7 @@ namespace qController.Cell
 
             void Connect(object sender, EventArgs e)
             {
-                App.NavigationPage.Navigation.PushAsync(new ControlPage(nameLabel.Text,addressLabel.Text));
+                App.rootPage.Detail.Navigation.PushAsync(new ControlPage(nameLabel.Text, addressLabel.Text));
                 Log.Debug("QINSTANCECELL - Connect To " + nameLabel.Text + " Pressed");
             }
         }
