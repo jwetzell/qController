@@ -31,6 +31,7 @@
     <AndroidSupportedAbis>x86;armeabi-v7a;arm64-v8a;x86_64</AndroidSupportedAbis>
     <MandroidI18n>
     </MandroidI18n>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -394,28 +395,28 @@
       <HintPath>..\packages\Xamarin.AndroidX.ConstraintLayout.2.0.4.2\lib\monoandroid90\Xamarin.AndroidX.ConstraintLayout.dll</HintPath>
     </Reference>
     <Reference Include="Square.OkIO">
-      <HintPath>..\packages\Square.OkIO.1.15.0\lib\monoandroid44\Square.OkIO.dll</HintPath>
+      <HintPath>..\packages\Square.OkIO.2.8.0\lib\monoandroid90\Square.OkIO.dll</HintPath>
     </Reference>
     <Reference Include="Square.OkHttp3">
-      <HintPath>..\packages\Square.OkHttp3.3.12.3\lib\monoandroid44\Square.OkHttp3.dll</HintPath>
+      <HintPath>..\packages\Square.OkHttp3.4.9.0\lib\monoandroid10.0\Square.OkHttp3.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Google.Android.DataTransport.TransportApi">
-      <HintPath>..\packages\Xamarin.Google.Android.DataTransport.TransportApi.2.2.0\lib\monoandroid90\Xamarin.Google.Android.DataTransport.TransportApi.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Google.Android.DataTransport.TransportApi.2.2.1\lib\monoandroid90\Xamarin.Google.Android.DataTransport.TransportApi.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Google.Android.DataTransport.TransportBackendCct">
-      <HintPath>..\packages\Xamarin.Google.Android.DataTransport.TransportBackendCct.2.2.3\lib\monoandroid90\Xamarin.Google.Android.DataTransport.TransportBackendCct.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Google.Android.DataTransport.TransportBackendCct.2.3.3\lib\monoandroid90\Xamarin.Google.Android.DataTransport.TransportBackendCct.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Google.AutoValue.Annotations">
-      <HintPath>..\packages\Xamarin.Google.AutoValue.Annotations.1.6.5\lib\monoandroid80\Xamarin.Google.AutoValue.Annotations.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Google.AutoValue.Annotations.1.6.6\lib\monoandroid80\Xamarin.Google.AutoValue.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Basement">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Basement.117.2.1\lib\monoandroid90\Xamarin.GooglePlayServices.Basement.dll</HintPath>
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Basement.117.6.0\lib\monoandroid90\Xamarin.GooglePlayServices.Basement.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Stats">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Stats.117.0.0\lib\monoandroid90\Xamarin.GooglePlayServices.Stats.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Tasks">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Tasks.117.0.2\lib\monoandroid90\Xamarin.GooglePlayServices.Tasks.dll</HintPath>
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Tasks.117.2.1\lib\monoandroid90\Xamarin.GooglePlayServices.Tasks.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Base">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Base.117.1.0\lib\monoandroid90\Xamarin.GooglePlayServices.Base.dll</HintPath>
@@ -424,10 +425,19 @@
       <HintPath>..\packages\Xamarin.JavaX.Inject.1.0.0\lib\monoandroid90\Xamarin.JavaX.Inject.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Google.Dagger">
-      <HintPath>..\packages\Xamarin.Google.Dagger.2.25.2.1\lib\monoandroid90\Xamarin.Google.Dagger.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Google.Dagger.2.27.0\lib\monoandroid90\Xamarin.Google.Dagger.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Google.Android.DataTransport.TransportRuntime">
-      <HintPath>..\packages\Xamarin.Google.Android.DataTransport.TransportRuntime.2.2.3\lib\monoandroid90\Xamarin.Google.Android.DataTransport.TransportRuntime.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Google.Android.DataTransport.TransportRuntime.2.2.6\lib\monoandroid90\Xamarin.Google.Android.DataTransport.TransportRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Jetbrains.Annotations">
+      <HintPath>..\packages\Xamarin.Jetbrains.Annotations.13.0.0.3\lib\monoandroid10.0\Xamarin.Jetbrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Kotlin.StdLib.Common">
+      <HintPath>..\packages\Xamarin.Kotlin.StdLib.Common.1.4.20\lib\monoandroid10.0\Xamarin.Kotlin.StdLib.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Kotlin.StdLib">
+      <HintPath>..\packages\Xamarin.Kotlin.StdLib.1.4.20\lib\monoandroid10.0\Xamarin.Kotlin.StdLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -554,8 +564,11 @@
   <Import Project="..\packages\Xamarin.AndroidX.Annotation.Experimental.1.1.0\build\monoandroid9.0\Xamarin.AndroidX.Annotation.Experimental.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Annotation.Experimental.1.1.0\build\monoandroid9.0\Xamarin.AndroidX.Annotation.Experimental.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Lifecycle.Runtime.2.3.1.1\build\monoandroid9.0\Xamarin.AndroidX.Lifecycle.Runtime.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Lifecycle.Runtime.2.3.1.1\build\monoandroid9.0\Xamarin.AndroidX.Lifecycle.Runtime.targets')" />
   <Import Project="..\packages\Xamarin.Build.Download.0.10.0\build\Xamarin.Build.Download.targets" Condition="Exists('..\packages\Xamarin.Build.Download.0.10.0\build\Xamarin.Build.Download.targets')" />
-  <Import Project="..\packages\Xamarin.GooglePlayServices.Basement.117.2.1\build\MonoAndroid90\Xamarin.GooglePlayServices.Basement.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Basement.117.2.1\build\MonoAndroid90\Xamarin.GooglePlayServices.Basement.targets')" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Stats.117.0.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Stats.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Stats.117.0.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Stats.targets')" />
-  <Import Project="..\packages\Xamarin.GooglePlayServices.Tasks.117.0.2\build\MonoAndroid90\Xamarin.GooglePlayServices.Tasks.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Tasks.117.0.2\build\MonoAndroid90\Xamarin.GooglePlayServices.Tasks.targets')" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Base.117.1.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Base.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Base.117.1.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Base.targets')" />
+  <Import Project="..\packages\Xamarin.GooglePlayServices.Basement.117.6.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Basement.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Basement.117.6.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Basement.targets')" />
+  <Import Project="..\packages\Xamarin.GooglePlayServices.Tasks.117.2.1\build\MonoAndroid90\Xamarin.GooglePlayServices.Tasks.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Tasks.117.2.1\build\MonoAndroid90\Xamarin.GooglePlayServices.Tasks.targets')" />
+  <Import Project="..\packages\Xamarin.Jetbrains.Annotations.13.0.0.3\build\monoandroid10.0\Xamarin.Jetbrains.Annotations.targets" Condition="Exists('..\packages\Xamarin.Jetbrains.Annotations.13.0.0.3\build\monoandroid10.0\Xamarin.Jetbrains.Annotations.targets')" />
+  <Import Project="..\packages\Xamarin.Kotlin.StdLib.Common.1.4.20\build\monoandroid10.0\Xamarin.Kotlin.StdLib.Common.targets" Condition="Exists('..\packages\Xamarin.Kotlin.StdLib.Common.1.4.20\build\monoandroid10.0\Xamarin.Kotlin.StdLib.Common.targets')" />
+  <Import Project="..\packages\Xamarin.Kotlin.StdLib.1.4.20\build\monoandroid10.0\Xamarin.Kotlin.StdLib.targets" Condition="Exists('..\packages\Xamarin.Kotlin.StdLib.1.4.20\build\monoandroid10.0\Xamarin.Kotlin.StdLib.targets')" />
 </Project>

@@ -176,22 +176,21 @@ namespace qController
             {
                 qController.qClient.sendTCP(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/0", (float)args.NewValue);
             };
-
-            for (int i = 0; i < qLevelsCell.sliders.Count; i++)
+            qLevelsCell.leftSlider.ValueChanged += (sender, args) =>
             {
-                var channel = i + 1;
-                Log.Debug("Setting value changed for channel: " + channel);
-                qLevelsCell.sliders[i].ValueChanged += (sender, args) =>
-                {
-                    qLevelsCell.sliderLabels[channel - 1].Text = $"{args.NewValue}";
-                    qController.qClient.sendTCP(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/" + channel, (float)args.NewValue);
-                };
-            }
+                qController.qClient.sendTCP(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/1", (float)args.NewValue);
+            };
+            qLevelsCell.rightSlider.ValueChanged += (sender, args) =>
+            {
+                qController.qClient.sendTCP(workspace_prefix + "/cue_id/" + qLevelsCell.activeCue + "/sliderLevel/2", (float)args.NewValue);
+            };
 
 
             showLevelsButton = new QLevelsButton();
-            showLevelsButton.button.Clicked += ToggeQLevelsCellVisiblity;
-
+            showLevelsButton.button.Clicked += (s, e) =>
+            {
+                qLevelsCell.IsVisible = !qLevelsCell.IsVisible;
+            };
             qControlsBlock = new QControlsBlock(SendOSCFromButton);
 
             AbsoluteLayout.SetLayoutFlags(qControlsBlock, AbsoluteLayoutFlags.All);
@@ -203,12 +202,12 @@ namespace qController
             {
                 case Device.iOS:
                     AbsoluteLayout.SetLayoutBounds(qControlsBlock, new Rectangle(0, 0.53, 1, 0.25));
-                    AbsoluteLayout.SetLayoutBounds(qLevelsCell, new Rectangle(0, 0.63, 1, 0.35));
+                    AbsoluteLayout.SetLayoutBounds(qLevelsCell, new Rectangle(0.9, 0.40, 0.8, 0.25));
                     AbsoluteLayout.SetLayoutBounds(showLevelsButton, new Rectangle(0.02, 0.34, App.HeightUnit * 8, App.HeightUnit * 8));
                     break;
                 case Device.Android:
                     AbsoluteLayout.SetLayoutBounds(qControlsBlock, new Rectangle(0, 0.58, 1, 0.25));
-                    AbsoluteLayout.SetLayoutBounds(qLevelsCell, new Rectangle(0, 0.63, 1, 0.25));
+                    AbsoluteLayout.SetLayoutBounds(qLevelsCell, new Rectangle(0.9, 0.45, 0.8, 0.25));
                     AbsoluteLayout.SetLayoutBounds(showLevelsButton, new Rectangle(0.02, 0.39, App.HeightUnit * 8, App.HeightUnit * 8));
                     break;
             }
