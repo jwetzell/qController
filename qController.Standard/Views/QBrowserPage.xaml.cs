@@ -1,7 +1,6 @@
 ﻿using QControlKit;
 using Xamarin.Forms;
 using Serilog;
-using qController.UI.Cells;
 using Acr.UserDialogs;
 using qController.UI.Dialogs;
 using Xamarin.Essentials;
@@ -32,10 +31,11 @@ namespace qController.Pages
 
         async void QWorkspaceSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if (e.SelectedItem == null)
+            if (e.SelectedItem == null) {
                 return;
+            }
 
-            this.qBrowserViewModel.autoUpdate = false;
+            qBrowserViewModel.autoUpdate = false;
             QWorkspace selectedWorkspace = (e.SelectedItem as QWorkspaceViewModel).workspace;
             Log.Debug($"[demo] workspace: {selectedWorkspace.nameWithoutPathExtension} has been selected");
             ((ListView)sender).SelectedItem = null;
@@ -98,7 +98,7 @@ namespace qController.Pages
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            this.qBrowserViewModel.autoUpdate = true;
+            qBrowserViewModel.autoUpdate = true;
         }
     }
 

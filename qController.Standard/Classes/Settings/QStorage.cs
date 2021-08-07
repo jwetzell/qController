@@ -69,7 +69,7 @@ namespace qController
         }
 
         public static void RemoveInstance(string name, string address){
-            foreach (var item in qInstances)
+            foreach (QInstance item in qInstances)
             {
                 if(item.address == address && item.name == name){
                     RemoveInstance(item);
@@ -85,9 +85,11 @@ namespace qController
 
         public static bool AddServer(string host, int port)
         {
-            QServerInfo serverInfo = new QServerInfo();
-            serverInfo.host = host;
-            serverInfo.port = port;
+            QServerInfo serverInfo = new QServerInfo
+            {
+                host = host,
+                port = port
+            };
 
             return AddServer(serverInfo);
         }
@@ -109,7 +111,7 @@ namespace qController
 
         public static void RemoveServer(string host)
         {
-            foreach (var item in qStoredServers)
+            foreach (QServerInfo item in qStoredServers)
             {
                 if (item.host == host)
                 {
@@ -131,7 +133,7 @@ namespace qController
         }
 
         public static bool Contains(string address){
-            foreach (var item in qInstances)
+            foreach (QInstance item in qInstances)
             {
                 //Log.Debug("Item name: " + item.name + " Found Name: " + name);
                 if (item.address == address)
@@ -140,7 +142,7 @@ namespace qController
                 }
             }
 
-            foreach (var item in qStoredServers)
+            foreach (QServerInfo item in qStoredServers)
             {
                 //Log.Debug("Item name: " + item.name + " Found Name: " + name);
                 if (item.host == address)

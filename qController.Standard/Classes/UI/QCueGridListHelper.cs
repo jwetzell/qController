@@ -33,13 +33,7 @@ namespace qController.UI
 
         public static QCueGrid get(string cueID)
         {
-            if (cueGridDict.ContainsKey(cueID))
-            {
-                return cueGridDict[cueID];
-            }
-            else {
-                return null;
-            }
+            return cueGridDict.ContainsKey(cueID) ? cueGridDict[cueID] : null;
         }
     }
 }

@@ -12,15 +12,15 @@ namespace qController.UI
             Padding = 8;
             HeightRequest = 175;
             CornerRadius = 0;
-            this.SetBinding(Frame.BackgroundColorProperty, "color", BindingMode.OneWay);
-            this.SetBinding(Frame.BorderColorProperty, "color", BindingMode.OneWay);
+            this.SetBinding(BackgroundColorProperty, "color", BindingMode.OneWay);
+            this.SetBinding(BorderColorProperty, "color", BindingMode.OneWay);
 
             Frame frameInt = new Frame
             {
                 Padding = 0
             };
 
-            frameInt.SetDynamicResource(Frame.BackgroundColorProperty, "SelectedCueCellBackgroundColor");
+            frameInt.SetDynamicResource(BackgroundColorProperty, "SelectedCueCellBackgroundColor");
 
 
             Grid selectedCueGrid = new Grid
@@ -106,8 +106,10 @@ namespace qController.UI
 
             //Double tap to edit name/number
 
-            var nameDoubleTap = new TapGestureRecognizer();
-            nameDoubleTap.NumberOfTapsRequired = 2;
+            TapGestureRecognizer nameDoubleTap = new TapGestureRecognizer
+            {
+                NumberOfTapsRequired = 2
+            };
 
             nameDoubleTap.Tapped += (s, e) =>
             {
@@ -119,30 +121,31 @@ namespace qController.UI
                     Text = name.Text,
                     OnAction = (qName) =>
                     {
-                        if (!qName.Ok)
+                        if (!qName.Ok) {
                             return;
-                        ((QCueViewModel)this.BindingContext).name = qName.Text;
+                        }
+                        ((QCueViewModel)BindingContext).name = qName.Text;
                     }
                 });
             };
 
             name.GestureRecognizers.Add(nameDoubleTap);
 
-            var numberDoubleTap = new TapGestureRecognizer();
-            numberDoubleTap.NumberOfTapsRequired = 2;
-
-            numberDoubleTap.Tapped += (s, e) =>
+            TapGestureRecognizer numberDoubleTap = new TapGestureRecognizer
             {
-                UserDialogs.Instance.Prompt(new PromptConfig
-                {
+                NumberOfTapsRequired = 2
+            };
+
+            numberDoubleTap.Tapped += (s, e) => {
+                UserDialogs.Instance.Prompt(new PromptConfig {
                     Title = "Update Number",
                     Message = "Change number to update",
                     OkText = "Update",
                     Text = number.Text,
-                    OnAction = (qNumber) =>
-                    {
-                        if (!qNumber.Ok)
+                    OnAction = (qNumber) => {
+                        if (!qNumber.Ok) {
                             return;
+                        }
                         //This bypasses the label .Text property because the number might not be valid (no duplicates)
                         ((QCueViewModel)BindingContext).number = qNumber.Text;
                     }
@@ -152,21 +155,21 @@ namespace qController.UI
             number.GestureRecognizers.Add(numberDoubleTap);
 
 
-            var notesDoubleTap = new TapGestureRecognizer();
-            notesDoubleTap.NumberOfTapsRequired = 2;
-
-            notesDoubleTap.Tapped += (s, e) =>
+            TapGestureRecognizer notesDoubleTap = new TapGestureRecognizer
             {
-                UserDialogs.Instance.Prompt(new PromptConfig
-                {
+                NumberOfTapsRequired = 2
+            };
+
+            notesDoubleTap.Tapped += (s, e) => {
+                UserDialogs.Instance.Prompt(new PromptConfig {
                     Title = "Update Notes",
                     Message = "Change notes to update",
                     OkText = "Update",
                     Text = notes.Text,
-                    OnAction = (qNotes) =>
-                    {
-                        if (!qNotes.Ok)
+                    OnAction = (qNotes) => {
+                        if (!qNotes.Ok) {
                             return;
+                        }
                         ((QCueViewModel)BindingContext).notes = qNotes.Text;
                     }
                 });

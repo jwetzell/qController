@@ -14,8 +14,9 @@ namespace qController.UI.Dialogs
             OkText = "Donate";
             OnAction = (response) =>
             {
-                if (response)
+                if (response) {
                     Launcher.OpenAsync(new Uri("https://linktr.ee/JoelWetzell"));
+                }
             };
         }
     }

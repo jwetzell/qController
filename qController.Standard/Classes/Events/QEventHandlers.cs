@@ -1,5 +1,4 @@
-﻿using System;
-namespace qController.Events
+﻿namespace qController.Events
 {
     public delegate void SelectedCueEditedHandler(object source, CueEditArgs args);
 

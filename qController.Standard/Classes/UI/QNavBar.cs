@@ -10,26 +10,28 @@ namespace qController.UI
 
         public QNavBar()
         {
-            this.SetDynamicResource(Grid.BackgroundColorProperty, "NavigationBarColor");
+            SetDynamicResource(BackgroundColorProperty, "NavigationBarColor");
             CornerRadius = 0;
             HasShadow = false;
             Padding = 0;
             Margin = 0;
 
-            Grid grid = new Grid();
-            grid.RowSpacing = 0;
-            grid.ColumnSpacing = 0;
-            grid.Margin = 0;
-            grid.Padding = 0;
-            
-
-            grid.RowDefinitions = new RowDefinitionCollection {
-                new RowDefinition { Height = 50 }
-            };
-            grid.ColumnDefinitions = new ColumnDefinitionCollection
+            Grid grid = new Grid
             {
-                new ColumnDefinition {Width = GridLength.Star},
-                new ColumnDefinition {Width = new GridLength(4,GridUnitType.Star)},
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                Margin = 0,
+                Padding = 0,
+
+
+                RowDefinitions = new RowDefinitionCollection {
+                    new RowDefinition { Height = 50 }
+                },
+                ColumnDefinitions = new ColumnDefinitionCollection
+                {
+                    new ColumnDefinition {Width = GridLength.Star},
+                    new ColumnDefinition {Width = new GridLength(4,GridUnitType.Star)},
+                }
             };
 
             menuButton = new Label
@@ -63,7 +65,7 @@ namespace qController.UI
             instanceName.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
 
 
-            var menuButtonGesture = new TapGestureRecognizer();
+            TapGestureRecognizer menuButtonGesture = new TapGestureRecognizer();
             menuButtonGesture.Tapped += App.ShowMenu;
             menuButton.GestureRecognizers.Add(menuButtonGesture);
 
@@ -74,6 +76,10 @@ namespace qController.UI
                     menuButton.FontSize = App.Height * .04;
                     break;
                 case Device.Android:
+                    HeightRequest = App.HeightUnit * 6;
+                    menuButton.FontSize = App.Height * .04;
+                    break;
+                default:
                     HeightRequest = App.HeightUnit * 6;
                     menuButton.FontSize = App.Height * .04;
                     break;

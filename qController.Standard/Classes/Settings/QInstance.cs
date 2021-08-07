@@ -16,7 +16,7 @@ namespace qController.QItems
         }
         public bool IsReachable()
         {
-            return qController.Helpers.IPHelper.IsReachable(address);
+            return Helpers.IPHelper.IsReachable(address);
         }
     }
 }

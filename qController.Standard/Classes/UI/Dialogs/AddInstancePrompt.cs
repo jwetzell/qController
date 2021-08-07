@@ -11,15 +11,15 @@ namespace qController.UI.Dialogs
             Title = "Enter IP of QLab Computer";
             Message = "Enter an IP Address to save";
             OkText = "Next";
-			OnTextChanged = args =>
-            {
+			OnTextChanged = args => {
                 //IPAddress ugh
                 args.IsValid = IPHelper.IsValidAddress(args.Value);
             };
             OnAction = (qAddress) =>
             {
-                if (!qAddress.Ok)
+                if (!qAddress.Ok) {
                     return;
+                }
 
                 UserDialogs.Instance.Prompt(new PromptConfig
                 {
@@ -27,13 +27,13 @@ namespace qController.UI.Dialogs
                     Message = "Enter OSC port for " + qAddress.Text,
                     OkText = "Save",
                     InputType = InputType.Number,
-                    OnTextChanged = args =>
-                    {
+                    OnTextChanged = args => {
                         args.IsValid = args.Value.Length > 0;
                     },
                     OnAction = (qPort) => {
-                        if (!qPort.Ok)
+                        if (!qPort.Ok) {
                             return;
+                        }
 
                         QStorage.AddServer(qAddress.Text, int.Parse(qPort.Text));
                         App.showToast("Manual QLab Instance Added!");

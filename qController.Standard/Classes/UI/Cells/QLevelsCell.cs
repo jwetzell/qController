@@ -59,20 +59,20 @@ namespace qController.UI.Cells
 
             for(int i = 0; i< numberOfChannelsVisible; i++)
             {
-                var sliderToAdd = new Slider
+                Slider sliderToAdd = new Slider
                 {
                     Minimum = -60,
                     Maximum = 12
                 };
 
-                var labelToAdd = new Label
+                Label labelToAdd = new Label
                 {
                     Text = $"{i+1}:",
                     VerticalTextAlignment = TextAlignment.Center,
                     HorizontalTextAlignment = TextAlignment.Center
                 };
 
-                var valueLabelToAdd = new Label
+                Label valueLabelToAdd = new Label
                 {
                     Text = "",
                     VerticalTextAlignment = TextAlignment.Center,

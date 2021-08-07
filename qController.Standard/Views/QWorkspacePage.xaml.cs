@@ -36,7 +36,6 @@ namespace qController
             connectedWorkspace.defaultSendUpdatesOSC = true;
             connectedWorkspace.CueListChangedPlaybackPosition += ConnectedWorkspace_CueListChangedPlaybackPosition;
 
-
         }
 
         protected override void OnAppearing()
@@ -60,27 +59,42 @@ namespace qController
 
         private void ConnectedWorkspace_WorkspaceConnectionError(object source, QWorkspaceConnectionErrorArgs connectionErrorArgs)
         {
-            if (connectionErrorArgs.status.Equals(QConnectionStatus.BadPass))
+            switch (connectionErrorArgs.status)
             {
-                UserDialogs.Instance.Prompt(new PromptConfig
-                {
-                    InputType = InputType.Number,
-                    MaxLength = 4,
-                    Title = "Incorrect Passcode!",
-                    OkText = "Connect",
-                    IsCancellable = true,
-                    OnTextChanged = args =>
+                case QConnectionStatus.BadPass:
+                    UserDialogs.Instance.Prompt(new PromptConfig
                     {
-                        args.IsValid = args.Value != null && !args.Value.Equals("") && args.Value.Length == 4;
-                    },
-                    OnAction = (resp) =>
-                    {
-                        if (resp.Ok)
+                        InputType = InputType.Number,
+                        MaxLength = 4,
+                        Title = "Incorrect Passcode!",
+                        OkText = "Connect",
+                        IsCancellable = true,
+                        OnTextChanged = args =>
                         {
-                            connectedWorkspace.connect(resp.Value);
-                        }   
-                    }
-                });
+                            args.IsValid = args.Value != null && !args.Value.Equals("") && args.Value.Length == 4;
+                        },
+                        OnAction = (resp) =>
+                        {
+                            if (resp.Ok)
+                            {
+                                connectedWorkspace.connect(resp.Value);
+                            }
+                        }
+                    });
+                    break;
+                case QConnectionStatus.Error:
+                    UserDialogs.Instance.Alert(new AlertConfig
+                    {
+                        Title = $"Error connecting to <{connectedWorkspace.nameWithoutPathExtension}>!",
+                        OkText = "Ok",
+                        OnAction = () =>
+                        {
+                            Back();
+                        }
+                    });
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -106,11 +120,13 @@ namespace qController
                 else
                 {
                     //Setup an "empty" cue for when no cue is selected
-                    QCue emptyCue = new QCue();
-                    emptyCue.workspace = connectedWorkspace;
-                    emptyCue.type = QCueType.Memo;
-                    emptyCue.listName = "No Cue Selected";
-                    
+                    QCue emptyCue = new QCue
+                    {
+                        workspace = connectedWorkspace,
+                        type = QCueType.Memo,
+                        listName = "No Cue Selected"
+                    };
+
                     selectedCueFrame.BindingContext = new QCueViewModel(emptyCue, false);
                 }
             });
@@ -128,7 +144,7 @@ namespace qController
                 List<Task> cueAddTasks = new List<Task>();
 
                 
-                foreach (var aCue in connectedWorkspace.cueLists)
+                foreach (QCue aCue in connectedWorkspace.cueLists)
                 {
                     
                     if(aCue.cues.Count > 0)
@@ -166,8 +182,9 @@ namespace qController
         void Back()
         {
 
-            if (connectedWorkspace.connected)
+            if (connectedWorkspace.connected) {
                 connectedWorkspace.disconnect(); //TODO: This might not be implemented?
+            }
 
             //purge QCueGridListHelper
             QCueGridListHelper.reset();
@@ -201,48 +218,48 @@ namespace qController
             actionToExecute();
         }
 
-        void GoButtonClicked(System.Object sender, System.EventArgs e)
+        void GoButtonClicked(object sender, EventArgs e)
         {
-            if(this.connectedWorkspace != null)
+            if(connectedWorkspace != null)
             {
-                if (this.connectedWorkspace.connected)
+                if (connectedWorkspace.connected)
                 {
-                    this.connectedWorkspace.go();
+                    connectedWorkspace.go();
                 }
             }
         }
 
-        void PauseButtonClicked(System.Object sender, System.EventArgs e)
+        void PauseButtonClicked(object sender, EventArgs e)
         {
-            if (this.connectedWorkspace != null)
+            if (connectedWorkspace != null)
             {
-                if (this.connectedWorkspace.connected)
+                if (connectedWorkspace.connected)
                 {
-                    QCue selectedCue = ((QCueViewModel)this.selectedCueFrame.BindingContext).cue;
+                    QCue selectedCue = ((QCueViewModel)selectedCueFrame.BindingContext).cue;
                     selectedCue.pause();
                 }
             }
         }
 
-        void ResumeButtonClicked(System.Object sender, System.EventArgs e)
+        void ResumeButtonClicked(object sender, EventArgs e)
         {
-            if (this.connectedWorkspace != null)
+            if (connectedWorkspace != null)
             {
-                if (this.connectedWorkspace.connected)
+                if (connectedWorkspace.connected)
                 {
-                    QCue selectedCue = ((QCueViewModel)this.selectedCueFrame.BindingContext).cue;
+                    QCue selectedCue = ((QCueViewModel)selectedCueFrame.BindingContext).cue;
                     selectedCue.resume();
                 }
             }
         }
 
-        void PanicButtonClicked(System.Object sender, System.EventArgs e)
+        void PanicButtonClicked(object sender, EventArgs e)
         {
-            if (this.connectedWorkspace != null)
+            if (connectedWorkspace != null)
             {
-                if (this.connectedWorkspace.connected)
+                if (connectedWorkspace.connected)
                 {
-                    this.connectedWorkspace.panicAll();
+                    connectedWorkspace.panicAll();
                 }
             }
         }

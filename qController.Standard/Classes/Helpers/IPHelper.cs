@@ -11,9 +11,7 @@ namespace qController.Helpers
         }
 
         public static bool IsValidAddress(string ipString){
-            if ((ipString.Split('.').Length - 1) != 3) return false;
-            IPAddress address;
-            return IPAddress.TryParse(ipString, out address);
+            return (ipString.Split('.').Length - 1) == 3 && IPAddress.TryParse(ipString, out _);
         }
 
         public static bool IsReachable(string ipString)

@@ -57,7 +57,7 @@ namespace qController.ViewModels
         {
             QServerViewModel serverToRemove = null;
 
-            foreach(var serverGroup in ServersGrouped)
+            foreach(QServerViewModel serverGroup in ServersGrouped)
             {
                 if (serverGroup.host.Equals(args.server.host))
                 {
@@ -86,7 +86,7 @@ namespace qController.ViewModels
             if (!autoUpdate)
             {
                 Log.Debug("[QBrowserViewModel] Manual Scan Initiated");
-                this.browser.ProbeForQLabInstances();
+                browser.ProbeForQLabInstances();
             }
         }
     }

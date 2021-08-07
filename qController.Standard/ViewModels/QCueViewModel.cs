@@ -19,14 +19,15 @@ namespace qController.ViewModels
         public QCueViewModel(QCue cue, bool checkPlayback)
         {
             this.cue = cue;
-            if (checkPlayback)
+            if (checkPlayback) {
                 this.cue.workspace.CueListChangedPlaybackPosition += Workspace_CueListChangedPlaybackPosition;
+            }
             this.cue.CuePropertiesUpdated += OnCuePropertiesUpdated;
         }
 
         private void OnCuePropertiesUpdated(object source, QCuePropertiesUpdatedArgs args)
         {
-            foreach (var property in args.properties)
+            foreach (string property in args.properties)
             {
                 if (property.Equals(QOSCKey.Name) || property.Equals(QOSCKey.ListName))
                 {
@@ -64,95 +65,44 @@ namespace qController.ViewModels
             IsSelected = args.cueID == cue.uid;
         }
 
-        public Thickness nestPadding
-        {
-            get
-            {
-                return new Thickness((cue.nestLevel - 1) * 10,0,0,0);
-            }
-        }
+        public Thickness nestPadding => new Thickness((cue.nestLevel - 1) * 10, 0, 0, 0);
 
         public string name
         {
-            get
-            {
-                return cue.listName;
-            }
+            get => cue.listName;
 
-            set
-            {
-                cue.name = value;
-            }
+            set => cue.name = value;
         }
 
-        public string type
-        {
-            get
-            {
-                return QIcon.GetIconFromType(cue.type);
-            }
-        }
+        public string type => QIcon.GetIconFromType(cue.type);
 
-        public string uid
-        {
-            get
-            {
-                return cue.uid;
-            }
-        }
+        public string uid => cue.uid;
 
         public string number
         {
-            get
-            {
-                return cue.number;
-            }
+            get => cue.number;
 
-            set
-            {
-                cue.number = value;
-            }
+            set => cue.number = value;
         }
 
         public string notes
         {
-            get
-            {
-                return cue.notes;
-            }
+            get => cue.notes;
 
-            set
-            {
-                cue.notes = value;
-            }
+            set => cue.notes = value;
         }
 
         public Color color
         {
-            get
-            {
-                return Color.FromHex(cue.color.Hex);
-            }
-            set
-            {
-                cue.color = new QColor("none");
-            }
+            get => Color.FromHex(cue.color.Hex);
+            set => cue.color = new QColor("none");
         }
 
-        public List<QCue> cues
-        {
-            get
-            {
-                return cue.cues;
-            }
-        }
+        public List<QCue> cues => cue.cues;
 
         public bool IsSelected
         {
-            get
-            {
-                return isSelected;
-            }
+            get => isSelected;
             set
             {
                 isSelected = value;
@@ -162,10 +112,7 @@ namespace qController.ViewModels
 
         public bool IsCollapsed
         {
-            get
-            {
-                return isCollapsed;
-            }
+            get => isCollapsed;
             set
             {
                 isCollapsed = value;

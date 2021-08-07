@@ -14,57 +14,25 @@ namespace qController.ViewModels
         public new event PropertyChangedEventHandler PropertyChanged;
         public string name
         {
-            get
-            {
-                return server.name;
-            }
-            set
-            {
-                server.name = value;
-            }
+            get => server.name;
+            set => server.name = value;
         }
 
-        public string host
-        {
-            get
-            {
-                return server.host;
-            }
-        }
+        public string host => server.host;
 
-        public string version
-        {
-            get
-            {
-                if (server.version == null)
-                {
-                    return "";
-                }
-                else
-                {
-                    return $"v{server.version}";
+        public string version => server.version == null ? "" : $"v{server.version}";
 
-                }
-            }
-        }
-
-        public string GroupName
-        {
-            get
-            {
-                return $"{name} ({host})";
-            }
-        }
+        public string GroupName => $"{name} ({host})";
 
         public QServerViewModel(QServer server)
         {
             this.server = server;
             name = this.server.name;
-            foreach (var workspace in this.server.workspaces)
+            foreach (QWorkspace workspace in this.server.workspaces)
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    this.Add(new QWorkspaceViewModel(workspace));
+                    Add(new QWorkspaceViewModel(workspace));
                 });
             }
             this.server.WorkspaceAdded += Server_WorkspaceAdded;
@@ -76,7 +44,7 @@ namespace qController.ViewModels
         {
             QWorkspaceViewModel workspaceToRemove = null;
 
-            foreach(var workspaceViewModel in this)
+            foreach(QWorkspaceViewModel workspaceViewModel in this)
             {
                 if(workspaceViewModel.workspace.uniqueID == args.workspace.uniqueID)
                 {

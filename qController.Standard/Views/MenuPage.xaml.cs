@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using Xamarin.Forms;
-using qController.QItems;
 using System;
 using qController.Helpers;
 
@@ -20,7 +19,7 @@ namespace qController
             listView.ItemsSource = items;
             listView.ItemTemplate = new DataTemplate(() =>
             {
-                var grid = new Grid {
+                Grid grid = new Grid {
                     Padding = 0,
                     ColumnSpacing = 0,
                     ColumnDefinitions =
@@ -30,7 +29,7 @@ namespace qController
                     }
                 };
 
-                var icon = new Label {
+                Label icon = new Label {
                     FontFamily = (OnPlatform<string>)Application.Current.Resources["MaterialFontFamily"],
                     HorizontalTextAlignment = TextAlignment.Center,
                     VerticalTextAlignment = TextAlignment.Center,
@@ -43,7 +42,7 @@ namespace qController
                 icon.SetBinding(Label.TextProperty, "Icon");
                 icon.SetDynamicResource(Label.TextColorProperty, "IconTextColor");
 
-                var label = new Label {
+                Label label = new Label {
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     VerticalTextAlignment = TextAlignment.Center,
                     FontSize = App.HeightUnit * 2.75

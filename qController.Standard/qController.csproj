@@ -57,14 +57,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Acr.UserDialogs" Version="7.1.0.483" />
+    <PackageReference Include="Acr.UserDialogs" Version="7.1.0.514" />
     <PackageReference Include="Zeroconf" Version="3.4.2" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
     <PackageReference Include="Acr.Settings" Version="9.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
     <PackageReference Include="Serilog" Version="2.10.0" />
-    <PackageReference Include="QControlKit" Version="0.0.17" />
+    <PackageReference Include="QControlKit" Version="0.0.19" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="App.xaml" />

@@ -33,13 +33,11 @@ namespace qController
 
         void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as MenuPageItem;
-            if (item != null)
+            if (e.SelectedItem is MenuPageItem item)
             {
                 MenuPage.clearSelectedItem();
                 IsPresented = false;
-                if (MenuItemSelected != null)
-                    MenuItemSelected(this, new MenuEventArgs { Command = item.Command });
+                MenuItemSelected?.Invoke(this, new MenuEventArgs { Command = item.Command });
             }
         }
     }

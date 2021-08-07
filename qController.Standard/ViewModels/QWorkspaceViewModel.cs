@@ -10,28 +10,8 @@ namespace qController.ViewModels
             this.workspace = workspace;
         }
 
-        public string Name
-        {
-            get
-            {
-                return workspace.name;
-            }
-            set
-            {
+        public string Name => workspace.name;
 
-            }
-        }
-
-        public bool HasPasscode
-        {
-            get
-            {
-                return workspace.hasPasscode;
-            }
-            set
-            {
-
-            }
-        }
+        public bool HasPasscode => workspace.hasPasscode;
     }
 }

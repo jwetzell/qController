@@ -20,20 +20,14 @@ namespace qController
         public static double WidthUnit;
         public static bool MenuIsPresented
         {
-            get
-            {
-                return rootPage.IsPresented;
-            }
-            set
-            {
-                rootPage.IsPresented = value;
-            }
+            get => rootPage.IsPresented;
+            set => rootPage.IsPresented = value;
         }
 
         public App()
         {
             InitializeComponent();
-            App.Current.RequestedThemeChanged += Current_RequestedThemeChanged;
+            Current.RequestedThemeChanged += Current_RequestedThemeChanged;
             SetAppResources();
 
             mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
@@ -83,7 +77,7 @@ namespace qController
         private void SetAppResources()
         {
 
-            switch (App.Current.RequestedTheme)
+            switch (Current.RequestedTheme)
             {
                 case OSAppTheme.Light:
                     SetLightResources();
@@ -93,6 +87,9 @@ namespace qController
                     break;
                 case OSAppTheme.Unspecified:
                     //Default to Light
+                    SetLightResources();
+                    break;
+                default:
                     SetLightResources();
                     break;
             }
@@ -171,7 +168,7 @@ namespace qController
 
         public static void showToast(string message)
         {
-            var toastConfig = new ToastConfig(message);
+            ToastConfig toastConfig = new ToastConfig(message);
             toastConfig.SetDuration(3000);
             toastConfig.SetPosition(ToastPosition.Bottom);
             UserDialogs.Instance.Toast(toastConfig);
@@ -179,7 +176,7 @@ namespace qController
 
         public static void ShowMenu(object sender, EventArgs e)
         {
-            App.MenuIsPresented = true;
+            MenuIsPresented = true;
         }
     }
 }
