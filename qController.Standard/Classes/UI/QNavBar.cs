@@ -13,6 +13,7 @@ namespace qController.UI
             SetDynamicResource(BackgroundColorProperty, "NavigationBarColor");
             CornerRadius = 0;
             HasShadow = false;
+
             Padding = 0;
             Margin = 0;
 
@@ -20,18 +21,18 @@ namespace qController.UI
             {
                 RowSpacing = 0,
                 ColumnSpacing = 0,
+
                 Margin = 0,
                 Padding = 0,
 
-
                 RowDefinitions = new RowDefinitionCollection {
-                    new RowDefinition { Height = 50 }
+                    new RowDefinition { Height = GridLength.Auto }
                 },
                 ColumnDefinitions = new ColumnDefinitionCollection
                 {
                     new ColumnDefinition {Width = GridLength.Star},
                     new ColumnDefinition {Width = new GridLength(4,GridUnitType.Star)},
-                }
+                },
             };
 
             menuButton = new Label
@@ -44,7 +45,6 @@ namespace qController.UI
                 Padding = 0,
                 Margin = new Thickness(10, 0, 0, 0),
                 Text = IconConstants.Menu,
-                BackgroundColor = Color.Transparent
             };
 
             menuButton.SetDynamicResource(Label.TextColorProperty, "IconTextColor");
@@ -59,7 +59,6 @@ namespace qController.UI
                 Margin = new Thickness(0, 0, 10, 0),
                 Padding = 0,
                 FontSize = App.HeightUnit * 3,
-                //BackgroundColor = Color.Blue
             };
 
             instanceName.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
@@ -73,15 +72,21 @@ namespace qController.UI
             {
                 case Device.iOS:
                     HeightRequest = App.HeightUnit * 6;
-                    menuButton.FontSize = App.Height * .04;
+                    menuButton.HeightRequest = App.HeightUnit * 6;
+                    instanceName.HeightRequest = App.HeightUnit * 6;
+                    menuButton.FontSize = App.HeightUnit * 5;
                     break;
                 case Device.Android:
                     HeightRequest = App.HeightUnit * 6;
-                    menuButton.FontSize = App.Height * .04;
+                    menuButton.HeightRequest = App.HeightUnit * 6;
+                    instanceName.HeightRequest = App.HeightUnit * 6;
+                    menuButton.FontSize = App.HeightUnit * 5;
                     break;
                 default:
                     HeightRequest = App.HeightUnit * 6;
-                    menuButton.FontSize = App.Height * .04;
+                    menuButton.HeightRequest = App.HeightUnit * 6;
+                    instanceName.HeightRequest = App.HeightUnit * 6;
+                    menuButton.FontSize = App.HeightUnit * 5;
                     break;
             }
 

@@ -27,13 +27,15 @@ namespace qController.ViewModels
             this.browser.ServerLost += OnServerLost;
             Device.StartTimer(TimeSpan.FromSeconds(4), () =>
             {
-                Task.Run(async () =>
+                Task.Run(() =>
                 {
                     if (autoUpdate)
                     {
-                        //Log.Debug("[QBrowserViewModel] Auto update scan ran");
-                        this.browser.ProbeForQLabInstances();
-
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            Log.Debug("[QBrowserViewModel] QBrowser probe triggered");
+                            this.browser.ProbeForQLabInstances();
+                        });
                     }
                 });
                 return true;

@@ -96,7 +96,8 @@ namespace qController.UI
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 Margin = 5,
                 BackgroundColor = Color.Transparent,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                HorizontalTextAlignment = TextAlignment.Center,
             };
             notes.SetDynamicResource(Label.TextColorProperty, "PrimaryTextColor");
             notes.SetBinding(Label.TextProperty, "notes", BindingMode.OneWay);
