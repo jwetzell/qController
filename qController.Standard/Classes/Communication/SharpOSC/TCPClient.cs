@@ -31,7 +31,12 @@ namespace SharpOSC
         }
         public delegate void MessageReceivedHandler(object source, MessageEventArgs args);
         public event MessageReceivedHandler MessageReceived;
+
+        private Queue<OscPacket> SendQueue = new Queue<OscPacket>();
+
         private Thread receivingThread;
+        private Thread sendThread;
+
         string _address;
         TcpClient client;
 
@@ -54,6 +59,10 @@ namespace SharpOSC
                 client = new TcpClient(Address, Port);
                 receivingThread = new Thread(ReceiveLoop);
                 receivingThread.Start();
+
+                sendThread = new Thread(SendLoop);
+                sendThread.Start();
+
                 Log.Debug($"[tcpclient] connected to <{Address}:{Port}>");
                 return true;
             }
@@ -63,6 +72,23 @@ namespace SharpOSC
                 return false;
             }
 
+        }
+
+        public void QueueForSending(OscPacket packet)
+        {
+            SendQueue.Enqueue(packet);
+        }
+
+        private void SendLoop()
+        {
+            while (client != null && client.Connected)
+            {
+                if (SendQueue.Count > 0)
+                {
+                    OscPacket packet = SendQueue.Dequeue();
+                    Send(packet);
+                }
+            }
         }
 
         public void Send(byte[] message)
@@ -82,17 +108,20 @@ namespace SharpOSC
         {
             get
             {
-                return client.Connected;
+                if (client == null)
+                    return false;
+                else
+                    return client.Connected;
             }
         }
 
         public void ReceiveLoop()
         {
-            while (client.Connected)
+            while (client != null && client.Connected)
             {
                 Receive();
             }
-            Console.WriteLine("TCPClient - Receive Loop has exited for some reason");
+            //Log.Debug("[tcpclient] - ReceiveLoop has exited");
         }
 
         public void Receive()
@@ -121,14 +150,16 @@ namespace SharpOSC
                     } while (netStream.DataAvailable);
 
                     //Console.WriteLine("Raw TCP In: " + System.Text.Encoding.UTF8.GetString(responseData.ToArray()));
-                    OscMessage response = (OscMessage)OscPacket.GetPacket(responseData.Skip(1).ToArray());
+                    OscPacket packet = OscPacket.GetPacket(responseData.Skip(1).ToArray());
+                    OscMessage responseMessage = (OscMessage)packet;
                     //watch.Stop();
                     //Console.WriteLine($"TCPCLient - message receive took {watch.ElapsedMilliseconds}ms and {reads} reads");
-                    OnMessageReceived(response);
+                    OnMessageReceived(responseMessage);
                 }
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
-                //Log.Debug("TCPClient - Receive Exception: " + e.ToString());
+                //Console.WriteLine("TCPSENDER - Receive Exception: " + e.ToString());
             }
         }
 
