@@ -40,7 +40,7 @@
                             HorizontalOptions="FillAndExpand"
                             VerticalOptions="FillAndExpand"
                             HorizontalTextAlignment="Center"
-                            FontSize="Header"
+                            FontSize="Title"
                             Text="Discovered QLab Instances" />
                     <!--Need to try and remove the group spacing caused by ios:GroupHeaderStyle-->
                     <ListView x:Name="serverListView"
