@@ -89,7 +89,7 @@ namespace qController
             App.showToast("Scanning for Instances...");
             Log.Debug("QCONNECTIONPAGE - Begin Scanning");
 
-            IReadOnlyList<IZeroconfHost> results = await ZeroconfResolver.ResolveAsync("_qlab._udp.local.",TimeSpan.FromSeconds(3));
+            IReadOnlyList<IZeroconfHost> results = await ZeroconfResolver.ResolveAsync("_qlab._tcp.local.",TimeSpan.FromSeconds(3));
             if(results != null){
                 foreach (var result in results)
                 {

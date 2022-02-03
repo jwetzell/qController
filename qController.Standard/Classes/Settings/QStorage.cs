@@ -55,7 +55,7 @@ namespace qController
         public static bool Contains(string name, string address){
             foreach (var item in qInstances)
             {
-                //Log.Debug("Item name: " + item.name + " Found Name: " + name);
+                Log.Information("Item name: " + item.name + " Found Name: " + name);
                 if (item.address == address)
                 {
                     return true;

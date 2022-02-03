@@ -16,7 +16,7 @@ namespace qController.Communication
 		public async void SearchForWorkspaces()
 		{
             Log.Debug("QFINDER - Scanning Started");
-            IReadOnlyList<IZeroconfHost> results = await ZeroconfResolver.ResolveAsync("_qlab._udp.local.");
+            IReadOnlyList<IZeroconfHost> results = await ZeroconfResolver.ResolveAsync("_qlab._tcp.local.");
             Log.Debug("QFINDER - Scanning Done");
 		}
     }

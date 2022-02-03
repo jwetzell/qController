@@ -1,6 +1,6 @@
 ![Build Android and iOS](https://github.com/jwetzell/qController/workflows/Build%20Android%20and%20iOS/badge.svg)
 ![App Store](https://img.shields.io/itunes/v/1350276173?label=iOS&logo=apple)
-![Play Store](http://img.shields.io/static/v1?label=Android&message=v1.1.2&color=blue&logo=android)
+![Play Store](http://img.shields.io/static/v1?label=Android&message=v1.6.3&color=blue&logo=android)
 # qControl
 Simple Android and iOS application for controlling Figure 53's QLab
 - [Play Store](https://play.google.com/store/apps/details?id=com.jwetzell.qlabcontroller)
