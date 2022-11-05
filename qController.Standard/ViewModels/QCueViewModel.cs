@@ -6,6 +6,7 @@ using QControlKit;
 using QControlKit.Constants;
 using QControlKit.Events;
 using System.Collections.Generic;
+using qController.Helpers;
 
 namespace qController.ViewModels
 {
@@ -51,6 +52,10 @@ namespace qController.ViewModels
                     {
                         OnPropertyChanged("cues");
                     }
+                }
+                else if (property.Equals(QOSCKey.IsBroken))
+                {
+                    OnPropertyChanged("status");
                 }
             }
         }
@@ -117,6 +122,25 @@ namespace qController.ViewModels
             {
                 isCollapsed = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public string status
+        {
+            get
+            {
+                if (cue.IsRunning)
+                {
+                    return IconConstants.Play;
+                }
+                else if (cue.IsBroken)
+                {
+                    return IconConstants.Cancel;
+                }
+                else
+                {
+                    return " ";
+                }
             }
         }
     }
