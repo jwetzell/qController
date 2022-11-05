@@ -5,6 +5,7 @@ using Xamarin.Forms;
 
 using QControlKit;
 using QControlKit.Events;
+using Serilog;
 
 namespace qController.ViewModels
 {
@@ -56,6 +57,7 @@ namespace qController.ViewModels
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
+                    Log.Debug($"[QServerViewModel] removing workspace <{workspaceToRemove.Name}>");
                     Remove(workspaceToRemove);
                 });
             }
@@ -67,6 +69,7 @@ namespace qController.ViewModels
             QWorkspaceViewModel workspaceViewModel = new QWorkspaceViewModel(args.workspace);
             Device.BeginInvokeOnMainThread(() =>
             {
+                Log.Debug($"[QServerViewModel] adding workspace <{workspaceViewModel.Name}>");
                 Add(workspaceViewModel);
             });
         }
