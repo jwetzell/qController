@@ -32,6 +32,7 @@ namespace qController.UI
             ColumnDefinitions = new ColumnDefinitionCollection
             {
                 new ColumnDefinition{Width = GridLength.Star},
+                new ColumnDefinition{Width = GridLength.Star},
                 new ColumnDefinition{Width = new GridLength(5,GridUnitType.Star)}
             };
 
@@ -65,14 +66,16 @@ namespace qController.UI
             {
                 FontFamily = (OnPlatform<string>)Application.Current.Resources["QFontFamily"],
                 BindingContext = qCueViewModel,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                HorizontalTextAlignment = TextAlignment.Start,
-                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalTextAlignment = TextAlignment.End,
+                VerticalOptions = LayoutOptions.Center,
                 VerticalTextAlignment = TextAlignment.Center,
                 Padding = 0,
-                Margin = new Thickness(10, 0, 0, 0),
+                Margin = new Thickness(0, 0, 0, 0),
                 //BackgroundColor = Color.Red
             };
+
+            
 
             switch (Device.RuntimePlatform)
             {
@@ -87,6 +90,29 @@ namespace qController.UI
             cueTypeLabel.SetBinding(Label.TextProperty, "type", BindingMode.OneWay);
             cueTypeLabel.SetDynamicResource(Label.TextColorProperty, "IconTextColor");
 
+            Label cueStatusLabel = new Label
+            {
+                FontFamily = (OnPlatform<string>)Application.Current.Resources["MaterialFontFamily"],
+                BindingContext = qCueViewModel,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalTextAlignment = TextAlignment.End,
+                VerticalOptions = LayoutOptions.Center,
+                VerticalTextAlignment = TextAlignment.Center,
+                Padding = 0,
+                Margin = new Thickness(10, 0, 0, 0),
+                //BackgroundColor = Color.Blue
+            };
+            switch (Device.RuntimePlatform)
+            {
+                case Device.Android:
+                    cueStatusLabel.FontSize = App.HeightUnit * 4;
+                    break;
+                default:
+                    cueStatusLabel.FontSize = App.HeightUnit * 3;
+                    break;
+            }
+            cueStatusLabel.SetBinding(Label.TextProperty, "status", BindingMode.OneWay);
+            cueStatusLabel.SetDynamicResource(Label.TextColorProperty, "IconTextColor");
 
             if (!cue.IsCueList)
             {
@@ -156,8 +182,9 @@ namespace qController.UI
             Children.Add(cueBackground, 0, 0);
             SetColumnSpan(cueBackground, ColumnDefinitions.Count);
 
-            Children.Add(cueTypeLabel, 0, 0);
-            Children.Add(cueLabel, 1, 0);
+            Children.Add(cueStatusLabel, 0, 0);
+            Children.Add(cueTypeLabel, 1, 0);
+            Children.Add(cueLabel, 2, 0);
 
             if (cue.cues.Count > 0)
             {
