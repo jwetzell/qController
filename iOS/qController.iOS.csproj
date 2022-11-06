@@ -148,13 +148,13 @@
       <HintPath>..\packages\Xamarin.Forms.5.0.0.2515\lib\Xamarin.iOS10\Xamarin.Forms.Platform.iOS.dll</HintPath>
     </Reference>
     <Reference Include="SuperSimpleTcp">
-      <HintPath>..\packages\SuperSimpleTcp.3.0.0.2\lib\netstandard2.1\SuperSimpleTcp.dll</HintPath>
+      <HintPath>..\packages\SuperSimpleTcp.3.0.5\lib\netstandard2.1\SuperSimpleTcp.dll</HintPath>
     </Reference>
     <Reference Include="Zeroconf">
       <HintPath>..\packages\Zeroconf.3.5.11\lib\xamarinios10\Zeroconf.dll</HintPath>
     </Reference>
     <Reference Include="QControlKit">
-      <HintPath>..\packages\QControlKit.0.0.30\lib\netstandard2.1\QControlKit.dll</HintPath>
+      <HintPath>..\packages\QControlKit.0.0.31\lib\netstandard2.1\QControlKit.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System.Numerics.Vectors" />

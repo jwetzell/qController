@@ -111,11 +111,12 @@ namespace qController
                     selectedCueFrame.BindingContext = new QCueViewModel(selectedCue, false);
 
                     //Find cue grid for selected cue and scroll to it if it exists
-                    QCueGrid gridToScrollTo = QCueGridListHelper.get(args.cueID);
-                    if(gridToScrollTo != null)
-                    {
-                        cueListScrollView.ScrollToAsync(gridToScrollTo, ScrollToPosition.Center,true);
-                    }
+                    //TODO: something about element isn't a member
+                    //QCueGrid gridToScrollTo = QCueGridListHelper.get(args.cueID);
+                    //if(gridToScrollTo != null)
+                    //{
+                    //    cueListScrollView.ScrollToAsync(gridToScrollTo, ScrollToPosition.Center,true);
+                    //}
                 }
                 else
                 {
@@ -132,6 +133,18 @@ namespace qController
             });
         }
 
+        void updateCuePropertes(QCue cue)
+        {
+            cue.workspace.fetchDefaultPropertiesForCue(cue);
+            if(cue.cues.Count > 0)
+            {
+                foreach(QCue childCue in cue.cues)
+                {
+                    childCue.workspace.fetchDefaultPropertiesForCue(childCue);
+                }
+            }
+        }
+
         void Workspace_WorkspaceUpdated(object source, QWorkspaceUpdatedArgs args)
         {
             Log.Debug("[workspacepage] Workspace Updated");
@@ -146,7 +159,7 @@ namespace qController
                 
                 foreach (QCue aCue in connectedWorkspace.cueLists)
                 {
-                    
+                    updateCuePropertes(aCue);   
                     if(aCue.cues.Count > 0)
                     {
                         QCueGrid mainCueGrid = new QCueGrid(aCue);

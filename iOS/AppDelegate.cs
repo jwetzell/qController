@@ -10,7 +10,7 @@ namespace qController.iOS
         {
             global::Xamarin.Forms.Forms.Init();
 
-            Log.Logger = new LoggerConfiguration().WriteTo.NSLog().MinimumLevel.Information().CreateLogger();
+            Log.Logger = new LoggerConfiguration().WriteTo.NSLog().MinimumLevel.Debug().CreateLogger();
 
             LoadApplication(new App());
 

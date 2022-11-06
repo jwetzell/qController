@@ -3,6 +3,7 @@ using qController.ViewModels;
 using QControlKit;
 using System.Linq;
 using System.Collections.Generic;
+using Serilog;
 
 namespace qController.UI
 {
@@ -22,6 +23,7 @@ namespace qController.UI
 
         private void BuildGrid(QCue cue)
         {
+            RowDefinitions.Clear();
             RowDefinitions.Add(
                 new RowDefinition
                 {
@@ -214,19 +216,17 @@ namespace qController.UI
             Device.BeginInvokeOnMainThread(() =>
             {
                 //Nuke current grid
-                List<View> children = Children.ToList();
-                foreach (View child in children)
-                {
-                    Children.Remove(child);
-                }
-
-                RowDefinitions = new RowDefinitionCollection();
+                Children.Clear();
+                RowDefinitions.Clear();
 
                 //rebuild
                 BuildGrid(qCueViewModel.cue);
 
                 //TODO: check if this is working
-                qCueViewModel.cue.workspace.fetchPlaybackPositionForCue(qCueViewModel.cue);
+                if (qCueViewModel.cue.IsGroup)
+                {
+                    qCueViewModel.cue.workspace.fetchPlaybackPositionForCue(qCueViewModel.cue);
+                }
             });
         }
 
@@ -234,7 +234,8 @@ namespace qController.UI
         {
             if (e.PropertyName.Equals("cues"))
             {
-                ReloadGrid();
+                //TODO: Figure out why this doesn't work
+                //ReloadGrid();
             }
         }
     }
