@@ -2,6 +2,8 @@
 using Xamarin.Forms;
 using qController.QItems;
 using System;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace qController
 {
@@ -11,6 +13,7 @@ namespace qController
         public ObservableCollection<MenuPageItem> items { get; } = new ObservableCollection<MenuPageItem>();
         public MenuPage()
         {
+            On<iOS>().SetUseSafeArea(true);
             Title = "Menu";
             InitializeComponent();
 

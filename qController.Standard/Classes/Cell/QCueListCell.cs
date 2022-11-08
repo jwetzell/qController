@@ -11,7 +11,15 @@ namespace qController.Cell
         public ObservableCollection<OSCListItem> items;
         public QCueListCell(QCueList qCueList)
         {
-            Margin = new Thickness(10);
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    Margin = new Thickness(10, 30, 10, 10);
+                    break;
+                case Device.Android:
+                    Margin = new Thickness(10, 10, 10, 10);
+                    break;
+            }
             Padding = new Thickness(10);
             items = new ObservableCollection<OSCListItem>();
 
