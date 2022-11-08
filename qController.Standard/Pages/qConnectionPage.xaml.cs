@@ -8,6 +8,8 @@ using qController.QItems;
 using qController.Dialogs;
 using qController.Cell;
 using Xamarin.Essentials;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace qController
 {
@@ -43,7 +45,7 @@ namespace qController
 
         private void InitGUI()
         {
-            NavigationPage.SetHasNavigationBar(this, false);
+            Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
 
             //ListView Setup
             listView.ItemsSource = QStorage.qInstances;
@@ -53,7 +55,7 @@ namespace qController
                 // don't do anything if we just de-selected the row
                 if (e.Item == null) return;
                 // do something with e.SelectedItem
-                ((ListView)sender).SelectedItem = null; // de-select the row
+                ((Xamarin.Forms.ListView)sender).SelectedItem = null; // de-select the row
             };
 
             //Platform Specific Setup
