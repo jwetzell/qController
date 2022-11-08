@@ -67,13 +67,18 @@ namespace qController
         private void OnConnectionStatusChanged(object source, ConnectEventArgs args)
         {
             Log.Debug($"CONTROLPAGE - Connection Status Changed: {args.WorkspaceId} : {args.Status}");
-            if (args.Status.Equals("ok"))
+            if (args.Status.Contains("ok"))
             {
+                if(args.Status.Contains(":") && !args.Status.Contains("view"))
+                {
+                    workspacePrompt.promptWorkspacePasscode(args.WorkspaceId);
+                    return;
+                }
                 Device.BeginInvokeOnMainThread(() => {
                     FinishUI();
                 });
             }
-            else if (args.Status.Equals("badpass"))
+            else if (args.Status.Contains("badpass"))
             {
                 workspacePrompt.promptWorkspacePasscode(args.WorkspaceId);
             }
@@ -252,6 +257,11 @@ namespace qController
 
         public void WorkspaceUpdated(object sender, WorkspaceEventArgs e)
         {
+            if(e.UpdatedWorkspace.data == null)
+            {
+                Log.Debug("[ControlPage] Workspace Update contains null data.");
+                return;
+            }
             if(e.UpdatedWorkspace.data.Count > 0)
             {
                 qController.qWorkspace = e.UpdatedWorkspace;
@@ -313,10 +323,11 @@ namespace qController
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             Log.Debug("CONTROLPAGE - Refreshing Currently Displayed Cue");
-                            if (args.Cue.levels != null)
+                            if (args.Cue.levels != null) {
+                                Log.Debug("before show levels button and cue.levels isnt null");
                                 showLevelsButton.IsVisible = true;
-                            else
-                            {
+                                Log.Debug("after show levels button and cue.levels isnt null");
+                            } else {
                                 showLevelsButton.IsVisible = false;
                                 qLevelsCell.IsVisible = false;
                             }

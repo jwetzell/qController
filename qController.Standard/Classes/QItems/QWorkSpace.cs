@@ -94,6 +94,12 @@ namespace qController.QItems
 
         public bool CheckPopulated()
         {
+            if(data == null)
+            {
+                IsPopulated = false;
+                return false;
+            }
+
             for (int i = 0; i < data.Count; i++)
             {
                 for (int j = 0; j < data[i].cues.Count; j++)

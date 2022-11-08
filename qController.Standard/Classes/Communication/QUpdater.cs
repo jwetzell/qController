@@ -21,8 +21,14 @@ namespace qController.Communication
         private void OnConnectionStatusChanged(object source, ConnectEventArgs args)
         {
             Log.Debug("QUPDATER - Connection Status Changed: " + args.Status);
-            if (args.Status == "ok")
+            
+            if (args.Status.Contains("ok"))
             {
+                //new sort of connect format for QLab 5 ok:view|control|edit is connection good
+                if(args.Status.Contains(":") && !args.Status.Contains("view"))
+                {
+                    return;
+                }
                 qController.qClient.sendTCP("/workspace/" + qController.qWorkspace.workspace_id + "/updates", 1);
                 qController.qClient.sendTCP("/workspace/" + qController.qWorkspace.workspace_id + "/cueLists");
             }
