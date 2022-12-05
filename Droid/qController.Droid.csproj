@@ -468,9 +468,6 @@
     <Reference Include="Xamarin.AndroidX.Concurrent.Futures">
       <HintPath>..\packages\Xamarin.AndroidX.Concurrent.Futures.1.1.0.5\lib\monoandroid90\Xamarin.AndroidX.Concurrent.Futures.dll</HintPath>
     </Reference>
-    <Reference Include="SuperSimpleTcp">
-      <HintPath>..\packages\SuperSimpleTcp.3.0.5\lib\netstandard2.1\SuperSimpleTcp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
