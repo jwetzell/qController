@@ -4,10 +4,10 @@ namespace SharpOSC
 {
     public static class SlipFrame
     {
-        static readonly byte END = 0xc0;
-        static readonly byte ESC = 0xdb;
-        static readonly byte ESC_END = 0xDC;
-        static readonly byte ESC_ESC = 0xDD;
+        public static readonly byte END = 0xc0;
+        public static readonly byte ESC = 0xdb;
+        public static readonly byte ESC_END = 0xDC;
+        public static readonly byte ESC_ESC = 0xDD;
 
         public static List<byte[]> Decode(byte[] data)
         {

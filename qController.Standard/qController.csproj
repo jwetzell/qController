@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.2.0.562" />
+    <PackageReference Include="TcpSharp" Version="1.2.0" />
     <PackageReference Include="Zeroconf" Version="3.5.11" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2612" />
     <PackageReference Include="Acr.Settings" Version="9.0.1" />

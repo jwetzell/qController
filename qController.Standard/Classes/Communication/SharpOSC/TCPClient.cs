@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Net.Sockets;
-using System.Threading;
 using Serilog;
+using TcpSharp.Events;
 
 namespace SharpOSC
 {
@@ -19,6 +18,8 @@ namespace SharpOSC
 
     public class TCPClient
     {
+        private ILogger _log = Log.Logger.ForContext<TCPClient>();
+
         public int Port
         {
             get { return _port; }
@@ -32,11 +33,11 @@ namespace SharpOSC
         public delegate void MessageReceivedHandler(object source, MessageEventArgs args);
         public event MessageReceivedHandler MessageReceived;
 
-        private Thread receivingThread;
-
         string _address;
-        TcpClient client;
 
+        TcpSharp.TcpSharpSocketClient tcpClient;
+
+        private List<byte> frameStream = new List<byte>();
 
         public TCPClient(string address, int port)
         {
@@ -46,28 +47,82 @@ namespace SharpOSC
 
         public bool Connect()
         {
+
             try
             {
-                client = new TcpClient(Address, Port);
-                receivingThread = new Thread(ReceiveLoop);
-                receivingThread.Start();
-
-                Log.Debug($"[tcpclient] connected to <{Address}:{Port}>");
+                tcpClient = new TcpSharp.TcpSharpSocketClient(Address, Port);
+                tcpClient.OnConnected += ClientConnected;
+                tcpClient.OnDataReceived += DataReceived;
+                tcpClient.OnDisconnected += ClientDisconneted;
+                tcpClient.OnError += ClientError;
+                tcpClient.Connect();
                 return true;
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                _log.Error(e.Message);
                 return false;
             }
 
+        }
+        private void ClientError(object sender, OnClientErrorEventArgs e)
+        {
+            _log.Error("client error");
+            _log.Error(e.Exception.ToString());
+        }
+
+        private void ClientDisconneted(object sender, OnClientDisconnectedEventArgs e)
+        {
+            _log.Information($"client disconnected: {e.Reason}");
+            Close();
+        }
+
+        private void DataReceived(object sender, OnClientDataReceivedEventArgs e)
+        {
+            frameStream.AddRange(e.Data);
+
+            int i = 0;
+            int frameEnd = frameStream.FindIndex(1, frameByte => frameByte.Equals(SlipFrame.END));
+            while (frameEnd > 0)
+            {
+                List<byte> frame = frameStream.GetRange(0, frameEnd + 1);
+                frameStream.RemoveRange(0, frameEnd + 1);
+                List<byte[]> messages = SlipFrame.Decode(frame.ToArray());
+                foreach (var message in messages)
+                {
+                    try
+                    {
+                        OscPacket packet = OscPacket.GetPacket(message);
+                        OscMessage responseMessage = (OscMessage)packet;
+                        if (packet == null)
+                        {
+                            _log.Error("packet is null");
+                        }
+
+                        if (responseMessage == null)
+                        {
+                            _log.Error("responeMessage is null");
+                        }
+                        OnMessageReceived(responseMessage);
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error($"Exception parsing OSC message: {ex.ToString()}");
+                    }
+                }
+                frameEnd = frameStream.FindIndex(0, frameByte => frameByte.Equals(SlipFrame.END));
+            }
+        }
+
+        private void ClientConnected(object sender, OnClientConnectedEventArgs e)
+        {
+            _log.Debug($"connected to <{Address}:{Port}>");
         }
 
         public void Send(byte[] message)
         {
             byte[] slipData = SlipFrame.Encode(message);
-            NetworkStream netStream = client.GetStream();
-            netStream.Write(slipData.ToArray(), 0, slipData.ToArray().Length);
+            tcpClient.SendBytes(slipData.ToArray());
         }
 
         public void Send(OscPacket packet)
@@ -80,75 +135,24 @@ namespace SharpOSC
         {
             get
             {
-                if (client == null)
+                if (tcpClient == null)
                     return false;
                 else
-                    return client.Connected;
-            }
-        }
-
-        public void ReceiveLoop()
-        {
-            while (client != null && client.Connected)
-            {
-                Receive();
-            }
-            //Log.Debug("[tcpclient] - ReceiveLoop has exited");
-        }
-
-        public void Receive()
-        {
-            Random random = new Random();
-            int num = random.Next(1000);
-            try
-            {
-                NetworkStream netStream = client.GetStream();
-                netStream.ReadTimeout = 250;
-                List<byte> responseData = new List<byte>();
-                if (netStream.CanRead)
-                {
-                    //var watch = System.Diagnostics.Stopwatch.StartNew();
-                    byte[] buffer = new byte[256];
-
-                    int bytesRead = 0;
-                    int reads = 0;
-                    do
-                    {
-                        bytesRead = netStream.Read(buffer, 0, buffer.Length);
-                        responseData.AddRange(buffer);
-                        reads += 1;
-                        Thread.Sleep(1);
-                        //Log.Debug("Thread " + num + ":  Bytes read: " + bytesRead + " - " + Encoding.UTF8.GetString(buffer));
-                    } while (netStream.DataAvailable);
-
-                    List<byte[]> messages = SlipFrame.Decode(responseData.ToArray());
-
-                    foreach (byte[] message in messages)
-                    {
-                        OscPacket packet = OscPacket.GetPacket(message);
-                        OscMessage responseMessage = (OscMessage)packet;
-                        //watch.Stop();
-                        //Console.WriteLine($"TCPCLient - message receive took {watch.ElapsedMilliseconds}ms and {reads} reads");
-                        OnMessageReceived(responseMessage);
-                    }
-                    //Console.WriteLine("Raw TCP In: " + System.Text.Encoding.UTF8.GetString(responseData.ToArray()));
-                }
-            }
-            catch (Exception e)
-            {
-                //Console.WriteLine("TCPSENDER - Receive Exception: " + e.ToString());
+                    return tcpClient.Connected;
             }
         }
 
         public void Close()
         {
-            if (client != null)
+            if (tcpClient != null)
             {
-                if (client.Connected)
+                tcpClient.OnConnected -= ClientConnected;
+                tcpClient.OnDataReceived -= DataReceived;
+                tcpClient.OnDisconnected -= ClientDisconneted;
+                if (tcpClient.Connected)
                 {
-                    Log.Debug($"[tcpClient] closing connection to {Address}");
-                    client.GetStream().Close();
-                    client.Close();
+                    _log.Debug($"closing connection to {Address}");
+                    tcpClient.Disconnect();
                 }
             }
         }
