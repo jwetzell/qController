@@ -44,6 +44,7 @@
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <EnableLLVM>false</EnableLLVM>
     <BundleAssemblies>false</BundleAssemblies>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -76,9 +77,6 @@
   <ItemGroup>
     <Reference Include="Acr.Settings, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Acr.Settings.9.0.1\lib\monoandroid80\Acr.Settings.dll</HintPath>
-    </Reference>
-    <Reference Include="Acr.UserDialogs, Version=7.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Acr.UserDialogs.7.2.0.562\lib\monoandroid10.0\Acr.UserDialogs.dll</HintPath>
     </Reference>
     <Reference Include="AndHUD, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AndHUD.1.5.0\lib\monoandroid12.0\AndHUD.dll</HintPath>
@@ -374,7 +372,7 @@
       <HintPath>..\packages\Zeroconf.3.5.11\lib\netstandard2.0\Zeroconf.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.AndroidX.MultiDex">
-      <HintPath>..\packages\Xamarin.AndroidX.MultiDex.2.0.1.10\lib\monoandroid90\Xamarin.AndroidX.MultiDex.dll</HintPath>
+      <HintPath>..\packages\Xamarin.AndroidX.MultiDex.2.0.1.21\lib\monoandroid12.0\Xamarin.AndroidX.MultiDex.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.AndroidX.Lifecycle.LiveData">
       <HintPath>..\packages\Xamarin.AndroidX.Lifecycle.LiveData.2.3.1.3\lib\monoandroid90\Xamarin.AndroidX.Lifecycle.LiveData.dll</HintPath>
@@ -412,6 +410,9 @@
     </Reference>
     <Reference Include="SuperSimpleTcp">
       <HintPath>..\packages\SuperSimpleTcp.3.0.5\lib\netstandard2.1\SuperSimpleTcp.dll</HintPath>
+    </Reference>
+    <Reference Include="Acr.UserDialogs">
+      <HintPath>..\packages\Acr.UserDialogs.7.2.0.562\lib\monoandroid10.0\Acr.UserDialogs.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -677,4 +678,5 @@
   <Import Project="..\packages\Xamarin.AndroidX.SlidingPaneLayout.1.2.0.9\build\monoandroid12.0\Xamarin.AndroidX.SlidingPaneLayout.targets" Condition="Exists('..\packages\Xamarin.AndroidX.SlidingPaneLayout.1.2.0.9\build\monoandroid12.0\Xamarin.AndroidX.SlidingPaneLayout.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Legacy.Support.Core.UI.1.0.0.22\build\monoandroid12.0\Xamarin.AndroidX.Legacy.Support.Core.UI.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Legacy.Support.Core.UI.1.0.0.22\build\monoandroid12.0\Xamarin.AndroidX.Legacy.Support.Core.UI.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Browser.1.6.0\build\monoandroid12.0\Xamarin.AndroidX.Browser.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Browser.1.6.0\build\monoandroid12.0\Xamarin.AndroidX.Browser.targets')" />
+  <Import Project="..\packages\Xamarin.AndroidX.MultiDex.2.0.1.21\build\monoandroid12.0\Xamarin.AndroidX.MultiDex.targets" Condition="Exists('..\packages\Xamarin.AndroidX.MultiDex.2.0.1.21\build\monoandroid12.0\Xamarin.AndroidX.MultiDex.targets')" />
 </Project>
