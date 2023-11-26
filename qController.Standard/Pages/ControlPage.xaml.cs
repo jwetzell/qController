@@ -40,25 +40,19 @@ namespace qController
 
             InitGUI();
 
-            if (!qController.qClient.connected)
-            {
+            if (!qController.qClient.connected) {
                 App.showToast("Error connecting...make sure QLab is running");
                 Back();
-            }
-            else
-            {
+            } else {
                 qController.KickOff();
             }
         }
 
         private void OnWorkspaceSelected(object source, WorkspacePromptArgs args)
         {
-            if (args.SelectedWorkspace != null)
-            {
+            if (args.SelectedWorkspace != null) {
                 qController.Connect(args.SelectedWorkspace);
-            }
-            else
-            {
+            } else {
                 Log.Debug("CONTROLPAGE - No Workspace selected backing out");
                 Back();
             }
@@ -67,46 +61,34 @@ namespace qController
         private void OnConnectionStatusChanged(object source, ConnectEventArgs args)
         {
             Log.Debug($"CONTROLPAGE - Connection Status Changed: {args.WorkspaceId} : {args.Status}");
-            if (args.Status.Contains("ok"))
-            {
-                if(args.Status.Contains(":") && !args.Status.Contains("view"))
-                {
+            if (args.Status.Contains("ok")) {
+                if(args.Status.Contains(":") && !args.Status.Contains("view")) {
                     workspacePrompt.promptWorkspacePasscode(args.WorkspaceId);
                     return;
                 }
                 Device.BeginInvokeOnMainThread(() => {
                     FinishUI();
                 });
-            }
-            else if (args.Status.Contains("badpass"))
-            {
+            } else if (args.Status.Contains("badpass")) {
                 workspacePrompt.promptWorkspacePasscode(args.WorkspaceId);
             }
         }
 
         private void WorkspaceInfoReceived(object source, WorkspaceInfoArgs args)
         {
-            if (args.WorkspaceInfo.Count > 1)
-            {
+            if (args.WorkspaceInfo.Count > 1) {
                 Log.Debug("CONTROLPAGE - MULTIPLE WORKSPACES ON SELECTED COMPUTER");
                 PromptForWorkspace(args.WorkspaceInfo);
-            }
-            else if (args.WorkspaceInfo.Count == 1)
-            {
+            } else if (args.WorkspaceInfo.Count == 1) {
                 Log.Debug("CONTROLPAGE - ONLY ONE WORKSPACE ON SELECTED COMPUTER");
-                if (!args.WorkspaceInfo[0].hasPasscode)
-                {
+                if (!args.WorkspaceInfo[0].hasPasscode) {
                     qController.Connect(args.WorkspaceInfo[0].uniqueID);
 
-                }
-                else
-                {
+                } else {
                     workspacePrompt.promptWorkspacePasscode(args.WorkspaceInfo[0].uniqueID);
                 }
 
-            }
-            else
-            {
+            } else {
                 NoWorkspacesConfig noWorkspacesConfig = new NoWorkspacesConfig(NoWorkspaceDetected);
                 UserDialogs.Instance.Confirm(noWorkspacesConfig);
             }
@@ -235,8 +217,10 @@ namespace qController
 
         void Back()
         {
-            if(qController.qClient.connected)
+            if (qController.qClient.connected)
+            {
                 qController.Kill();
+            }
             App.rootPage.MenuItemSelected -= OnMenuItemSelected;
             Device.BeginInvokeOnMainThread(() =>
             {
@@ -248,7 +232,9 @@ namespace qController
         public void NoWorkspaceDetected(bool resp)
         {
             if (resp)
+            {
                 Back();
+            }
         }
         public void WorkspaceDisconnected(object sender, EventArgs e)
         {
@@ -363,12 +349,9 @@ namespace qController
             if (args.Command.Contains("/"))
             {
                 qController.qClient.sendTCP(args.Command);
-            }
-            else if (args.Command == "disconnect")
-            {
+            } else if (args.Command == "disconnect") {
                 Back();
-            }else if (args.Command.Contains("cueList"))
-            {
+            } else if (args.Command.Contains("cueList")) {
                 var parts = args.Command.Split(' ');
                 if(parts.Length > 1)
                 {
@@ -399,6 +382,12 @@ namespace qController
             string selectCueOSC = "/workspace/" + qController.qWorkspace.workspace_id + cue.Command;
             qController.qClient.sendTCP(selectCueOSC);
             CloseCueList(sender,e);
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Back();
+            return true;
         }
 
     }
