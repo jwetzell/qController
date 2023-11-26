@@ -16,10 +16,10 @@ jobs:
     steps:
     - uses: actions/checkout@v1
       name: Checkout Code
-    - name: setup-msbuild
-      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.3.1
     - name: Setup NuGet.exe for use with actions
-      uses: NuGet/setup-nuget@v1.0.2  
+      uses: NuGet/setup-nuget@v1.2.0
     - name: Restore NuGet Packages
       run: nuget restore
     - name: Build  Application      

@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using System;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using qController.Helpers;
 
 namespace qController
@@ -11,6 +13,7 @@ namespace qController
         public ObservableCollection<MenuPageItem> items { get; } = new ObservableCollection<MenuPageItem>();
         public MenuPage()
         {
+            On<iOS>().SetUseSafeArea(true);
             Title = "Menu";
             InitializeComponent();
 
@@ -30,7 +33,7 @@ namespace qController
                 };
 
                 Label icon = new Label {
-                    FontFamily = (OnPlatform<string>)Application.Current.Resources["MaterialFontFamily"],
+                    FontFamily = (OnPlatform<string>)Xamarin.Forms.Application.Current.Resources["MaterialFontFamily"],
                     HorizontalTextAlignment = TextAlignment.Center,
                     VerticalTextAlignment = TextAlignment.Center,
                     VerticalOptions = LayoutOptions.FillAndExpand,
