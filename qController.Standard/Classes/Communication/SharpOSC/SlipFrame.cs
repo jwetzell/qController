@@ -14,14 +14,32 @@ namespace SharpOSC
             List<byte[]> messages = new List<byte[]>();
 
             List<byte> buffer = new List<byte>();
+            bool escapeNext = false;
             for (int i = 0; i < data.Length; i++)
             {
-                if (data[i] == END && buffer.Count > 0)
+                if (data[i] == ESC)
+                {
+                    escapeNext = true;
+                    continue;
+                }
+
+                if (escapeNext)
+                {
+                    if (data[i] == ESC_END)
+                    {
+                        buffer.Add(END);
+                    }
+                    else if (data[i] == ESC_ESC)
+                    {
+                        buffer.Add(ESC);
+                    }
+                }
+                else if (data[i] == END)
                 {
                     messages.Add(buffer.ToArray());
                     buffer.Clear();
                 }
-                else if (data[i] != END)
+                else
                 {
                     buffer.Add(data[i]);
                 }
