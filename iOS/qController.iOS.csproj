@@ -102,9 +102,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.IO.Compression" />
-    <Reference Include="Zeroconf">
-      <HintPath>..\packages\Zeroconf.3.6.11\lib\xamarinios10\Zeroconf.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -165,6 +162,12 @@
     </Reference>
     <Reference Include="System.Diagnostics.DiagnosticSource">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.7.0.2\lib\netstandard2.0\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeroconf">
+      <HintPath>..\packages\Zeroconf.3.5.11\lib\xamarinios10\Zeroconf.dll</HintPath>
+    </Reference>
+    <Reference Include="TcpSharp">
+      <HintPath>..\packages\TcpSharp.1.3.6\lib\netstandard2.1\TcpSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

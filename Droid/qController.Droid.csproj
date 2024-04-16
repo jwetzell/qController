@@ -141,9 +141,6 @@
     <Reference Include="Serilog.Sinks.Xamarin">
       <HintPath>..\packages\Serilog.Sinks.Xamarin.1.0.0\lib\monoandroid90\Serilog.Sinks.Xamarin.dll</HintPath>
     </Reference>
-    <Reference Include="TcpSharp, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TcpSharp.1.2.0\lib\netstandard2.1\TcpSharp.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.AndroidX.Activity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.AndroidX.Activity.1.8.1\lib\monoandroid12.0\Xamarin.AndroidX.Activity.dll</HintPath>
     </Reference>
@@ -419,9 +416,6 @@
     <Reference Include="Acr.UserDialogs">
       <HintPath>..\packages\Acr.UserDialogs.7.2.0.562\lib\monoandroid10.0\Acr.UserDialogs.dll</HintPath>
     </Reference>
-    <Reference Include="Zeroconf, Version=3.6.0.0, Culture=neutral, PublicKeyToken=dbbfcdb374507df0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Zeroconf.3.6.11\lib\netstandard2.0\Zeroconf.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.AndroidX.Browser">
       <HintPath>..\packages\Xamarin.AndroidX.Browser.1.5.0.3\lib\monoandroid12.0\Xamarin.AndroidX.Browser.dll</HintPath>
     </Reference>
@@ -448,6 +442,12 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\packages\Xamarin.Forms.5.0.0.2622\lib\MonoAndroid13.0\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Zeroconf">
+      <HintPath>..\packages\Zeroconf.3.5.11\lib\netstandard2.0\Zeroconf.dll</HintPath>
+    </Reference>
+    <Reference Include="TcpSharp">
+      <HintPath>..\packages\TcpSharp.1.3.6\lib\netstandard2.1\TcpSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

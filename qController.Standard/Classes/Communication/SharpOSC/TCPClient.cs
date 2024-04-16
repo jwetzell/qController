@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Serilog;
-using TcpSharp.Events;
+using TcpSharp;
 
 namespace SharpOSC
 {
@@ -35,7 +34,7 @@ namespace SharpOSC
 
         string _address;
 
-        TcpSharp.TcpSharpSocketClient tcpClient;
+        TcpSharpSocketClient tcpClient;
 
         private List<byte> frameStream = new List<byte>();
 
@@ -50,7 +49,7 @@ namespace SharpOSC
 
             try
             {
-                tcpClient = new TcpSharp.TcpSharpSocketClient(Address, Port);
+                tcpClient = new TcpSharpSocketClient(Address, Port);
                 tcpClient.OnConnected += ClientConnected;
                 tcpClient.OnDataReceived += DataReceived;
                 tcpClient.OnDisconnected += ClientDisconneted;
