@@ -15,7 +15,7 @@ jobs:
   Android:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
       name: Checkout Code
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.3.1
@@ -23,6 +23,12 @@ jobs:
       uses: NuGet/setup-nuget@v1.2.0
     - name: Restore NuGet Packages
       run: nuget restore
+    - name: Setup java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        java-package: 'jdk'
     - name: Build  Application      
       run: |
         cd Droid
@@ -30,7 +36,7 @@ jobs:
   iOS:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
       name: Checkout Code
     - name: Restore NuGet Packages
       run: nuget restore
