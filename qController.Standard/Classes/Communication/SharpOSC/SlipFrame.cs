@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Serilog;
 
 namespace SharpOSC
 {
@@ -8,6 +9,7 @@ namespace SharpOSC
         public static readonly byte ESC = 0xdb;
         public static readonly byte ESC_END = 0xDC;
         public static readonly byte ESC_ESC = 0xDD;
+        public static ILogger _log = Log.Logger.ForContext<TCPClient>();
 
         public static List<byte[]> Decode(byte[] data)
         {
@@ -17,6 +19,7 @@ namespace SharpOSC
             bool escapeNext = false;
             for (int i = 0; i < data.Length; i++)
             {
+                _log.Information(data[1].ToString());
                 if (data[i] == ESC)
                 {
                     escapeNext = true;
@@ -33,10 +36,14 @@ namespace SharpOSC
                     {
                         buffer.Add(ESC);
                     }
+                    escapeNext = false;
                 }
                 else if (data[i] == END)
                 {
-                    messages.Add(buffer.ToArray());
+                    if(buffer.Count > 0)
+                    {
+                        messages.Add(buffer.ToArray());
+                    }
                     buffer.Clear();
                 }
                 else
@@ -44,7 +51,6 @@ namespace SharpOSC
                     buffer.Add(data[i]);
                 }
             }
-
             return messages;
         }
 
