@@ -82,7 +82,6 @@
     <None Remove="Bespoke.Osc\Samples\VB\Receiver\My Project\Application.myapp" />
     <None Remove="Bespoke.Net\.gitignore" />
     <None Remove="Bespoke.Net\Help\Bespoke Common Library.chm" />
-    <None Remove="SuperSimpleTcp" />
   </ItemGroup>
   <!--<ItemGroup>
     <EmbeddedResource Include="Pages\ControlPage.xaml">
