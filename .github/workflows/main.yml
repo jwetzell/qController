@@ -18,9 +18,9 @@ jobs:
     - uses: actions/checkout@v4
       name: Checkout Code
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.3.1
+      uses: microsoft/setup-msbuild@v2.0.0
     - name: Setup NuGet.exe for use with actions
-      uses: NuGet/setup-nuget@v1.2.0
+      uses: NuGet/setup-nuget@v2.0.0
     - name: Restore NuGet Packages
       run: nuget restore
     - name: Setup java
