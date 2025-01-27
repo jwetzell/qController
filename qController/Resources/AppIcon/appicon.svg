@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="background: #FFFFFF;">
+    <title>Icon</title>
+    <defs>
+        <linearGradient x1="51.6744256%" y1="50%" x2="75.2765643%" y2="-20.8600423%" id="linearGradient-1">
+            <stop stop-color="#FFE900" offset="0%"></stop>
+            <stop stop-color="#E7FF6D" offset="51.5046481%"></stop>
+            <stop stop-color="#FCFF00" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#FFFFFF" x="0" y="0" width="512" height="512"></rect>
+        <rect id="Background" fill="url(#linearGradient-1)" x="0" y="0" width="512" height="512"></rect>
+    </g>
+</svg>
