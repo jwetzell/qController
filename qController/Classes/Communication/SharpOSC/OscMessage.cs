@@ -17,7 +17,12 @@ namespace SharpOSC
 			Arguments.AddRange(args);
 		}
 
-		public override byte[] GetBytes()
+        public override string ToString()
+        {
+            return "Address: " + Address + " Args: " + string.Join(",", Arguments);
+        }
+
+        public override byte[] GetBytes()
 		{
 			List<byte[]> parts = new List<byte[]>();
 

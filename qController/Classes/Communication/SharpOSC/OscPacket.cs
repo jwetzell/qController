@@ -15,6 +15,11 @@ namespace SharpOSC
 				return parseMessage(OscData);
 		}
 
+		public static OscMessage GetMessage(byte[] OscData)
+		{
+			return parseMessage(OscData);
+		}
+
 		public abstract byte[] GetBytes();
 
 		#region Parse OSC packages

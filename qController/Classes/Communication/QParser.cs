@@ -81,21 +81,41 @@ namespace qController.Communication
         public void ParseCueUpdateInfo(OscMessage msg)
         {
             JToken cueUpdate = OSC2JSON(msg);
-            QCue cue = JsonConvert.DeserializeObject<QCue>(cueUpdate.ToString());
-            OnCueInfoUpdated(cue);
+            if(cueUpdate != null)
+            {
+                QCue cue = JsonConvert.DeserializeObject<QCue>(cueUpdate.ToString());
+                OnCueInfoUpdated(cue);
+            }else
+            {
+                Log.Debug("QPARSER - cue update info does not have any data");
+            }
         }
 
         public void ParseSelectedCueInfo(OscMessage msg){
             JToken selectedCue = OSC2JSON(msg);
-            QCue cue = JsonConvert.DeserializeObject<QCue>(selectedCue.ToString());
-            OnSelectedCueUpdated(cue);
+            if (selectedCue != null)
+            {
+                QCue cue = JsonConvert.DeserializeObject<QCue>(selectedCue.ToString());
+                OnSelectedCueUpdated(cue);
+            }
+            else
+            {
+                Log.Debug("QPARSER - selected does not have any data");
+            }
         }
 
         public void ParseQInfo(OscMessage msg)
         {
             JToken qInfo = OSC2JSON(msg);
-            List<QWorkspaceInfo> qWorkspaceInfo = JsonConvert.DeserializeObject<List<QWorkspaceInfo>>(qInfo.ToString());
-            OnWorkspaceInfoReceived(qWorkspaceInfo);
+            if (qInfo != null)
+            {
+                List<QWorkspaceInfo> qWorkspaceInfo = JsonConvert.DeserializeObject<List<QWorkspaceInfo>>(qInfo.ToString());
+                OnWorkspaceInfoReceived(qWorkspaceInfo);
+            }
+            else
+            {
+                Log.Debug("QPARSER - selected does not have any data");
+            }
         }
 
         public void ParseWorkspaceInfo(OscMessage msg)
@@ -131,8 +151,15 @@ namespace qController.Communication
             {
                 string cue_id = msg.Address.Split('/')[3];
                 JToken children_obj = OSC2JSON(msg);
-                List<QCue> children = JsonConvert.DeserializeObject<List<QCue>>(children_obj.ToString());
-                OnChildrenUpdated(cue_id, children);
+                if(children_obj != null)
+                {
+                    List<QCue> children = JsonConvert.DeserializeObject<List<QCue>>(children_obj.ToString());
+                    OnChildrenUpdated(cue_id, children);
+                }else
+                {
+                    Log.Debug("QPARSER - children info message does not have any data");
+
+                }
             }
         }
 
@@ -157,6 +184,7 @@ namespace qController.Communication
 
         protected virtual void OnPlaybackPositionUpdated(string id)
         {
+            Log.Error(id);
             PlaybackPositionUpdated?.Invoke(this, new PlaybackPositionArgs() { PlaybackPosition = id });
         }
         protected virtual void OnConnectionStatusChanged(string status, string workspace_id)

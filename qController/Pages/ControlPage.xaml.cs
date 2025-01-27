@@ -289,6 +289,9 @@ namespace qController
                     }
                     qCell.UpdateSelectedCue(cue);
                 });
+            } else
+            {
+                Log.Error("Playback Position has been updated but cue is null?");
             }
         }
 

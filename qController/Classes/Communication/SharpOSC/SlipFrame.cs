@@ -8,12 +8,12 @@ namespace SharpOSC
         public static readonly byte ESC = 0xdb;
         public static readonly byte ESC_END = 0xDC;
         public static readonly byte ESC_ESC = 0xDD;
+        private static List<byte> buffer = new List<byte>();
 
         public static List<byte[]> Decode(byte[] data)
         {
             List<byte[]> messages = new List<byte[]>();
 
-            List<byte> buffer = new List<byte>();
             bool escapeNext = false;
             for (int i = 0; i < data.Length; i++)
             {

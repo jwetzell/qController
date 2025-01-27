@@ -36,8 +36,6 @@ namespace SharpOSC
 
         TcpSharpSocketClient? tcpClient;
 
-        private List<byte> frameStream = new List<byte>();
-
         public TCPClient(string address, int port)
         {
             _port = port;
@@ -78,38 +76,27 @@ namespace SharpOSC
 
         private void DataReceived(object sender, OnClientDataReceivedEventArgs e)
         {
-            frameStream.AddRange(e.Data);
-
-            int i = 0;
-            int frameEnd = frameStream.FindIndex(1, frameByte => frameByte.Equals(SlipFrame.END));
-            while (frameEnd > 0)
+            List<byte[]> messages = SlipFrame.Decode(e.Data);
+            _log.Debug("tcpclient: " +  messages.Count + " messages pulled from slip");
+            foreach (var message in messages)
             {
-                List<byte> frame = frameStream.GetRange(0, frameEnd + 1);
-                frameStream.RemoveRange(0, frameEnd + 1);
-                List<byte[]> messages = SlipFrame.Decode(frame.ToArray());
-                foreach (var message in messages)
+                try
                 {
-                    try
-                    {
-                        OscPacket packet = OscPacket.GetPacket(message);
-                        OscMessage responseMessage = (OscMessage)packet;
-                        if (packet == null)
-                        {
-                            _log.Error("packet is null");
-                        }
 
-                        if (responseMessage == null)
-                        {
-                            _log.Error("responeMessage is null");
-                        }
+                    OscMessage responseMessage = OscPacket.GetMessage(message);
+                    if (responseMessage == null)
+                    {
+                        _log.Error("responseMessage is null");
+                    } else
+                    {
                         OnMessageReceived(responseMessage);
                     }
-                    catch (Exception ex)
-                    {
-                        _log.Error($"Exception parsing OSC message: {ex.ToString()}");
-                    }
+
                 }
-                frameEnd = frameStream.FindIndex(0, frameByte => frameByte.Equals(SlipFrame.END));
+                catch (Exception ex)
+                {
+                    _log.Error($"Exception parsing OSC message: {ex.ToString()}");
+                }
             }
         }
 
