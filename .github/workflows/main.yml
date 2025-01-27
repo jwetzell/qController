@@ -1,5 +1,5 @@
 
-name: Build Android and iOS
+name: Build Android
 
 on:
   # Trigger the workflow on push or pull request,
@@ -31,17 +31,6 @@ jobs:
         java-package: 'jdk'
     - name: Build  Application      
       run: |
-        cd Droid
+        cd qController
         msbuild qController.Droid.csproj /verbosity:normal /t:Rebuild /p:Configuration=Debug  
-  iOS:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v4
-      name: Checkout Code
-    - name: Restore NuGet Packages
-      run: nuget restore
-    - name: Build Application
-      run: |
-        cd iOS
-        msbuild qController.iOS.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug  
 

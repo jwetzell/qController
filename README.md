@@ -1,4 +1,4 @@
-![Build Android and iOS](https://github.com/jwetzell/qController/workflows/Build%20Android%20and%20iOS/badge.svg)
+![Build Android](https://github.com/jwetzell/qController/workflows/Build%20Android/badge.svg)
 ![App Store](https://img.shields.io/itunes/v/1350276173?label=iOS&logo=apple)
 ![Play Store](http://img.shields.io/static/v1?label=Android&message=v1.6.3&color=blue&logo=android)
 # qControl
