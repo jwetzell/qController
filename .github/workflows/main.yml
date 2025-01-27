@@ -32,5 +32,10 @@ jobs:
     - name: Build  Application      
       run: |
         cd qController
-        msbuild qController.csproj /verbosity:normal /t:Rebuild /p:Configuration=Debug  
+        msbuild qController.csproj /verbosity:normal /t:Rebuild /p:Configuration=Debug
+    - name: Archive debug artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: main-apk
+          path: qController/bin/Debug/net8.0-android34.0/com.jwetzell.qlabcontroller-Signed.apk
 
