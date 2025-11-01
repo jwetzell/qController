@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using qController.Communication;
+using Microsoft.Maui.Devices;
 
 namespace qController
 {

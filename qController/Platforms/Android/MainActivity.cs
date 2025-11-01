@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.OS;
 using Serilog;
+using Microsoft.Maui;
 
 namespace qController
 {

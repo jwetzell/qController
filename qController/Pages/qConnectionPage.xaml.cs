@@ -4,6 +4,7 @@ using qController.QItems;
 using qController.Dialogs;
 using qController.Cell;
 using Acr.UserDialogs;
+using Microsoft.Maui.ApplicationModel;
 
 namespace qController
 {

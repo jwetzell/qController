@@ -6,6 +6,7 @@ using qController.Communication;
 using Microsoft.Maui.Layouts;
 using Acr.UserDialogs;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Maui.Graphics;
 
 namespace qController
 {
