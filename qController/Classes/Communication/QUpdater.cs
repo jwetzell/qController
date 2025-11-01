@@ -30,7 +30,7 @@ namespace qController.Communication
                 {
                     return;
                 }
-                qController.qClient.sendTCP("/workspace/" + qController.qWorkspace.workspace_id + "/updates", 1);
+                qController.qClient.sendTCP("/updates", 1);
                 qController.qClient.sendTCP("/workspace/" + qController.qWorkspace.workspace_id + "/cueLists");
             }
         }
