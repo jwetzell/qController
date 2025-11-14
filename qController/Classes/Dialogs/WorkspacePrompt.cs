@@ -38,11 +38,11 @@ namespace qController.Dialogs
                     
                     if (!workspace.hasPasscode)
                     {
-                        OnWorkspaceSelected(new QWorkspace(workspace.uniqueID));
+                        OnWorkspaceSelected(new QWorkspace(workspace));
                     }
                     else
                     {
-                        promptWorkspacePasscode(workspace.uniqueID);
+                        promptWorkspacePasscode(workspace);
                     }
                 }));
             }
@@ -51,7 +51,7 @@ namespace qController.Dialogs
 
         
 
-        public void promptWorkspacePasscode(string workspace_id)
+        public void promptWorkspacePasscode(QWorkspaceInfo workspaceInfo)
         {
             UserDialogs.Instance.Prompt(new PromptConfig
             {
@@ -64,7 +64,7 @@ namespace qController.Dialogs
                 {
                     if (resp.Ok)
                     {
-                        OnWorkspaceSelected(new QWorkspace(workspace_id,resp.Value));
+                        OnWorkspaceSelected(new QWorkspace(workspaceInfo,resp.Value));
                     }
                     else
                     {

@@ -22,7 +22,7 @@ namespace qController.Communication
         {
             
             Log.Debug("QUPDATER - Connection Status Changed: " + args.Status);
-            
+
             if (args.Status.Contains("ok"))
             {
                 //new sort of connect format for QLab 5 ok:view|control|edit is connection good
@@ -30,7 +30,14 @@ namespace qController.Communication
                 {
                     return;
                 }
-                qController.qClient.sendTCP("/updates", 1);
+                if (qController.qWorkspace.version.StartsWith("5"))
+                {
+                    qController.qClient.sendTCP("/updates", 1);
+                }
+                else
+                {
+                    qController.qClient.sendTCP("/workspace/" + qController.qWorkspace.workspace_id + "/updates", 1);
+                }
                 qController.qClient.sendTCP("/workspace/" + qController.qWorkspace.workspace_id + "/cueLists");
             }
         }

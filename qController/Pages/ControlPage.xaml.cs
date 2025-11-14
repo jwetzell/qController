@@ -63,14 +63,14 @@ namespace qController
             Log.Debug($"CONTROLPAGE - Connection Status Changed: {args.WorkspaceId} : {args.Status}");
             if (args.Status.Contains("ok")) {
                 if(args.Status.Contains(":") && !args.Status.Contains("view")) {
-                    workspacePrompt.promptWorkspacePasscode(args.WorkspaceId);
+                    workspacePrompt.promptWorkspacePasscode(new QWorkspaceInfo { uniqueID = args.WorkspaceId, version = qController.qWorkspace.version });
                     return;
                 }
                 Device.BeginInvokeOnMainThread(() => {
                     FinishUI();
                 });
             } else if (args.Status.Contains("badpass")) {
-                workspacePrompt.promptWorkspacePasscode(args.WorkspaceId);
+                workspacePrompt.promptWorkspacePasscode(new QWorkspaceInfo { uniqueID = args.WorkspaceId, version = qController.qWorkspace.version });
             }
         }
 
@@ -82,10 +82,9 @@ namespace qController
             } else if (args.WorkspaceInfo.Count == 1) {
                 Log.Debug("CONTROLPAGE - ONLY ONE WORKSPACE ON SELECTED COMPUTER");
                 if (!args.WorkspaceInfo[0].hasPasscode) {
-                    qController.Connect(args.WorkspaceInfo[0].uniqueID);
-
+                    qController.Connect(args.WorkspaceInfo[0]);
                 } else {
-                    workspacePrompt.promptWorkspacePasscode(args.WorkspaceInfo[0].uniqueID);
+                    workspacePrompt.promptWorkspacePasscode(args.WorkspaceInfo[0]);
                 }
 
             } else {

@@ -65,7 +65,6 @@ namespace qController.Communication
             if (msg.Arguments.Count > 0)
             {
                 JToken connectStatus = OSC2JSON(msg);
-                ;
                 OnConnectionStatusChanged(connectStatus.ToString(), msg.Address.Split('/')[3]);
             }
         }

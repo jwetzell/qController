@@ -4,6 +4,7 @@
 //TODO: STILL NEED TO WORK ON PASSWORD PROTECTED WORKSPACES
 using Serilog;
 using qController.QItems;
+using System;
 
 namespace qController.Communication
 {
@@ -23,31 +24,29 @@ namespace qController.Communication
             this.ipAddress = address;
             qClient = new QClient(ipAddress, port);
             qUpdater = new QUpdater(this);
-
+            
         }
 
-        public void Connect(string workspace_id)
+        public void Connect(QWorkspaceInfo workspaceInfo)
         {
-            Log.Debug($"QCONTROLLER - Connect Called: {workspace_id}");
-            qWorkspace = new QWorkspace(workspace_id);
-            qClient.sendTCP("/workspace/"+workspace_id+"/connect");
-        }
-
-        public void Connect(string workspace_id, string passcode)
-        {
-            Log.Debug($"QCONTROLLER - Connect with Passcode Called: {workspace_id}:{passcode}");
-            qWorkspace = new QWorkspace(workspace_id);
-            qClient.sendTCP("/workspace/" + workspace_id + "/connect", passcode);
-
+            Log.Debug($"QCONTROLLER - Connect Called: {workspaceInfo.uniqueID}");
+            Connect(new QWorkspace(workspaceInfo));
         }
 
         public void Connect(QWorkspace workspace)
         {
-            if(workspace.passcode != null)
-                Connect(workspace.workspace_id, workspace.passcode);
+            Log.Debug($"QCONTROLLER - Connect Called: {workspace.workspace_id}");
+            qWorkspace = workspace;
+            if (qWorkspace.passcode != null)
+            {
+                Log.Debug($"QCONTROLLER - Connect with Passcode Called: {qWorkspace.workspace_id}:{qWorkspace.passcode}");
+                qClient.sendTCP("/workspace/" + qWorkspace.workspace_id + "/connect", qWorkspace.passcode);
+            }
             else
-                Connect(workspace.workspace_id);
-
+            {
+                Log.Debug($"QCONTROLLER - Connect Called: {qWorkspace.workspace_id}");
+                qClient.sendTCP("/workspace/" + qWorkspace.workspace_id + "/connect");
+            }
         }
 
         public void KickOff()

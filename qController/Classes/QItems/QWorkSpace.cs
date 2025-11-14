@@ -11,7 +11,7 @@ namespace qController.QItems
         public string workspace_id { get; set; }
         public string address { get; set; }
         public bool IsPopulated { get; set; }
-
+        public string version { get; set; }
         public string passcode { get; set; }
 
         //ONLY FOR PASSING A WORKSPACE LOAD ERROR
@@ -20,12 +20,17 @@ namespace qController.QItems
             workspace_id = id;
         }
 
-        public QWorkspace(string id, string passcode)
+        public QWorkspace(QWorkspaceInfo workspaceInfo)
         {
-            workspace_id = id;
+            workspace_id = workspaceInfo.uniqueID;
+            version = workspaceInfo.version;
+        }
+        public QWorkspace(QWorkspaceInfo workspaceInfo, string passcode)
+        {
+            workspace_id = workspaceInfo.uniqueID;
+            version = workspaceInfo.version;
             this.passcode = passcode;
         }
-
         public QWorkspace()
         {
 
