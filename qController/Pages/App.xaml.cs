@@ -40,18 +40,8 @@ namespace qController
             Width = mainDisplayInfo.Width / mainDisplayInfo.Density;
             HeightUnit = Height / 100.0;
             WidthUnit = Width / 100.0;
-            // TODO Xamarin.Forms.Device.RuntimePlatform is no longer supported. Use Microsoft.Maui.Devices.DeviceInfo.Platform instead. For more details see https://learn.microsoft.com/en-us/dotnet/maui/migration/forms-projects#device-changes
-            switch (Device.RuntimePlatform)
-            {
-                case Device.iOS:
-                    QFont = "qfont";
-                    break;
-                case Device.Android:
-                    QFont = "qfont.ttf#qfont";
-                    break;
 
-            }
-
+            QFont = "qfont";
             rootPage = new RootPage();
             rootPage.Detail = new NavigationPage(new QConnectionPage());
             MainPage = rootPage;

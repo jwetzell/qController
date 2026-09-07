@@ -11,9 +11,9 @@ namespace qController
         public ObservableCollection<MenuPageItem> items { get; } = new ObservableCollection<MenuPageItem>();
         public MenuPage()
         {
-            On<iOS>().SetUseSafeArea(true);
             Title = "Menu";
             InitializeComponent();
+            SafeAreaEdges = SafeAreaEdges.All;
 
             ChangeToHome();
 

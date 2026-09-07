@@ -14,6 +14,7 @@ namespace qController
         {
             base.OnCreate(savedInstanceState);
             Acr.UserDialogs.UserDialogs.Init(this);
+            RequestedOrientation = ScreenOrientation.Portrait;
 
         }
     }

@@ -89,7 +89,8 @@ namespace qController.Cell
             number = new Label { 
                 Text = "",
                 FontAttributes = FontAttributes.Bold,
-                FontSize = App.HeightUnit * 5
+                FontSize = App.HeightUnit * 5,
+                TextColor = Colors.Black,
             };
 
             name = new Label { 
@@ -97,7 +98,8 @@ namespace qController.Cell
                 FontAttributes = FontAttributes.Bold,
                 HorizontalTextAlignment = TextAlignment.Center,
                 FontSize = App.HeightUnit * 3.5,
-                Margin = new Thickness(0)
+                Margin = new Thickness(0),
+                TextColor = Colors.Black,
             };
 
             type = new Label { 
@@ -105,7 +107,8 @@ namespace qController.Cell
                 FontFamily = App.QFont,
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.End,
-                FontSize = App.HeightUnit * 5
+                FontSize = App.HeightUnit * 5,
+                TextColor = Colors.Black,
             };
 
             notes = new Label { 
@@ -113,7 +116,8 @@ namespace qController.Cell
                 HorizontalTextAlignment = TextAlignment.Center,
                 Margin = new Thickness(0,0,0,10),
                 VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                TextColor = Colors.Black,
             };
             
             //BACKGROUND COLORS FOR TESTING ONLY 

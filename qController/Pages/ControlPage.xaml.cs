@@ -24,6 +24,8 @@ namespace qController
         {
             InitializeComponent();
 
+            SafeAreaEdges = SafeAreaEdges.All;
+
             qController = new QController(address, 53000);
             qController.qClient.qParser.WorkspaceInfoReceived += WorkspaceInfoReceived;
             qController.qClient.qParser.WorkspaceUpdated += WorkspaceUpdated;

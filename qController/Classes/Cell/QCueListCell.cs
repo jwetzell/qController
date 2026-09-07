@@ -10,16 +10,7 @@ namespace qController.Cell
         public ObservableCollection<OSCListItem> items;
         public QCueListCell(QCueList qCueList)
         {
-            // TODO Xamarin.Forms.Device.RuntimePlatform is no longer supported. Use Microsoft.Maui.Devices.DeviceInfo.Platform instead. For more details see https://learn.microsoft.com/en-us/dotnet/maui/migration/forms-projects#device-changes
-            switch (Device.RuntimePlatform)
-            {
-                case Device.iOS:
-                    Margin = new Thickness(10, 30, 10, 10);
-                    break;
-                case Device.Android:
-                    Margin = new Thickness(10, 10, 10, 10);
-                    break;
-            }
+            Margin = new Thickness(10, 10, 10, 10);
             Padding = new Thickness(10);
             items = new ObservableCollection<OSCListItem>();
 
@@ -41,22 +32,15 @@ namespace qController.Cell
                     icon.HorizontalTextAlignment = TextAlignment.Center;
                     icon.VerticalTextAlignment = TextAlignment.Center;
                     icon.FontSize = App.HeightUnit * 3;
+                    icon.TextColor = Colors.Black;
                     var label = new Label { VerticalOptions = LayoutOptions.FillAndExpand };
                     label.SetBinding(Label.TextProperty, "Text");
                     if (label.Text == "Disconnect")
                     {
                         label.TextColor = Colors.DarkRed;
                     }
-                    // TODO Xamarin.Forms.Device.RuntimePlatform is no longer supported. Use Microsoft.Maui.Devices.DeviceInfo.Platform instead. For more details see https://learn.microsoft.com/en-us/dotnet/maui/migration/forms-projects#device-changes
-                    switch (Device.RuntimePlatform)
-                    {
-                        case Device.iOS:
-                            label.FontSize = App.HeightUnit * 3;
-                            break;
-                        case Device.Android:
-                            label.FontSize = App.HeightUnit * 2.2;
-                            break;
-                    }
+                    label.FontSize = App.HeightUnit * 2.2;
+                    label.TextColor = Colors.Black;
                     grid.Add(icon);
                     grid.Add(label, 1, 0);
                     return new ViewCell { View = grid };
@@ -68,7 +52,7 @@ namespace qController.Cell
             {
                 BackgroundColor = Colors.Gray,
                 Text = "Close",
-                TextColor = Colors.White
+                TextColor = Colors.Black
             };
 
             layout.Children.Add(closeButton);

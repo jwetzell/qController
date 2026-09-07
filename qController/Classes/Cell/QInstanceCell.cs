@@ -75,11 +75,13 @@ namespace qController.Cell
                 nameLabel.FontAttributes = FontAttributes.Bold;
                 nameLabel.FontSize = App.HeightUnit * 3;
                 nameLabel.Margin = new Thickness(0, 20, 0, 0);
+                nameLabel.TextColor = Colors.Black;
 
                 addressLabel.HorizontalTextAlignment = TextAlignment.Center;
                 addressLabel.VerticalTextAlignment = TextAlignment.Start;
                 addressLabel.FontSize = App.HeightUnit * 2.5;
                 addressLabel.Margin = new Thickness(0, 0, 0, 20);
+                addressLabel.TextColor = Colors.Black;
 
                 connectLabel.HorizontalOptions = LayoutOptions.StartAndExpand;
                 connectLabel.VerticalOptions = LayoutOptions.CenterAndExpand;

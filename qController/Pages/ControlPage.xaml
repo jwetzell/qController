@@ -13,8 +13,8 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="4*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="menuButton" FontFamily = "{StaticResource qfont}"  HorizontalOptions = "Start" VerticalOptions="End" Margin="20,10,20,10" Grid.Row="0" Grid.Column="0" FontSize="25" Text="&#xF0C9;"/>
-                <Label x:Name="instanceName" HorizontalTextAlignment="End" HorizontalOptions = "FillAndExpand" VerticalOptions="End" Margin="20,10,20,10" Grid.Row="0" Grid.Column="1"/>
+                <Label x:Name="menuButton" FontFamily = "qfont"  HorizontalOptions = "Start" VerticalOptions="End" Margin="20,10,20,10" Grid.Row="0" Grid.Column="0" FontSize="25" Text="&#xF0C9;" TextColor="Black"/>
+                <Label x:Name="instanceName" HorizontalTextAlignment="End" HorizontalOptions = "FillAndExpand" VerticalOptions="End" Margin="20,10,20,10" Grid.Row="0" Grid.Column="1" TextColor="Black"/>
             </Grid>
             <AbsoluteLayout x:Name="sLayout" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></AbsoluteLayout>
         </StackLayout>
